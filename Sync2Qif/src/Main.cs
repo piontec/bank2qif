@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Xml.Linq;
+using System.Data.Linq;
 
 namespace Sync2Qif
 {
@@ -25,8 +26,19 @@ namespace Sync2Qif
 				return false;
 			}
 
-			if (!File.Exists (args [1])) {
+			string fileName = args [1];
+			if (!File.Exists (fileName)) {
 				Console.WriteLine ("File does not exists");
+				return false;
+			}
+
+			if (!File.Exists (fileName)) {
+				Console.WriteLine ("File does not exists");
+				return false;
+			}
+
+			if (!fileName.EndsWith (".pdf", StringComparison.CurrentCultureIgnoreCase)) {
+				Console.WriteLine ("Wrong file extension, *.pdf expected");
 				return false;
 			}
 
@@ -36,22 +48,24 @@ namespace Sync2Qif
 
 		static void DisplayHelp (string[] args)
 		{
-			Console.WriteLine (string.Format ("Usage: {0} [{1}]", args [0], args [1]));
+			Console.WriteLine (string.Format ("Usage: {0} [pdf file name]", args [0]));
 		}
 
 
-		private void Run (string pdfFile)
+		private void Run (string pdfFileName)
 		{
-			var xml = PdfToXmlReader.Read (pdfFile);
+			var xml = PdfToXmlReader.Read (pdfFileName);
 			var qifEntries = new AliorSyncXmlToQif ().ConvertXmlToQif (xml);
 			var qifFile = new QifFile (qifEntries);
-			qifFile.Save (GetQifFileName (pdfFile));
+			qifFile.Save (GetQifFileName (pdfFileName));
 		}
 
 
-		string GetQifFileName (string pdfFile)
+		string GetQifFileName (string pdfFileName)
 		{
 			throw new NotImplementedException ();
+			var extIndex = pdfFileName.LastIndexOf ("*.pdf", StringComparison.CurrentCultureIgnoreCase);
+			return pdfFileName.Remove (extIndex) + ".qif";
 		}
 	}
 }
