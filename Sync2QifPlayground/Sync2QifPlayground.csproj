@@ -32,6 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
@@ -40,5 +44,11 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sync2Qif\Sync2Qif.csproj">
+      <Project>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</Project>
+      <Name>Sync2Qif</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
