@@ -45,6 +45,7 @@
     <Compile Include="src\AliorSyncXmlToQif.cs" />
     <Compile Include="src\QifFile.cs" />
     <Compile Include="src\Sync2QifParser.cs" />
+    <Compile Include="src\Runner.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
