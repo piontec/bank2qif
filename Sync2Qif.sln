@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sync2Qif", "Sync2Qif\Sync2Qif.csproj", "{06E4739E-550C-4CE4-BFF5-5DEACD121B36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sync2QifTests", "Sync2QifTests\Sync2QifTests.csproj", "{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,10 @@ Global
 		{06E4739E-550C-4CE4-BFF5-5DEACD121B36}.Debug|x86.Build.0 = Debug|x86
 		{06E4739E-550C-4CE4-BFF5-5DEACD121B36}.Release|x86.ActiveCfg = Release|x86
 		{06E4739E-550C-4CE4-BFF5-5DEACD121B36}.Release|x86.Build.0 = Release|x86
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Sync2Qif\Sync2Qif.csproj

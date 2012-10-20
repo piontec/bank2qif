@@ -5,7 +5,7 @@ using System.Data.Linq;
 
 namespace Sync2Qif
 {
-	class Sync2QifParser
+	public class Sync2QifParser
 	{
 		public static void Main (string[] args)
 		{
@@ -61,10 +61,11 @@ namespace Sync2Qif
 		}
 
 
-		string GetQifFileName (string pdfFileName)
+		public string GetQifFileName (string pdfFileName)
 		{
-			throw new NotImplementedException ();
-			var extIndex = pdfFileName.LastIndexOf ("*.pdf", StringComparison.CurrentCultureIgnoreCase);
+			var extIndex = pdfFileName.LastIndexOf (".pdf", StringComparison.CurrentCultureIgnoreCase);
+			if (extIndex == 0)
+				throw new ApplicationException ("Could not find .pdf in file name");
 			return pdfFileName.Remove (extIndex) + ".qif";
 		}
 	}

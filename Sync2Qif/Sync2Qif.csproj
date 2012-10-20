@@ -39,12 +39,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
-    <Compile Include="src\Main.cs" />
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\PdfToXmlReader.cs" />
     <Compile Include="src\IXmlToQifEntry.cs" />
     <Compile Include="src\AliorSyncXmlToQif.cs" />
     <Compile Include="src\QifFile.cs" />
+    <Compile Include="src\Sync2QifParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
