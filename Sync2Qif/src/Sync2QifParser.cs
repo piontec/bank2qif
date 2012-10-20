@@ -64,7 +64,7 @@ namespace Sync2Qif
 		public string GetQifFileName (string pdfFileName)
 		{
 			var extIndex = pdfFileName.LastIndexOf (".pdf", StringComparison.CurrentCultureIgnoreCase);
-			if (extIndex == 0)
+			if (extIndex == -1)
 				throw new ApplicationException ("Could not find .pdf in file name");
 			return pdfFileName.Remove (extIndex) + ".qif";
 		}
