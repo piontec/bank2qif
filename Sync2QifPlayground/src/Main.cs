@@ -10,6 +10,31 @@ namespace Sync2QifPlayground
 {
 	class MainClass
 	{
+		static IEnumerable<XElement> ExtractBoxes (IEnumerable<XElement> page1, int firstBoxId)
+		{
+			Func<XElement, XElement, XElement> strAgg = (e1, e2) => new XElement ("Line", (string)e1 + (string)e2);
+			int lastBoxId = int.Parse ((
+				from b in page1.Elements ("textbox")
+				let firstLn = b.Elements ("textline").First ()
+				let firstLnTxt = (string)firstLn.Elements ("text").Aggregate (strAgg)
+				where firstLnTxt.StartsWith ("Infolinia")
+				select b.Attribute ("id").Value)
+			                           .First ());
+			var boxes = 
+				from b in page1.Elements ("textbox")
+				let bid = (int)b.Attribute ("id")
+				where bid > firstBoxId && bid < lastBoxId
+				select b;
+			var lines = 
+				from b in boxes
+				select new XElement ("box", 
+					from tl in b.Elements ("textline")
+					select tl.Elements ("text")
+					                     .Aggregate (strAgg));
+			return lines;
+		}
+
+
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Loading file");
@@ -23,24 +48,7 @@ namespace Sync2QifPlayground
 				where (int) p.Attribute ("id") == 1
 				select p;
 
-			Func<XElement, XElement, XElement> strAgg = (e1, e2) => new XElement ("Line", (string) e1 + (string) e2);
-			int lastBoxId = int.Parse (
-				(from b in page1.Elements ("textbox")
-				let firstLn = b.Elements ("textline").First ()
-				let firstLnTxt = (string) firstLn.Elements ("text").Aggregate (strAgg)
-				where firstLnTxt.StartsWith ("Infolinia")
-				select b.Attribute ("id").Value)
-				.First ()
-				);
-			var boxes = from b in page1.Elements ("textbox")
-				let bid = (int)b.Attribute ("id")
-				where  bid > 10 && bid < lastBoxId
-				select b;
-			var lines = from b in boxes
-				select new XElement ("box",
-		             from tl in b.Elements ("textline")
-				     select tl.Elements ("text").Aggregate (strAgg)		             
-				     );
+			var lines = ExtractBoxes (page1, 10);
 
 			foreach (var line in lines)
 				Console.WriteLine (line);
