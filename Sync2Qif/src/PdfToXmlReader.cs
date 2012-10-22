@@ -33,7 +33,7 @@ namespace Sync2Qif
 				throw;
 			}
 
-			return XDocument.Parse (output);
+			return XDocument.Parse (output, LoadOptions.PreserveWhitespace);
 		}
 	}
 }
