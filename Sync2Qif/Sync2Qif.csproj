@@ -36,6 +36,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
@@ -46,6 +47,7 @@
     <Compile Include="src\QifFile.cs" />
     <Compile Include="src\Sync2QifParser.cs" />
     <Compile Include="src\Runner.cs" />
+    <Compile Include="src\BankDates.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

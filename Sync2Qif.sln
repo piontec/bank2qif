@@ -27,6 +27,6 @@ Global
 		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Sync2Qif\Sync2Qif.csproj
+		StartupItem = Sync2QifPlayground\Sync2QifPlayground.csproj
 	EndGlobalSection
 EndGlobal

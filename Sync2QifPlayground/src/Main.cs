@@ -10,28 +10,79 @@ namespace Sync2QifPlayground
 {
 	class MainClass
 	{
-		static IEnumerable<XElement> ExtractBoxes (IEnumerable<XElement> page1, int firstBoxId)
+		private readonly string [] OpNames = new string [] 
 		{
-			Func<XElement, XElement, XElement> strAgg = (e1, e2) => new XElement ("Line", (string)e1 + (string)e2);
+			"RZELEW W RAMACH BANKU NA RACH OBCY", 
+			"PRZELEW DO INNEGO BANKU KRAJOWEGO",
+			"PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO",
+			"PRZELEW NATYCHMIASTOWY",
+		};
+
+		static IEnumerable<XElement> ExtractBoxes (IEnumerable<XElement> page, int firstBoxId)
+		{
+			Func<XElement, XElement, XElement> strAgg = (e1, e2) => new XElement ("line", (string)e1 + (string)e2);
 			int lastBoxId = int.Parse ((
-				from b in page1.Elements ("textbox")
+				from b in page.Elements ("textbox")
 				let firstLn = b.Elements ("textline").First ()
 				let firstLnTxt = (string)firstLn.Elements ("text").Aggregate (strAgg)
 				where firstLnTxt.StartsWith ("Infolinia")
 				select b.Attribute ("id").Value)
 			                           .First ());
 			var boxes = 
-				from b in page1.Elements ("textbox")
+				from b in page.Elements ("textbox")
 				let bid = (int)b.Attribute ("id")
 				where bid > firstBoxId && bid < lastBoxId
 				select b;
+			new XElement ("root", boxes).Save ("/tmp/boxes.xml");
+			int newid = 0;
 			var lines = 
 				from b in boxes
 				select new XElement ("box", 
-					from tl in b.Elements ("textline")
-					select tl.Elements ("text")
-					                     .Aggregate (strAgg));
+					                   new XAttribute ("id", newid++), 
+				                       from tl in b.Elements ("textline")
+				                       select tl.Elements ("text")
+				                       .Aggregate (strAgg)
+					                );
+			new XElement ("root", lines).Save ("/tmp/lines.xml");
 			return lines;
+		}
+
+
+		static IEnumerable<QifEntry> ConvertBoxes (IEnumerable<XElement> boxes)
+		{
+			var result = new List<QifEntry> ();
+			var boxesList = boxes.ToList ();
+
+			var blockDates = new List<BankDates> ();
+			IList<QifEntry> blockEntries;
+			for (int i = 0; i < boxesList.Count; i++) {
+				var box = boxesList [i];
+				BankDates date = BankDates.TryParse (box);
+				if (date != null) {
+					blockDates.Add (date);
+					continue;
+				}
+				blockEntries = TryParseTransactions (boxesList, i, blockDates.Count);
+				MergeDatesWithTransactions (blockEntries, blockDates);
+
+				i += blockDates.Count;
+				blockDates.Clear ();
+				result.AddRange (blockEntries);
+			}
+
+			return result;
+		}
+
+
+		static void MergeDatesWithTransactions (object blockEntries, List<BankDates> blockDates)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		static IList<QifEntry> TryParseTransactions (List<XElement> boxesList, int startIndex, int count)
+		{
+			throw new NotImplementedException ();
 		}
 
 
@@ -48,33 +99,13 @@ namespace Sync2QifPlayground
 				where (int) p.Attribute ("id") == 1
 				select p;
 
-			var lines = ExtractBoxes (page1, 10);
+			var boxes = ExtractBoxes (page1, 10);
 
-			foreach (var line in lines)
-				Console.WriteLine (line);
+			var trans = ConvertBoxes (boxes);
 
-			/*
-			IEnumerable<XElement> lines = from ln in xdoc.Descendants("textline")
-				select	(from w in ln.Elements("text")
-				        select w).Aggregate ((e1, e2) => 
-				                    {
-					string s1 = (string) e1;
-					return s1 == string.Empty ?
-						new XElement ("Line", " " + (string) e2)
-							: new XElement ("Line", s1 + (string) e2);
-									})
-				        ;
-			foreach (var line in lines)
-				Console.WriteLine (line);
-*/
-			/*
-			var lines = from ln in xdoc.Descendants ("textline")
-				select	new {List = ln.Elements ("text")}
-					;
-			foreach (var line in lines)
-				foreach (var a in line.List)
-					Console.WriteLine (a);
-					*/
+			foreach (var box in boxes)
+				Console.WriteLine (box);
+
 		}
 	}
 }
