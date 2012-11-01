@@ -27,6 +27,12 @@ namespace Sync2Qif
 
 			return success ? new BankDates {BookingDate = booking, OperationDate = operation} : null;
 		}
+
+
+		public override string ToString ()
+		{
+			return string.Format ("[BankDates: BookingDate={0}, OperationDate={1}]", BookingDate, OperationDate);
+		}
 	}
 }
 

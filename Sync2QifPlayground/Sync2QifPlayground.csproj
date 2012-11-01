@@ -31,7 +31,6 @@
     <Externalconsole>True</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml" />

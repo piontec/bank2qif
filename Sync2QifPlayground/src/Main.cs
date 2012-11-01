@@ -5,6 +5,8 @@ using System.Data.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Globalization;
 
 namespace Sync2QifPlayground
 {
@@ -17,9 +19,10 @@ namespace Sync2QifPlayground
 			"PRZELEW DO INNEGO BANKU KRAJOWEGO",
 			"PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO",
 			"PRZELEW NATYCHMIASTOWY",
+			"ZAŁOŻENIE LOKATY",
 		};
 
-		private IEnumerable<XElement> ExtractBoxes (IEnumerable<XElement> page, int firstBoxId)
+		private IEnumerable<XElement> ExtractBoxes (XElement page, int firstBoxId)
 		{
 			int lastBoxId = int.Parse ((
 				from b in page.Elements ("textbox")
@@ -129,19 +132,29 @@ namespace Sync2QifPlayground
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Loading file");
+			var cult = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
 			var xdoc = PdfToXmlReader.Read (@"../../../Sync2QifTests/data/wyciag1.pdf");
 
 			IEnumerable<XElement> pages = from page in xdoc.Descendants("page")
 				select page;
-
-			var page1 = from p in pages
-				where (int) p.Attribute ("id") == 1
-				select p;
-
 			var m = new MainClass ();
+
+			var page1 = (from p in pages
+				where (int) p.Attribute ("id") == 1
+			    select p).Single ();
 			var boxes = m.ExtractBoxes (page1, 10);
 
+			var nextPages = from p in pages
+				where (int) p.Attribute ("id") > 1
+				select p;
+
+			foreach (var p in nextPages) 			
+				boxes = boxes.Concat (m.ExtractBoxes (p, 1));
+
 			var entries = m.ConvertBoxes (boxes);
+
+			Thread.CurrentThread.CurrentCulture = cult;
 
 			foreach (var entry in entries)
 				Console.WriteLine (entry);
