@@ -40,7 +40,7 @@ namespace Sync2Qif.Converters
                 let bid = (int)b.Attribute("id")
                 where bid > firstBoxId && bid < lastBoxId
                 select b;
-            new XElement("root", boxes).Save("/tmp/boxes.xml");
+            
             int newid = 0;
             var lines =
                 from b in boxes
@@ -50,7 +50,7 @@ namespace Sync2Qif.Converters
                                        select tl.Elements("text")
                                        .Aggregate(strAgg)
                                     );
-            new XElement("root", lines).Save("/tmp/lines.xml");
+            
             return lines;
         }
 
