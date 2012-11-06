@@ -1,13 +1,13 @@
 using System;
+using Sync2Qif.Converters;
 
 namespace Sync2Qif
 {
 	public class Sync2QifParser
 	{
 		public void Run (string pdfFileName)
-		{
-			var xml = PdfToXmlReader.Read (pdfFileName);
-			var qifEntries = new AliorSyncXmlToQif ().ConvertFileToQif (xml);
+		{			
+			var qifEntries = new AliorSyncPdfToQif ().ConvertFileToQif (pdfFileName);
 			var qifFile = new QifFile (qifEntries);
 			qifFile.Save (GetQifFileName (pdfFileName));
 		}
