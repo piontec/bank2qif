@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 
-namespace Sync2Qif
+namespace Sync2Qif.Converters
 {
 	public interface IFileToQifEntries
 	{
