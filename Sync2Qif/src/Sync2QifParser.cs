@@ -7,7 +7,7 @@ namespace Sync2Qif
 		public void Run (string pdfFileName)
 		{
 			var xml = PdfToXmlReader.Read (pdfFileName);
-			var qifEntries = new AliorSyncXmlToQif ().ConvertXmlToQif (xml);
+			var qifEntries = new AliorSyncXmlToQif ().ConvertFileToQif (xml);
 			var qifFile = new QifFile (qifEntries);
 			qifFile.Save (GetQifFileName (pdfFileName));
 		}

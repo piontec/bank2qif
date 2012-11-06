@@ -6,9 +6,9 @@ using System.Xml.Linq;
 
 namespace Sync2Qif
 {
-	public interface IXmlToQifEntry
+	public interface IFileToQifEntries
 	{
-		IList<QifEntry> ConvertXmlToQif (XDocument xml);
+		IList<QifEntry> ConvertFileToQif (string fileName);
 	}
 }
 

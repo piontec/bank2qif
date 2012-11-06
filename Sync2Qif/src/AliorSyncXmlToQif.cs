@@ -4,9 +4,9 @@ using System.Xml.Linq;
 
 namespace Sync2Qif
 {
-	public class AliorSyncXmlToQif : IXmlToQifEntry
+	public class AliorSyncXmlToQif : IFileToQifEntries
 	{
-		public IList<QifEntry> ConvertXmlToQif (XDocument xml)
+		public IList<QifEntry> ConvertFileToQif (XDocument xml)
 		{
 			throw new NotImplementedException ();
 		}
