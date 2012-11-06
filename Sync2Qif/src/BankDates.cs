@@ -21,9 +21,9 @@ namespace Sync2Qif
 			if (lines.Count () != 2)
 				return null;
 
-			DateTime booking, operation;
-			bool success = DateTime.TryParse ((string) lines.ElementAt (0), out booking) 
-				&& DateTime.TryParse ((string) lines.ElementAt (1), out operation);
+            DateTime booking, operation;            
+			bool success = DateTime.TryParse ((string) lines.ElementAt (0), out booking); 
+			success &=	DateTime.TryParse ((string) lines.ElementAt (1), out operation);
 
 			return success ? new BankDates {BookingDate = booking, OperationDate = operation} : null;
 		}
