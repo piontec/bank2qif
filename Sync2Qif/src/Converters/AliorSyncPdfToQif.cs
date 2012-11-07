@@ -143,25 +143,30 @@ namespace Sync2Qif.Converters
                 throw new ApplicationException(string.Format("File name does not end in *.pdf: {0}", fileName));
             if (!File.Exists(fileName))
                 throw new ApplicationException(string.Format("File does not exists: {0}", fileName));
-                        
-            var cult = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
-            var xdoc = PdfToXmlReader.Read(fileName);
-
-            IEnumerable<XElement> pages = from page in xdoc.Descendants("page")
-                                          select page;
-
-            var page1 = pages.Where(p => (int)p.Attribute("id") == 1).Single();
-            var boxes = ExtractBoxes(page1, TITLE_PAGE_FIRST_BOX);
-
-            var nextPages = pages.Where (p => (int) p.Attribute ("id") > 1);
-            foreach (var p in nextPages)
-                boxes = boxes.Concat(ExtractBoxes(p, NEXT_PAGE_FIRST_BOX));
-
-            var entries = ConvertBoxes(boxes);
-            Thread.CurrentThread.CurrentCulture = cult;
-
-            return entries;
+            
+			return ConvertXmlToQif (PdfToXmlReader.Read(fileName));
         }
+
+
+		public IList<QifEntry> ConvertXmlToQif (XDocument xml)
+		{
+			var cult = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
+			
+			IEnumerable<XElement> pages = from page in xml.Descendants("page")
+				select page;
+			
+			var page1 = pages.Where(p => (int)p.Attribute("id") == 1).Single();
+			var boxes = ExtractBoxes(page1, TITLE_PAGE_FIRST_BOX);
+			
+			var nextPages = pages.Where (p => (int) p.Attribute ("id") > 1);
+			foreach (var p in nextPages)
+				boxes = boxes.Concat(ExtractBoxes(p, NEXT_PAGE_FIRST_BOX));
+			
+			var entries = ConvertBoxes(boxes);
+			Thread.CurrentThread.CurrentCulture = cult;
+
+			return entries;
+		}
     }
 }
