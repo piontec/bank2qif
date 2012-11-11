@@ -18,7 +18,7 @@ namespace Sync2QifTests
 		[SetUp]
 		public void SetUp ()
 		{
-			xml = XDocument.Load ("../../data/wyciag1.xml");
+            xml = XDocument.Load("../../data/wyciag1.xml", LoadOptions.PreserveWhitespace);
 			converter = new AliorSyncPdfToQif ();
 			res = converter.ConvertXmlToQif (xml);
 		}
