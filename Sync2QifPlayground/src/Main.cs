@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Globalization;
+using Sync2Qif.Converters;
 
 namespace Sync2QifPlayground
 {
@@ -131,34 +132,46 @@ namespace Sync2QifPlayground
 
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Loading file");
-			var cult = Thread.CurrentThread.CurrentCulture;
-			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
-			var xdoc = PdfToXmlReader.Read (@"../../../Sync2QifTests/data/wyciag1.pdf");
-
-			IEnumerable<XElement> pages = from page in xdoc.Descendants("page")
-				select page;
-			var m = new MainClass ();
-
-			var page1 = (from p in pages
-				where (int) p.Attribute ("id") == 1
-			    select p).Single ();
-			var boxes = m.ExtractBoxes (page1, 10);
-
-			var nextPages = from p in pages
-				where (int) p.Attribute ("id") > 1
-				select p;
-
-			foreach (var p in nextPages) 			
-				boxes = boxes.Concat (m.ExtractBoxes (p, 1));
-
-			var entries = m.ConvertBoxes (boxes);
-
-			Thread.CurrentThread.CurrentCulture = cult;
-
-			foreach (var entry in entries)
-				Console.WriteLine (entry);
+            Case2();
 
 		}
+
+        private static void Case2()
+        {
+            var xml = XDocument.Load("../../../Sync2QifTests/data/wyciag1.xml", LoadOptions.PreserveWhitespace);
+            var converter = new AliorSyncPdfToQif();
+            var res = converter.ConvertXmlToQif(xml);
+        }
+
+        private static void Case1()
+        {
+            Console.WriteLine("Loading file");
+            var cult = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
+            var xdoc = PdfToXmlReader.Read(@"../../../Sync2QifTests/data/wyciag1.pdf");
+
+            IEnumerable<XElement> pages = from page in xdoc.Descendants("page")
+                                          select page;
+            var m = new MainClass();
+
+            var page1 = (from p in pages
+                         where (int)p.Attribute("id") == 1
+                         select p).Single();
+            var boxes = m.ExtractBoxes(page1, 10);
+
+            var nextPages = from p in pages
+                            where (int)p.Attribute("id") > 1
+                            select p;
+
+            foreach (var p in nextPages)
+                boxes = boxes.Concat(m.ExtractBoxes(p, 1));
+
+            var entries = m.ConvertBoxes(boxes);
+
+            Thread.CurrentThread.CurrentCulture = cult;
+
+            foreach (var entry in entries)
+                Console.WriteLine(entry);
+        }
 	}
 }

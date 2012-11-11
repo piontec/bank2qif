@@ -32,7 +32,7 @@ namespace Sync2Qif.Converters
                 from b in page.Elements("textbox")
                 let firstLn = b.Elements("textline").First()
                 let firstLnTxt = (string)firstLn.Elements("text").Aggregate(strAgg)
-                where firstLnTxt.StartsWith("Infolinia")
+                where firstLnTxt.StartsWith("Infolinia Alior Sync") || firstLnTxt.StartsWith("Niniejszy dokument jest")
                 select b.Attribute("id").Value)
                                        .First());
             var boxes =
