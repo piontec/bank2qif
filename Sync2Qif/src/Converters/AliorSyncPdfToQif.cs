@@ -108,7 +108,7 @@ namespace Sync2Qif.Converters
                     throw new ApplicationException(string.Format("Wrong line: {0}", line));
 
                 current = new QifEntry { Description = line };
-                double amount = double.Parse((string)boxesList[i + 1].Element("line"));
+                decimal amount = decimal.Parse((string)boxesList[i + 1].Element("line"));
                 //double balance = double.Parse ((string) boxesList [i + 2].Element ("line"));
                 var nextLine = (string)boxesList[i + 3].Elements("line").Aggregate(strAgg);
                 current.Amount = amount;
