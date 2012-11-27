@@ -29,11 +29,8 @@ namespace Sync2Qif
 
         private void Run(string[] args)
         {
-            m_container = new WindsorContainer();
-            m_container.Install(new ConvertersInstaller());
-
             LoadCmdLineArgs(args);
-            LoadConverters();
+            LoadContainer();
 
             var converter = GetConverter(m_bankType);
             VerifyArgs(converter, m_fileName);
@@ -59,9 +56,10 @@ namespace Sync2Qif
         }
 
 
-        private void LoadConverters()
+        private void LoadContainer()
         {
-            throw new NotImplementedException();
+            m_container = new WindsorContainer();
+            m_container.Install(new ConvertersInstaller());
         }
 
 
