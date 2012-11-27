@@ -153,37 +153,7 @@ namespace Sync2QifPlayground.src
         }
               
 
-        private static void Case1()
-        {
-            Console.WriteLine("Loading file");
-            var cult = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
-            var xdoc = PdfToXmlReader.Read(@"../../../Sync2QifTests/data/wyciag1.pdf");
-
-            IEnumerable<XElement> pages = from page in xdoc.Descendants("page")
-                                          select page;
-            var m = new MainClass();
-
-            var page1 = (from p in pages
-                         where (int)p.Attribute("id") == 1
-                         select p).Single();
-            var boxes = m.ExtractBoxes(page1, 10);
-
-            var nextPages = from p in pages
-                            where (int)p.Attribute("id") > 1
-                            select p;
-
-            foreach (var p in nextPages)
-                boxes = boxes.Concat(m.ExtractBoxes(p, 1));
-
-            var entries = m.ConvertBoxes(boxes);
-
-            Thread.CurrentThread.CurrentCulture = cult;
-
-            foreach (var entry in entries)
-                Console.WriteLine(entry);
-        }
-
+        
         public static void ExtractWithITextSharpTest ()
         {
             PdfReader reader = new PdfReader(@"../../../Sync2QifTests/data/wyciag1.pdf");
