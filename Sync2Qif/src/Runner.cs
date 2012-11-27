@@ -2,27 +2,86 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 using System.Data.Linq;
+using Nini.Config;
+using Sync2Qif.Converters;
 
 namespace Sync2Qif
 {
 	public class Runner
 	{
+        internal enum ExitCodes : int
+        {
+            Success = 0,
+            SyntaxError = 2,
+        }
+
+        private string fileName, bankType;
+
+
 		public static void Main (string[] args)
 		{
-			if (!ValidateArgs (args)) {
-				DisplayHelp (args);
-				return;
-			}
-
-			var sync2qif = new Sync2QifParser ();
-			sync2qif.Run (args [1]);
+            Runner runner = new Runner();
+            runner.Run(args);            
 		}
 
 
-		static bool ValidateArgs (string[] args)
+        private void Run(string[] args)
+        {
+            LoadCmdLineArgs(args);
+            LoadConverters();
+
+            var converter = GetConverter(bankType);
+            VerifyArgs(converter, fileName);
+
+            var entries = converter.ConvertFileToQif(fileName);
+            ProcessEntries();
+        }
+
+        private void ProcessEntries()
+        {
+            throw new NotImplementedException();
+        }
+
+        private IConverter GetConverter(string bankType)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void VerifyArgs(IConverter converter, string fileName)
+        {
+            throw new NotImplementedException();
+            // file extension and converter type
+        }
+
+
+        private void LoadConverters()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private void LoadCmdLineArgs(string[] args)
+        {
+            ArgvConfigSource source = new ArgvConfigSource(args);
+
+            source.AddSwitch("Main", "file-name", "f");
+            source.AddSwitch("Main", "bank-type", "t");
+                    
+            if (args.Length != 5)
+            {
+                Console.WriteLine ("Wrong number of parameters");
+                DisplayHelpAndExit(args, ExitCodes.SyntaxError);
+            }
+            
+            fileName = source.Configs["Main"].Get("file-name");
+            bankType = source.Configs["Main"].Get("bank-type");
+        }
+
+
+		private bool ValidateArgs (string[] args)
 		{
 			if (args.Length != 2) {
-				Console.WriteLine ("Wrong number of parameters");
+			
 				return false;
 			}
 
@@ -46,9 +105,10 @@ namespace Sync2Qif
 		}
 
 
-		static void DisplayHelp (string[] args)
+		private void DisplayHelpAndExit (string[] args, ExitCodes code)
 		{
-			Console.WriteLine (string.Format ("Usage: {0} [pdf file name]", args [0]));
+			Console.WriteLine (string.Format ("Usage: {0} -t [bank type] -f [file name]", args [0]));
+            System.Environment.Exit((int) code);
 		}	
 	}
 }

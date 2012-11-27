@@ -151,13 +151,7 @@ namespace Sync2QifPlayground.src
         {
             Sprache.Start();
         }
-
-        private static void Case2()
-        {
-            var xml = XDocument.Load("../../../Sync2QifTests/data/wyciag1.xml", LoadOptions.PreserveWhitespace);
-            var converter = new AliorSyncPdfToQif();
-            var res = converter.ConvertXmlToQif(xml);
-        }
+              
 
         private static void Case1()
         {
