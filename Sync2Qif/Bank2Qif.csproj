@@ -31,6 +31,9 @@
     <Externalconsole>True</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nini">
+      <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -40,10 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
+    <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\PdfToXmlReader.cs" />
-    <Compile Include="src\Converters\IFileToQifEntries.cs" />
+    <Compile Include="src\Converters\IConverter.cs" />
     <Compile Include="src\QifFile.cs" />
     <Compile Include="src\Sync2QifParser.cs" />
     <Compile Include="src\Runner.cs" />
