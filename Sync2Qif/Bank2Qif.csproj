@@ -31,8 +31,17 @@
     <Externalconsole>True</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\lib\castle.windsor-3.1.0\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\lib\itextsharp-5.3.4\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Nini">
       <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
+    </Reference>
+    <Reference Include="Sprache">
+      <HintPath>..\lib\sprache-1.9.1\Sprache.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -43,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
+    <Compile Include="src\ConvertersInstaller.cs" />
     <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
     <Compile Include="src\QifEntry.cs" />
