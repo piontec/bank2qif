@@ -46,9 +46,9 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Sync2Qif\Sync2Qif.csproj">
+    <ProjectReference Include="..\Sync2Qif\Bank2Qif.csproj">
       <Project>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</Project>
-      <Name>Sync2Qif</Name>
+      <Name>Bank2Qif</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
