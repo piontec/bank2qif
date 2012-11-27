@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.Data.Linq;
 using Nini.Config;
 using Sync2Qif.Converters;
+using Castle.Windsor;
 
 namespace Sync2Qif
 {
@@ -15,7 +16,8 @@ namespace Sync2Qif
             SyntaxError = 2,
         }
 
-        private string fileName, bankType;
+        private string m_fileName, m_bankType;
+        private WindsorContainer m_container;
 
 
 		public static void Main (string[] args)
@@ -27,13 +29,16 @@ namespace Sync2Qif
 
         private void Run(string[] args)
         {
+            m_container = new WindsorContainer();
+            m_container.Install(new ConvertersInstaller());
+
             LoadCmdLineArgs(args);
             LoadConverters();
 
-            var converter = GetConverter(bankType);
-            VerifyArgs(converter, fileName);
+            var converter = GetConverter(m_bankType);
+            VerifyArgs(converter, m_fileName);
 
-            var entries = converter.ConvertFileToQif(fileName);
+            var entries = converter.ConvertFileToQif(m_fileName);
             ProcessEntries();
         }
 
@@ -43,7 +48,7 @@ namespace Sync2Qif
         }
 
         private IConverter GetConverter(string bankType)
-        {
+        {            
             throw new NotImplementedException();
         }
 
@@ -73,8 +78,8 @@ namespace Sync2Qif
                 DisplayHelpAndExit(args, ExitCodes.SyntaxError);
             }
             
-            fileName = source.Configs["Main"].Get("file-name");
-            bankType = source.Configs["Main"].Get("bank-type");
+            m_fileName = source.Configs["Main"].Get("file-name");
+            m_bankType = source.Configs["Main"].Get("bank-type");
         }
 
 
