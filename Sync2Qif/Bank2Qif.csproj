@@ -46,7 +46,6 @@
     <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
     <Compile Include="src\QifEntry.cs" />
-    <Compile Include="src\PdfToXmlReader.cs" />
     <Compile Include="src\Converters\IConverter.cs" />
     <Compile Include="src\QifFile.cs" />
     <Compile Include="src\Sync2QifParser.cs" />
