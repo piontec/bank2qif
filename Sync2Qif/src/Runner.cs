@@ -45,12 +45,13 @@ namespace Sync2Qif
         }
 
         private IConverter GetConverter(string bankType)
-        {            
-            throw new NotImplementedException();
+        {
+            return m_container.Resolve<IConverter>(bankType);
         }
 
         private void VerifyArgs(IConverter converter, string fileName)
         {
+            //var supportedExt = Attribute.GetCustomAttribute(typeof(converter), ConverterAttribute);
             throw new NotImplementedException();
             // file extension and converter type
         }
@@ -70,7 +71,7 @@ namespace Sync2Qif
             source.AddSwitch("Main", "file-name", "f");
             source.AddSwitch("Main", "bank-type", "t");
                     
-            if (args.Length != 5)
+            if (args.Length != 4)
             {
                 Console.WriteLine ("Wrong number of parameters");
                 DisplayHelpAndExit(args, ExitCodes.SyntaxError);
