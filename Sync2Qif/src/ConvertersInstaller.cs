@@ -22,10 +22,11 @@ namespace Sync2Qif
                                             where a is ConverterAttribute
                                             select (ConverterAttribute)a
                              select new Tuple<Type, ConverterAttribute> ( t, convAttr.Single () );
-            foreach (var tuple in converters)
-                container.Register(
-                    Component.For(typeof (IConverter)).ImplementedBy(tuple.Item1).Named(tuple.Item2.Bank)
-                    );            
+            
+            container.Register(
+                converters.Select (t => Component.For(typeof(IConverter)).ImplementedBy(t.Item1).Named(t.Item2.Bank)).
+                Cast<IRegistration> ().ToArray ()                
+                );
         }
     }
 }
