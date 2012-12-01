@@ -5,10 +5,10 @@ using System.Text;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Sync2Qif.Converters;
+using Bank2Qif.Converters;
 using System.Reflection;
 
-namespace Sync2Qif
+namespace Bank2Qif
 {
     public class ConvertersInstaller : IWindsorInstaller
     {

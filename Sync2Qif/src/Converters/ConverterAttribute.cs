@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sync2Qif.Converters
+namespace Bank2Qif.Converters
 {
     /// <summary>
     /// Attribute to decorate Converters from a specific bank format to <see cref="QifEntry"/>

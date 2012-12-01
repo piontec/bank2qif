@@ -3,10 +3,10 @@ using System.IO;
 using System.Xml.Linq;
 using System.Data.Linq;
 using Nini.Config;
-using Sync2Qif.Converters;
+using Bank2Qif.Converters;
 using Castle.Windsor;
 
-namespace Sync2Qif
+namespace Bank2Qif
 {
 	public class Runner
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Sync2Qif;
+using Bank2Qif;
 
 namespace Bank2Qif.Transformers
 {

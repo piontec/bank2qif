@@ -1,5 +1,5 @@
 using System;
-using Sync2Qif;
+using Bank2Qif;
 using System.Xml.Linq;
 using System.Data.Linq;
 using System.Collections;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Globalization;
-using Sync2Qif.Converters;
+using Bank2Qif.Converters;
 using iTextSharp;
 using iTextSharp.text.pdf.parser;
 using iTextSharp.text.pdf;

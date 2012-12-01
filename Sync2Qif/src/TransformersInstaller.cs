@@ -7,7 +7,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
-namespace Sync2Qif
+namespace Bank2Qif
 {
     public class TransformersInstaller : IWindsorInstaller
     {

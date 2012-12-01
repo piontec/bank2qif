@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Sync2Qif
+namespace Bank2Qif
 {
 	public class BankDates
 	{

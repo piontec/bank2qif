@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 
-namespace Sync2Qif.Converters
+namespace Bank2Qif.Converters
 {
 	public interface IConverter
 	{

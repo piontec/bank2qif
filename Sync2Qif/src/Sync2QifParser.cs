@@ -1,7 +1,7 @@
 using System;
-using Sync2Qif.Converters;
+using Bank2Qif.Converters;
 
-namespace Sync2Qif
+namespace Bank2Qif
 {
 	public class Sync2QifParser
 	{

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Sprache;
-using Sync2Qif;
+using Bank2Qif;
 
 namespace Sync2QifPlayground.src
 {

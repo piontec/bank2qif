@@ -1,6 +1,6 @@
 using System;
 
-namespace Sync2Qif
+namespace Bank2Qif
 {
 	public class QifFile
 	{

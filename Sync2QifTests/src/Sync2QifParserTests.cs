@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using Sync2Qif;
+using Bank2Qif;
 
 namespace Sync2QifTests
 {

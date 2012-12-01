@@ -7,7 +7,7 @@ using System.Threading;
 using System.Globalization;
 using System.IO;
 
-namespace Sync2Qif.Converters
+namespace Bank2Qif.Converters
 {
     [Converter ("sync", "pdf")]
     public class AliorSyncPdfToQif : IConverter

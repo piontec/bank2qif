@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
-using Sync2Qif.Converters;
-using Sync2Qif;
+using Bank2Qif.Converters;
+using Bank2Qif;
 using System.Xml.Linq;
 using System.Collections.Generic;
 
