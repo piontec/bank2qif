@@ -62,7 +62,6 @@
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\Converters\IConverter.cs" />
     <Compile Include="src\QifFile.cs" />
-    <Compile Include="src\Sync2QifParser.cs" />
     <Compile Include="src\Runner.cs" />
     <Compile Include="src\BankDates.cs" />
     <Compile Include="src\TransformersInstaller.cs" />
