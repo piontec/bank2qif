@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bank2Qif.src.Transformers
+namespace Bank2Qif.Transformers
 {
     /// <summary>
     /// Attribute to decorate QifEntries transformers

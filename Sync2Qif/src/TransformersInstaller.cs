@@ -15,8 +15,8 @@ namespace Sync2Qif
         {
             container.Register(
                 Classes.FromThisAssembly()
-                .BasedOn<ITransformer>()
-                .Configure (c => c.Named (c.Attribute ("ky").ToString ()))
+                .Where (t => typeof(ITransformer).IsAssignableFrom (t) && 
+                    Attribute.IsDefined (t, typeof (TransformerAttribute)))                                
                 .LifestyleSingleton ()
                 .WithService.Base()
                 );
