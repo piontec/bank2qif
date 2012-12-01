@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Sync2Qif</RootNamespace>
-    <AssemblyName>Sync2Qif</AssemblyName>
+    <RootNamespace>Bank2Qif</RootNamespace>
+    <AssemblyName>bank2qif</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -65,6 +65,7 @@
     <Compile Include="src\Sync2QifParser.cs" />
     <Compile Include="src\Runner.cs" />
     <Compile Include="src\BankDates.cs" />
+    <Compile Include="src\Transformers\ITransformer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
