@@ -2,178 +2,221 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using System.Threading;
 using System.Globalization;
 using System.IO;
+using iTextSharp;
+using iTextSharp.text.pdf.parser;
+using iTextSharp.text.pdf;
+using Sprache;
+
 
 namespace Bank2Qif.Converters
 {
     [Converter ("sync", "pdf")]
     public class AliorSyncPdfToQif : IConverter
     {
-        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+
+        private class AccountNumber
         {
-            throw new NotImplementedException();
+            public AccountNumber(string num)
+            {
+                //TODO: validation
+                Number = num;
+            }
+
+            public string Number { get; private set; }
         }
 
-        //private readonly Func<XElement, XElement, XElement> strAgg = 
-        //    (e1, e2) => new XElement("line", (string)e1 + (string)e2);
 
-        //private readonly string[] OpNames = new string[] 
-        //{
-        //    "PRZELEW W RAMACH BANKU NA RACH OBCY", 
-        //    "PRZELEW DO INNEGO BANKU KRAJOWEGO",
-        //    "PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO",
-        //    "PRZELEW NATYCHMIASTOWY",
-        //    "ZAŁOŻENIE LOKATY",
-        //};
+        private class FirstLineResult
+        {
+            public DateTime Date { get; set; }
+            public string Description { get; set; }
+            public decimal Amount { get; set; }
+            public decimal Balance { get; set; }
 
-        //private const int TITLE_PAGE_FIRST_BOX = 10;
-        //private const int NEXT_PAGE_FIRST_BOX = 1;
+            public override string ToString()
+            {
+                return string.Format("[ Date = {0}, Description = {1}, Amount = {2}, Balance = {3} ]",
+                    Date, Description, Amount, Balance);
+            }
+        }
 
-        //private IEnumerable<XElement> ExtractBoxes(XElement page, int firstBoxId)
-        //{
-        //    int lastBoxId = int.Parse((
-        //        from b in page.Elements("textbox")
-        //        let firstLn = b.Elements("textline").First()
-        //        let firstLnTxt = (string)firstLn.Elements("text").Aggregate(strAgg)
-        //        where firstLnTxt.StartsWith("Infolinia Alior Sync") || firstLnTxt.StartsWith("Niniejszy dokument jest")
-        //        select b.Attribute("id").Value)
-        //                               .First());
-        //    var boxes =
-        //        from b in page.Elements("textbox")
-        //        let bid = (int)b.Attribute("id")
-        //        where bid > firstBoxId && bid < lastBoxId
-        //        select b;
-            
-        //    int newid = 0;
-        //    var lines =
-        //        from b in boxes
-        //        select new XElement("box",
-        //                               new XAttribute("id", newid++),
-        //                               from tl in b.Elements("textline")
-        //                               select tl.Elements("text")
-        //                               .Aggregate(strAgg)
-        //                            );
-            
-        //    return lines;
-        //}
+        private readonly string FIRST_PAGE_START = @"DATA OPERACJI OPERACJI OPERACJI KSIĘGOWE";
+        private readonly string FIRST_PAGE_END = @"Infolinia Alior Sync dostępna jest przez całą dobę pod numerami 19 506";
+        private readonly string NEXT_PAGE_START = @"Wyciąg z rachunku bankowego";
+        private readonly string NEXT_PAGE_END = @"Niniejszy dokument jest wydrukiem komputerowym sporządzonym zgodnie z art. 7";
+
+        private readonly string[] OpNames = new string[] 
+		{
+			"PRZELEW W RAMACH BANKU NA RACH OBCY", 
+			"PRZELEW DO INNEGO BANKU KRAJOWEGO",
+			"PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO",
+			"PRZELEW NATYCHMIASTOWY",
+			"ZAŁOŻENIE LOKATY",
+            "TRANSAKCJA KARTĄ DEBETOWĄ",
+            "PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM",
+            "KAPITALIZACJA ODSETEK",
+		};
 
 
-        //private IList<QifEntry> ConvertBoxes(IEnumerable<XElement> boxes)
-        //{
-        //    var result = new List<QifEntry>();
-        //    var boxesList = boxes.ToList();
-
-        //    var blockDates = new List<BankDates>();
-        //    IList<QifEntry> blockEntries;
-        //    for (int i = 0; i < boxesList.Count; i++)
-        //    {
-        //        var box = boxesList[i];
-        //        BankDates date = BankDates.TryParse(box);
-        //        if (date != null)
-        //        {
-        //            blockDates.Add(date);
-        //            continue;
-        //        }
-        //        int parsedBoxes;
-        //        blockEntries = TryParseTransactions(boxesList, i, blockDates.Count, out parsedBoxes);
-        //        MergeDatesWithTransactions(blockEntries, blockDates);
-
-        //        i = parsedBoxes;
-        //        blockDates.Clear();
-        //        result.AddRange(blockEntries);
-        //    }
-
-        //    return result;
-        //}
+        public IEnumerable<QifEntry> ParseToQif(string lines)
+        {
+            return QifEntriesParser.Parse(lines);
+        }
 
 
-        //private void MergeDatesWithTransactions(IList<QifEntry> blockEntries, List<BankDates> blockDates)
-        //{
-        //    if (blockEntries.Count != blockDates.Count)
-        //        throw new ApplicationException("Different number of entries");
-        //    for (int i = 0; i < blockEntries.Count; i++)
-        //        blockEntries[i].Date = blockDates[i];
-        //}
+        public QifEntry ParseSingleToQif(string lines)
+        {
+            return QifEntryParser.Parse(lines);
+        }
 
 
-        //private IList<QifEntry> TryParseTransactions(List<XElement> boxesList, int startIndex, int count, out int i)
-        //{
-        //    var result = new List<QifEntry>();
+        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+        {
+            PdfReader reader = new PdfReader(fileName);
 
-        //    QifEntry current = null;
-        //    i = startIndex;
-        //    int found = 0;
-        //    while (found < count)
-        //    {
-        //        var line = (string)boxesList[i].Elements("line").Aggregate(strAgg);
-        //        // check if current line is a standard operation name
-        //        if (!IsOpLine(line))
-        //            throw new ApplicationException(string.Format("Wrong line: {0}", line));
+            IEnumerable<string> lines = new List<string>();
+            for (int i = 1; i <= reader.NumberOfPages; i++)
+            {
+                string input = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+                lines = lines.Concat(TrimStrings(input, i == 1));
+            }
+                  
 
-        //        current = new QifEntry { Description = line };
-        //        decimal amount = decimal.Parse((string)boxesList[i + 1].Element("line"));
-        //        //double balance = double.Parse ((string) boxesList [i + 2].Element ("line"));
-        //        var nextLine = (string)boxesList[i + 3].Elements("line").Aggregate(strAgg);
-        //        current.Amount = amount;
-        //        result.Add(current);
-        //        found++;
+            if (!OpNames.Any(s => lines.ElementAt(0).Contains(s)))
+                throw new ArgumentException("Bad first line");
+            var current = new List<string>();
+            var entries = new List<QifEntry>();
 
-        //        if (IsOpLine(nextLine))
-        //        {
-        //            i += 3;
-        //            continue;
-        //        }
-        //        current.Description += " " + nextLine;
-        //        i += 4;
-        //    }
+            foreach (var line in lines)
+            {
+                // if it is a line starting with correct operation name and if it is a subsequent operation line
+                if (OpNames.Any(s => line.Contains(s)) && current.Count > 1)
+                {
+                    var total = current.Aggregate((s1, s2) => string.Format("{0}{1}{2}", s1, Environment.NewLine, s2));
+                    entries.Add(ParseSingleToQif(total));
+                    current.Clear();
+                }
+                current.Add(line);
+            }
+            var lastOne = current.Aggregate((s1, s2) => string.Format("{0}{1}{2}", s1, Environment.NewLine, s2));
+            entries.Add(ParseSingleToQif(lastOne));
 
-        //    if (count != result.Count)
-        //        throw new ApplicationException("Parsing error, wrong number of entries parsed");
-
-        //    return result;
-        //}
+            return entries;
+        }
 
 
-        //private bool IsOpLine(string line)
-        //{
-        //    return OpNames.Any(s => line.StartsWith(s));
-        //}
-        
-        
-        //public IList<QifEntry> ConvertFileToQif(string fileName)
-        //{
-        //    if (!fileName.EndsWith ("*.pdf", true, CultureInfo.InvariantCulture))
-        //        throw new ApplicationException(string.Format("File name does not end in *.pdf: {0}", fileName));
-        //    if (!File.Exists(fileName))
-        //        throw new ApplicationException(string.Format("File does not exists: {0}", fileName));
-            
-        //    return ConvertXmlToQif (PdfToXmlReader.Read(fileName));
-        //}
+        public IEnumerable<string> TrimStrings(string pdfInput, bool isFirstPage = false)
+        {
+            var strings = pdfInput.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            var startDelim = isFirstPage ? FIRST_PAGE_START : NEXT_PAGE_START;
+            var endDelim = isFirstPage ? FIRST_PAGE_END : NEXT_PAGE_END;
+
+            int firstId = strings.IndexOf(strings.Where(s => s.StartsWith(startDelim)).Single());
+            int lastId = strings.IndexOf(strings.Where(s => s.StartsWith(endDelim)).Single());
+
+            return strings.Where((s, i) => i > firstId && i < lastId);
+        }
 
 
-        //public IList<QifEntry> ConvertXmlToQif (XDocument xml)
-        //{
-        //    var cult = Thread.CurrentThread.CurrentCulture;
-        //    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("pl-PL");
-			
-        //    IEnumerable<XElement> pages = from page in xml.Descendants("page")
-        //        select page;
-			
-        //    var page1 = pages.Where(p => (int)p.Attribute("id") == 1).Single();
-        //    var boxes = ExtractBoxes(page1, TITLE_PAGE_FIRST_BOX);
-			
-        //    var nextPages = pages.Where (p => (int) p.Attribute ("id") > 1);
-        //    foreach (var p in nextPages)
-        //        boxes = boxes.Concat(ExtractBoxes(p, NEXT_PAGE_FIRST_BOX));
-			
-        //    var entries = ConvertBoxes(boxes);
-        //    Thread.CurrentThread.CurrentCulture = cult;
+        static readonly Parser<string> NewLine = Parse.String(Environment.NewLine).Text();
 
-        //    return entries;
-        //}
+        static readonly Parser<string> TwoDigits =
+            from dig1 in Parse.Digit
+            from dig2 in Parse.Digit
+            select string.Format("{0}{1}", dig1, dig2);
+
+        static readonly Parser<string> ThreeDigits =
+            from firstTwo in TwoDigits
+            from dig3 in Parse.Digit
+            select string.Format("{0}{1}", firstTwo, dig3);
+
+        //static readonly Parser<string> UpToThreeDigits =
+        //    from dig1 in Parse.Digit
+        //    from dig2 in Parse.Digit. XOr (Parse.Return (""))
+        //    from dig3 in Parse.Digit
+        //    select string.Format("{0}{1}{2}", dig1, dig2, dig3);
+
+        static readonly Parser<string> FourDigits =
+            from firstThree in ThreeDigits
+            from dig4 in Parse.Digit
+            select string.Format("{0}{1}", firstThree, dig4);
+
+        static readonly Parser<string> OptionalSeparator =
+            Parse.Char(' ').Select(c => c.ToString()).Or(Parse.Return(string.Empty));
+
+        static readonly Parser<string> OptSeparatorAndNumber =
+            from separator in OptionalSeparator
+            from strNum in Parse.Number.Text()
+            select strNum;
+
+        static readonly Parser<decimal> Amount =
+                from minus in Parse.String("-").Text().Or(Parse.Return(string.Empty))
+                from triples in OptSeparatorAndNumber.Token().Many()
+                from separator in Parse.Char(',').Once()
+                from pointPart in Parse.Number.Once()
+                let strDecimal = string.Format("{0}{1}.{2}", minus, triples.Aggregate((s1, s2) => s1 + s2),
+                    pointPart.Single())
+                select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
+
+        static readonly Parser<DateTime> Date =
+            from year in Parse.Number.Text()
+            from dot1 in Parse.Char('.').Once()
+            from month in Parse.Number.Text()
+            from dot2 in Parse.Char('.').Once()
+            from day in Parse.Number.Text()
+            select new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+
+        static readonly Parser<string> UpperString =
+            Parse.Upper.Or(Parse.Char(' ')).Or(Parse.Char('-')).Many().Text().Token();
+
+        static readonly Parser<FirstLineResult> FirstLineParser =
+            from date in Date
+            from desc in UpperString
+            from amount in Amount
+            from balance in Amount
+            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = desc };
+
+        static readonly Parser<AccountNumber> AccountNumberParser =
+            from dig2 in TwoDigits
+            from space1 in OptionalSeparator
+            from dig4_1 in FourDigits
+            from space2 in OptionalSeparator
+            from dig4_2 in FourDigits
+            from space3 in OptionalSeparator
+            from dig4_3 in FourDigits
+            from space4 in OptionalSeparator
+            from dig4_4 in FourDigits
+            from space5 in OptionalSeparator
+            from dig4_5 in FourDigits
+            from space6 in OptionalSeparator
+            from dig4_6 in FourDigits
+            select new AccountNumber(string.Format("{0} {1} {2} {3} {4} {5} {6}", dig2, dig4_1,
+                dig4_2, dig4_3, dig4_4, dig4_5, dig4_6));
+
+        static readonly Parser<QifEntry> QifEntryParser =
+            from firstLine in FirstLineParser
+            from nl1 in NewLine
+            from secondDate in Date
+            from desc2 in UpperString.Or(Parse.Return(string.Empty))
+            //from nl2 in NewLine
+            from accNum in AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
+            from desc3 in Parse.AnyChar.Many().Text().Token()
+            select new QifEntry
+            {
+                AccountName = accNum.Number,
+                Amount = firstLine.Amount,
+                Date = new BankDates { OperationDate = firstLine.Date, BookingDate = secondDate },
+                Description = string.Format("[{0}] {1} {2}:\n {3}", accNum.Number, firstLine.Description, desc2,
+                desc3)
+            };
+
+        static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =
+            from entries in QifEntryParser.Many().End()
+            select entries;
        
     }
 }
