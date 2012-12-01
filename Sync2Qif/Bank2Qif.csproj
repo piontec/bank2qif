@@ -48,10 +48,6 @@
       <HintPath>..\lib\sprache-1.9.1\Sprache.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>

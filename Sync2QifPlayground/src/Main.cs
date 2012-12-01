@@ -62,25 +62,25 @@ namespace Sync2QifPlayground.src
 		private IEnumerable<QifEntry> ConvertBoxes (IEnumerable<XElement> boxes)
 		{
 			var result = new List<QifEntry> ();
-			var boxesList = boxes.ToList ();
+            //var boxesList = boxes.ToList ();
 
-			var blockDates = new List<BankDates> ();
-			IList<QifEntry> blockEntries;
-			for (int i = 0; i < boxesList.Count; i++) {
-				var box = boxesList [i];
-				BankDates date = BankDates.TryParse (box);
-				if (date != null) {
-					blockDates.Add (date);
-					continue;
-				}
-				int parsedBoxes;
-				blockEntries = TryParseTransactions (boxesList, i, blockDates.Count, out parsedBoxes);
-				MergeDatesWithTransactions (blockEntries, blockDates);
+            //var blockDates = new List<BankDates> ();
+            //IList<QifEntry> blockEntries;
+            //for (int i = 0; i < boxesList.Count; i++) {
+            //    var box = boxesList [i];
+            //    BankDates date = BankDates.TryParse (box);
+            //    if (date != null) {
+            //        blockDates.Add (date);
+            //        continue;
+            //    }
+            //    int parsedBoxes;
+            //    blockEntries = TryParseTransactions (boxesList, i, blockDates.Count, out parsedBoxes);
+            //    MergeDatesWithTransactions (blockEntries, blockDates);
 
-				i = parsedBoxes;
-				blockDates.Clear ();
-				result.AddRange (blockEntries);
-			}
+            //    i = parsedBoxes;
+            //    blockDates.Clear ();
+            //    result.AddRange (blockEntries);
+            //}
 
 			return result;
 		}
