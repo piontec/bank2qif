@@ -8,8 +8,8 @@ namespace Sync2Qif.Converters
     /// <summary>
     /// Attribute to decorate Converters from a specific bank format to <see cref="QifEntry"/>
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ConverterAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public sealed class ConverterAttribute : Attribute
     {
         private string bank;
         private string ext;

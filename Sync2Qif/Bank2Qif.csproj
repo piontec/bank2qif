@@ -65,7 +65,9 @@
     <Compile Include="src\Sync2QifParser.cs" />
     <Compile Include="src\Runner.cs" />
     <Compile Include="src\BankDates.cs" />
+    <Compile Include="src\TransformersInstaller.cs" />
     <Compile Include="src\Transformers\ITransformer.cs" />
+    <Compile Include="src\Transformers\TransformerAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
