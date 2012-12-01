@@ -5,6 +5,7 @@ using System.Data.Linq;
 using Nini.Config;
 using Bank2Qif.Converters;
 using Castle.Windsor;
+using Castle.MicroKernel;
 
 namespace Bank2Qif
 {
@@ -14,10 +15,15 @@ namespace Bank2Qif
         {
             Success = 0,
             SyntaxError = 2,
+            NoConverter = 4,
+            WrongFile = 8,
+            FileNotFound = 16,
         }
+
 
         private string m_fileName, m_bankType;
         private WindsorContainer m_container;
+        private string m_myBinName;
 
 
 		public static void Main (string[] args)
@@ -29,6 +35,8 @@ namespace Bank2Qif
 
         private void Run(string[] args)
         {
+            m_myBinName = args[0];
+
             LoadCmdLineArgs(args);
             LoadContainer();
 
@@ -39,28 +47,54 @@ namespace Bank2Qif
             ProcessEntries();
         }
 
+
         private void ProcessEntries()
         {
             throw new NotImplementedException();
         }
 
+
         private IConverter GetConverter(string bankType)
         {
-            return m_container.Resolve<IConverter>(bankType);
+            IConverter result = null;
+            try
+            {
+                result = m_container.Resolve<IConverter>(bankType);
+            }
+            catch (ComponentNotFoundException)
+            {
+                Console.Error.WriteLine (string.Format ("No converter found for bank type {0}", bankType));
+                DisplayHelpAndExit(ExitCodes.NoConverter);
+            }
+
+            return result;
         }
+
 
         private void VerifyArgs(IConverter converter, string fileName)
         {
-            //var supportedExt = Attribute.GetCustomAttribute(typeof(converter), ConverterAttribute);
-            throw new NotImplementedException();
-            // file extension and converter type
+            string supportedExt = ((ConverterAttribute)Attribute.GetCustomAttribute(
+                converter.GetType(), typeof(ConverterAttribute))).Extension;
+
+            if (!fileName.EndsWith(supportedExt, StringComparison.InvariantCultureIgnoreCase))
+            {
+                Console.Error.WriteLine(string.Format("Wrong file name for that type of" +
+                    "converter, {0} file expected", supportedExt));
+                DisplayHelpAndExit(ExitCodes.WrongFile);
+            }
+
+            if (!File.Exists(fileName))
+            {
+                Console.Error.WriteLine(string.Format ("File {0} does not exists", fileName));
+                DisplayHelpAndExit(ExitCodes.FileNotFound);
+            }
         }
 
 
         private void LoadContainer()
         {
             m_container = new WindsorContainer();
-            m_container.Install(new ConvertersInstaller());
+            m_container.Install(new ConvertersInstaller(), new TransformersInstaller());
         }
 
 
@@ -74,44 +108,17 @@ namespace Bank2Qif
             if (args.Length != 4)
             {
                 Console.WriteLine ("Wrong number of parameters");
-                DisplayHelpAndExit(args, ExitCodes.SyntaxError);
+                DisplayHelpAndExit(ExitCodes.SyntaxError);
             }
             
             m_fileName = source.Configs["Main"].Get("file-name");
             m_bankType = source.Configs["Main"].Get("bank-type");
         }
+        
 
-
-		private bool ValidateArgs (string[] args)
+		private void DisplayHelpAndExit (ExitCodes code)
 		{
-			if (args.Length != 2) {
-			
-				return false;
-			}
-
-			string fileName = args [1];
-			if (!File.Exists (fileName)) {
-				Console.WriteLine ("File does not exists");
-				return false;
-			}
-
-			if (!File.Exists (fileName)) {
-				Console.WriteLine ("File does not exists");
-				return false;
-			}
-
-			if (!fileName.EndsWith (".pdf", StringComparison.CurrentCultureIgnoreCase)) {
-				Console.WriteLine ("Wrong file extension, *.pdf expected");
-				return false;
-			}
-
-			return true;
-		}
-
-
-		private void DisplayHelpAndExit (string[] args, ExitCodes code)
-		{
-			Console.WriteLine (string.Format ("Usage: {0} -t [bank type] -f [file name]", args [0]));
+            Console.Error.WriteLine(string.Format("Usage: {0} -t [bank type] -f [file name]", m_myBinName));
             System.Environment.Exit((int) code);
 		}	
 	}
