@@ -1,11 +1,12 @@
 using System;
 using System.IO;
-using System.Xml.Linq;
-using System.Data.Linq;
+using System.Linq;
 using Nini.Config;
 using Bank2Qif.Converters;
+using Bank2Qif.Transformers;
 using Castle.Windsor;
 using Castle.MicroKernel;
+using System.Collections.Generic;
 
 namespace Bank2Qif
 {
@@ -44,15 +45,27 @@ namespace Bank2Qif
             VerifyArgs(converter, m_fileName);
 
             var entries = converter.ConvertFileToQif(m_fileName);
-            ProcessEntries();
+            entries = ProcessEntries(entries);
+
+            QifFile.Save(entries, m_fileName);
         }
 
 
-        private void ProcessEntries()
+        private IEnumerable<QifEntry> ProcessEntries(IEnumerable<QifEntry> entries)
         {
-            throw new NotImplementedException();
-        }
+            var transformers = m_container.ResolveAll<ITransformer>().OrderBy (
+                t => ((TransformerAttribute)
+                    Attribute.GetCustomAttribute (t.GetType (), typeof (TransformerAttribute))).Priority
+                );
 
+            foreach (var transformer in transformers)
+            {
+                entries = transformer.Transform(entries);
+            }
+
+            return entries;
+        }
+        
 
         private IConverter GetConverter(string bankType)
         {

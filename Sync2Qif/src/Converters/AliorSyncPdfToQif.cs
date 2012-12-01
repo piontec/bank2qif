@@ -12,7 +12,7 @@ namespace Bank2Qif.Converters
     [Converter ("sync", "pdf")]
     public class AliorSyncPdfToQif : IConverter
     {
-        public IList<QifEntry> ConvertFileToQif(string fileName)
+        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
         {
             throw new NotImplementedException();
         }

@@ -8,7 +8,7 @@ namespace Bank2Qif.Converters
 {
 	public interface IConverter
 	{
-		IList<QifEntry> ConvertFileToQif (string fileName);
+		IEnumerable<QifEntry> ConvertFileToQif (string fileName);
 	}
 }
 
