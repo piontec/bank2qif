@@ -75,15 +75,7 @@ namespace Bank2Qif.Converters
 
         public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
         {
-            PdfReader reader = new PdfReader(fileName);
-
-            IEnumerable<string> lines = new List<string>();
-            for (int i = 1; i <= reader.NumberOfPages; i++)
-            {
-                string input = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
-                lines = lines.Concat(TrimStrings(input, i == 1));
-            }
-                  
+            var lines = ExtractLinesFromPdf(fileName);                  
 
             if (!OpNames.Any(s => lines.ElementAt(0).Contains(s)))
                 throw new ArgumentException("Bad first line");
@@ -105,6 +97,22 @@ namespace Bank2Qif.Converters
             entries.Add(ParseSingleToQif(lastOne));
 
             return entries;
+        }
+
+
+        private IEnumerable<string> ExtractLinesFromPdf(string fileName)
+        {
+            PdfReader reader = new PdfReader(fileName);
+
+            IEnumerable<string> lines = new List<string>();
+            for (int i = 1; i <= reader.NumberOfPages; i++)
+            {
+                string input = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+                lines = lines.Concat(TrimStrings(input, i == 1));
+            }
+
+            reader.Close();
+            return lines;
         }
 
 
