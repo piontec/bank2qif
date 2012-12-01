@@ -12,11 +12,10 @@ namespace Bank2Qif
 
         private static string GetQifFileName(string originalFileName)
         {
-            //var extIndex = pdfFileName.LastIndexOf(".pdf", StringComparison.CurrentCultureIgnoreCase);
-            //if (extIndex == -1)
-            //    throw new ApplicationException("Could not find .pdf in file name");
-            //return pdfFileName.Remove(extIndex) + ".qif";
-            throw new NotImplementedException();
+            var extIndex = originalFileName.LastIndexOf(".");
+            if (extIndex == -1)
+                throw new ArgumentException("Could not find '.' in file name");
+            return string.Format("{0}.{1}", originalFileName.Substring(0, extIndex), "qif");
         }
 	}
 }
