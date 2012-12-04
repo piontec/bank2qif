@@ -9,12 +9,13 @@ namespace Bank2Qif
 	{
         public static void Save(IEnumerable<QifEntry> entries, string originalFileName)
         {
-            StringBuilder output = new StringBuilder();
+            string nl = System.Environment.NewLine;
+            StringBuilder output = new StringBuilder("!Type:Bank" + nl);
 
             foreach (var entry in entries)
             {
                 output.Append(entry.ToQifString());
-                output.Append(System.Environment.NewLine);
+                output.Append(nl);
             }
 
             using (StreamWriter file = new StreamWriter (originalFileName, false, Encoding.UTF8))
