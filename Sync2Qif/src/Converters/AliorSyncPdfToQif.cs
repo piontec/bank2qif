@@ -218,8 +218,8 @@ namespace Bank2Qif.Converters
                 AccountName = accNum.Number,
                 Amount = firstLine.Amount,
                 Date = new BankDates { OperationDate = firstLine.Date, BookingDate = secondDate },
-                Description = string.Format("[{0}] {1} {2}:\n {3}", accNum.Number, firstLine.Description, desc2,
-                desc3)
+                RemoteAccountNumber = accNum.Number,
+                Description = string.Format("{1} {2}: {3}", firstLine.Description, desc2, desc3)
             };
 
         static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =

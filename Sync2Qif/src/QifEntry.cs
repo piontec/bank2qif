@@ -14,7 +14,7 @@ namespace Bank2Qif
         /// <summary>
         /// The remote account number, if present and applicable
         /// </summary>
-        public string RemoteAccountNumber { get; private set; }
+        public string RemoteAccountNumber { get; set; }
                
 
 		public override string ToString ()
