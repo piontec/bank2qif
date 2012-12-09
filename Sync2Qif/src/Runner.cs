@@ -108,6 +108,7 @@ namespace Bank2Qif
         {
             m_container = new WindsorContainer();
             m_container.Install(new ConvertersInstaller(), new TransformersInstaller());
+            m_container.Kernel.Resolver.AddSubResolver(new ConfigSubresolver());
         }
 
 
