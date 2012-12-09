@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
+    <Compile Include="src\ConfigSubresolver.cs" />
     <Compile Include="src\ConvertersInstaller.cs" />
     <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
@@ -76,5 +77,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="etc\config.ini" />
+  </ItemGroup>
 </Project>
