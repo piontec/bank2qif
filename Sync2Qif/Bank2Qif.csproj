@@ -62,6 +62,7 @@
     <Compile Include="src\Runner.cs" />
     <Compile Include="src\BankDates.cs" />
     <Compile Include="src\TransformersInstaller.cs" />
+    <Compile Include="src\Transformers\DefaultTransformer.cs" />
     <Compile Include="src\Transformers\ITransformer.cs" />
     <Compile Include="src\Transformers\TransformerAttribute.cs" />
   </ItemGroup>
