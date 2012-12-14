@@ -29,6 +29,13 @@
     <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\lib\moq-4.0.10827\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>lib\nunit-2.6.2\nunit.framework.dll</HintPath>
     </Reference>
@@ -42,9 +49,12 @@
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\Sync2QifParserTests.cs" />
     <Compile Include="src\AliorSyncPdfToQifTests.cs" />
+    <Compile Include="src\TransformersTests\DefaultTransformerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="src\ConvertersTests\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sync2Qif\Bank2Qif.csproj">
       <Project>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</Project>
