@@ -75,8 +75,13 @@ namespace Bank2Qif.Converters
 
         public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
         {
-            var lines = ExtractLinesFromPdf(fileName);                  
+            var lines = ExtractLinesFromPdf(fileName);
 
+            return ConvertExtractedTextToPdf(lines);
+        }
+
+        public IEnumerable<QifEntry> ConvertExtractedTextToPdf(IEnumerable<string> lines)
+        {
             if (!OpNames.Any(s => lines.ElementAt(0).Contains(s)))
                 throw new ArgumentException("Bad first line");
             var current = new List<string>();

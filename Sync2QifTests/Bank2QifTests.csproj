@@ -48,13 +48,11 @@
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\QifFileTests.cs" />
-    <Compile Include="src\AliorSyncPdfToQifTests.cs" />
+    <Compile Include="src\ConvertersTests\AliorSyncPdfToQifTests.cs" />
     <Compile Include="src\TransformersTests\DefaultTransformerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="src\ConvertersTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Sync2Qif\Bank2Qif.csproj">
       <Project>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</Project>

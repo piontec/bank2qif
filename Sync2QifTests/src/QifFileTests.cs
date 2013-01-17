@@ -10,12 +10,10 @@ namespace Sync2QifTests
 		[Test]
 		public void QifNameTest ()
 		{
-            //var parser = new Sync2QifParser ();
-
-            //Assert.AreEqual ("test.qif", parser.GetQifFileName ("test.pdf"));
-            //Assert.AreEqual ("sciezka/test.qif", parser.GetQifFileName ("sciezka/test.pdf"));
-            //Assert.AreEqual ("TEST.qif", parser.GetQifFileName ("TEST.PDF"));
-            //Assert.Throws<ApplicationException> ( () => parser.GetQifFileName ("test.fty"));
+            Assert.AreEqual("test.qif", QifFile.GetQifFileName("test.pdf"));
+            Assert.AreEqual("sciezka/test.qif", QifFile.GetQifFileName("sciezka/test.pdf"));
+            Assert.AreEqual("TEST.qif", QifFile.GetQifFileName("TEST.PDF"));
+            Assert.Throws<ArgumentException>(() => QifFile.GetQifFileName("test"));
 		}
 	}
 }
