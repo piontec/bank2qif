@@ -9,6 +9,7 @@ using iTextSharp;
 using iTextSharp.text.pdf.parser;
 using iTextSharp.text.pdf;
 using Sprache;
+using Bank2Qif.Parsers;
 
 
 namespace Bank2Qif.Converters
@@ -77,10 +78,10 @@ namespace Bank2Qif.Converters
         {
             var lines = ExtractLinesFromPdf(fileName);
 
-            return ConvertExtractedTextToPdf(lines);
+            return ConvertExtractedTextToQif(lines);
         }
 
-        public IEnumerable<QifEntry> ConvertExtractedTextToPdf(IEnumerable<string> lines)
+        public IEnumerable<QifEntry> ConvertExtractedTextToQif(IEnumerable<string> lines)
         {
             if (!OpNames.Any(s => lines.ElementAt(0).Contains(s)))
                 throw new ArgumentException("Bad first line");
@@ -133,9 +134,7 @@ namespace Bank2Qif.Converters
 
             return strings.Where((s, i) => i > firstId && i < lastId);
         }
-
-
-        static readonly Parser<string> NewLine = Parse.String(Environment.NewLine).Text();
+               
 
         static readonly Parser<string> TwoDigits =
             from dig1 in Parse.Digit
@@ -212,7 +211,7 @@ namespace Bank2Qif.Converters
 
         static readonly Parser<QifEntry> QifEntryParser =
             from firstLine in FirstLineParser
-            from nl1 in NewLine
+            from nl1 in GenericParsers.NewLine
             from secondDate in Date
             from desc2 in UpperString.Or(Parse.Return(string.Empty))
             //from nl2 in NewLine
@@ -226,7 +225,7 @@ namespace Bank2Qif.Converters
                 Payee = accNum.Number,
                 Description = string.Format("{1} {2}: {3}", firstLine.Description, desc2, desc3)
             };
-
+        
         static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =
             from entries in QifEntryParser.Many().End()
             select entries;
