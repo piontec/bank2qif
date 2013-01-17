@@ -72,6 +72,7 @@
     <Compile Include="src\ConvertersInstaller.cs" />
     <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
+    <Compile Include="src\Parsers\AliorSyncParsers.cs" />
     <Compile Include="src\Parsers\GenericParsers.cs" />
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\Converters\IConverter.cs" />

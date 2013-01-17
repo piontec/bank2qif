@@ -17,20 +17,6 @@ namespace Bank2Qif.Converters
     [Converter ("sync", "pdf")]
     public class AliorSyncPdfToQif : IConverter
     {
-        private class FirstLineResult
-        {
-            public DateTime Date { get; set; }
-            public string Description { get; set; }
-            public decimal Amount { get; set; }
-            public decimal Balance { get; set; }
-
-            public override string ToString()
-            {
-                return string.Format("[ Date = {0}, Description = {1}, Amount = {2}, Balance = {3} ]",
-                    Date, Description, Amount, Balance);
-            }
-        }
-
         private readonly string FIRST_PAGE_START = @"DATA OPERACJI OPERACJI OPERACJI KSIĘGOWE";
         private readonly string FIRST_PAGE_END = @"Infolinia Alior Sync dostępna jest przez całą dobę pod numerami 19 506";
         private readonly string NEXT_PAGE_START = @"Wyciąg z rachunku bankowego";
@@ -51,13 +37,13 @@ namespace Bank2Qif.Converters
 
         public IEnumerable<QifEntry> ParseToQif(string lines)
         {
-            return QifEntriesParser.Parse(lines);
+            return AliorSyncParsers.QifEntriesParser.Parse(lines);
         }
 
 
         public QifEntry ParseSingleToQif(string lines)
         {
-            return QifEntryParser.Parse(lines);
+            return AliorSyncParsers.QifEntryParser.Parse(lines);
         }
 
 
@@ -120,52 +106,6 @@ namespace Bank2Qif.Converters
             int lastId = strings.IndexOf(strings.Where(s => s.StartsWith(endDelim)).Single());
 
             return strings.Where((s, i) => i > firstId && i < lastId);
-        }
-       
-        
-        static readonly Parser<decimal> Amount =
-                from minus in Parse.String("-").Text().Or(Parse.Return(string.Empty))
-                from triples in GenericParsers.OptionalSpaceThenNumber.Token().Many()
-                from separator in Parse.Char(',').Once()
-                from pointPart in Parse.Number.Once()
-                let strDecimal = string.Format("{0}{1}.{2}", minus, triples.Aggregate((s1, s2) => s1 + s2),
-                    pointPart.Single())
-                select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
-
-        
-
-        static readonly Parser<string> UpperString =
-            Parse.Upper.Or(Parse.Char(' ')).Or(Parse.Char('-')).Many().Text().Token();
-
-        static readonly Parser<FirstLineResult> FirstLineParser =
-            from date in GenericParsers.DateYyyyMmDd
-            from desc in UpperString
-            from amount in Amount
-            from balance in Amount
-            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = desc };
-
-      
-
-        static readonly Parser<QifEntry> QifEntryParser =
-            from firstLine in FirstLineParser
-            from nl1 in GenericParsers.NewLine
-            from secondDate in GenericParsers.DateYyyyMmDd
-            from desc2 in UpperString.Or(Parse.Return(string.Empty))
-            //from nl2 in NewLine
-            from accNum in GenericParsers.AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
-            from desc3 in Parse.AnyChar.Many().Text().Token()
-            select new QifEntry
-            {
-                AccountName = accNum.Number,
-                Amount = firstLine.Amount,
-                Date = new BankDates { OperationDate = firstLine.Date, BookingDate = secondDate },
-                Payee = accNum.Number,
-                Description = string.Format("{1} {2}: {3}", firstLine.Description, desc2, desc3)
-            };
-        
-        static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =
-            from entries in QifEntryParser.Many().End()
-            select entries;
-       
+        }       
     }
 }
