@@ -30,7 +30,7 @@ namespace Bank2Qif
         {
             string nl = System.Environment.NewLine;
             StringBuilder sb = new StringBuilder();
-            sb.Append(string.Format ("D{0}{1}", Date.BookingDate.ToString("MM/dd/yyyy"), nl));
+            sb.Append(string.Format("D{0}{1}", Date.BookingDate.ToString("MM/dd/yyyy"), nl));
             sb.Append(string.Format("P{0}{1}", Payee, nl));
             sb.Append(string.Format("M{0}{1}", Description, nl));
             sb.Append(string.Format("T{0}{1}", Amount.ToString (CultureInfo.InvariantCulture), nl));

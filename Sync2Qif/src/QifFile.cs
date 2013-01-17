@@ -24,7 +24,7 @@ namespace Bank2Qif
             }
         }
 
-        private static string GetQifFileName(string originalFileName)
+        public static string GetQifFileName(string originalFileName)
         {
             var extIndex = originalFileName.LastIndexOf(".");
             if (extIndex == -1)

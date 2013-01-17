@@ -24,8 +24,7 @@ namespace Bank2Qif
 
         private string m_fileName, m_bankType;
         private WindsorContainer m_container;
-        private string m_myBinName;
-
+        
 
 		public static void Main (string[] args)
 		{
@@ -36,8 +35,6 @@ namespace Bank2Qif
 
         private void Run(string[] args)
         {
-            m_myBinName = args[0];
-
             LoadCmdLineArgs(args);
             LoadContainer();
 
@@ -114,17 +111,17 @@ namespace Bank2Qif
 
         private void LoadCmdLineArgs(string[] args)
         {
+            if (args.Length != 4)
+            {
+                Console.WriteLine("Wrong number of parameters");
+                DisplayHelpAndExit(ExitCodes.SyntaxError);
+            }
+
             ArgvConfigSource source = new ArgvConfigSource(args);
 
             source.AddSwitch("Main", "file-name", "f");
             source.AddSwitch("Main", "bank-type", "t");
-                    
-            if (args.Length != 4)
-            {
-                Console.WriteLine ("Wrong number of parameters");
-                DisplayHelpAndExit(ExitCodes.SyntaxError);
-            }
-            
+                        
             m_fileName = source.Configs["Main"].Get("file-name");
             m_bankType = source.Configs["Main"].Get("bank-type");
         }
@@ -132,7 +129,8 @@ namespace Bank2Qif
 
 		private void DisplayHelpAndExit (ExitCodes code)
 		{
-            Console.Error.WriteLine(string.Format("Usage: {0} -t [bank type] -f [file name]", m_myBinName));
+            Console.Error.WriteLine(string.Format("Usage: {0} -t [bank type] -f [file name]", 
+                System.AppDomain.CurrentDomain.FriendlyName));
             System.Environment.Exit((int) code);
 		}	
 	}

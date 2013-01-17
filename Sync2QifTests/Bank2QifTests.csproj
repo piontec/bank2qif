@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
-    <Compile Include="src\Sync2QifParserTests.cs" />
+    <Compile Include="src\QifFileTests.cs" />
     <Compile Include="src\AliorSyncPdfToQifTests.cs" />
     <Compile Include="src\TransformersTests\DefaultTransformerTest.cs" />
   </ItemGroup>
