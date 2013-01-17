@@ -19,6 +19,15 @@ namespace Bank2Qif.Parsers
             return string.Format("[ Date = {0}, Description = {1}, Amount = {2}, Balance = {3} ]",
                 Date, Description, Amount, Balance);
         }
+
+        public override bool Equals(object obj)
+        {
+            FirstLineResult dst = obj as FirstLineResult;
+            if (dst == null)
+                return false;
+            return Date == dst.Date && Description == dst.Description && Amount == dst.Amount
+                && Balance == dst.Balance;
+        }
     }
 
     public static class AliorSyncParsers
@@ -33,21 +42,22 @@ namespace Bank2Qif.Parsers
                 select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
 
         public static readonly Parser<string> UpperString =
-            Parse.Upper.Or(Parse.Char(' ')).Or(Parse.Char('-')).Many().Text().Token();
+            Parse.Upper.Or(Parse.Char(' ')).Or(Parse.Char('-')).Many().Text().Token ();
 
         public static readonly Parser<FirstLineResult> FirstLineParser =
             from date in GenericParsers.DateYyyyMmDd
             from desc in UpperString
             from amount in Amount
             from balance in Amount
-            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = desc };
+            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = desc.Trim () };
 
         public static readonly Parser<QifEntry> QifEntryParser =
             from firstLine in FirstLineParser
             from nl1 in GenericParsers.NewLine
             from secondDate in GenericParsers.DateYyyyMmDd
-            from desc2 in UpperString.Or(Parse.Return(string.Empty))
-            //from nl2 in NewLine
+            //FIXME: here the shit hits the fan when newline after date immidiately
+            //from desc2 in UpperString.Or(Parse.Return(string.Empty)).Text ().Token ()
+            from nl2 in GenericParsers.NewLine
             from accNum in GenericParsers.AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
             from desc3 in Parse.AnyChar.Many().Text().Token()
             select new QifEntry
@@ -56,7 +66,7 @@ namespace Bank2Qif.Parsers
                 Amount = firstLine.Amount,
                 Date = new BankDates { OperationDate = firstLine.Date, BookingDate = secondDate },
                 Payee = accNum.Number,
-                Description = string.Format("{1} {2}: {3}", firstLine.Description, desc2, desc3)
+                Description = string.Format("{0} {1}: {2}", firstLine.Description, "desc2", desc3)
             };
 
         public static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =

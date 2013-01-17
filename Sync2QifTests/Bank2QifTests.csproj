@@ -51,17 +51,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
+    <Compile Include="src\ParsersTests\AliorSyncParsersTest.cs" />
     <Compile Include="src\ParsersTests\GenericParsersTests.cs" />
     <Compile Include="src\QifFileTests.cs" />
     <Compile Include="src\ConvertersTests\AliorSyncPdfToQifTests.cs" />
     <Compile Include="src\TransformersTests\DefaultTransformerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Sync2Qif\Bank2Qif.csproj">
       <Project>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</Project>
       <Name>Bank2Qif</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="data\wyciag1.txt" />
+    <None Include="data\wyciag2.txt" />
   </ItemGroup>
 </Project>
