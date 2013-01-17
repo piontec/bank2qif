@@ -1,0 +1,53 @@
+2012.10.01 TRANSAKCJA KARTĄ DEBETOWĄ -100,99 10,10
+2012.10.01
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx
+2012.10.02 PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO 1 000,00 1 000,00
+2012.10.02 BANKU
+11 2222 3333 4444 5555 6666 7777 xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+2012.10.03 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -10,00 10,10
+2012.10.03
+11 2222 3333 4444 5555 6666 7777 PayU S.A. ul. Marcelińska
+xxxxxx xxxxxx xxxxxx Pay by link PayU XX123456789XX
+Zamowienie nr 10 10000
+2012.10.04 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -9,90 9,90
+2012.10.04
+11 2222 3333 4444 5555 6666 7777 PayU S.A. ul. Marcelińska
+xxxxxx xxxxxx xxxxxx Pay by link PayU XX123456789XX
+Zamowienie nr 10 10000
+2012.10.05 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -10,00 10,01
+2012.10.05
+11 2222 3333 4444 5555 6666 7777 PayU S.A. ul. Marcelińska
+XXX XXX XXX Pay by link PayU w Allegro XX123456789XX
+allegro aukcja nr (1234567890)
+2012.10.06 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -20,50 20,50
+2012.10.06
+11 2222 3333 4444 5555 6666 7777 PayU S.A. ul. Marcelińska
+XXX XXX XXX Pay by link PayU w Allegro XX123456789XX
+allegr o aukcja nr (1234567890)
+2012.10.07 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -20,00 20,00
+2012.10.07
+11 2222 3333 4444 5555 6666 7777 PayU S.A. ul. Marcelińska
+xxxxxx xxxxxx xxxxxx Pay by link PayU XX123456789XX
+Zamowienie nr 10 10000
+2012.10.08 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -70,00 70,70
+2012.10.08
+11 2222 3333 4444 5555 6666 7777 PayU S.A. ul. Marcelińska
+xxxxxx xxxxxx xxxxxx Pay by link PayU XX123456789XX
+Zamowienie nr 10 10000
+2012.10.09 TRANSAKCJA KARTĄ DEBETOWĄ -111,27 708,43
+2012.10.09
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx
+2012.10.10 KAPITALIZACJA ODSETEK 0,04 100,00
+2012.10.10
+ Odsetki naliczone: 0.05 Pobrany podatek: 0.01 Odsetki
+skapitalizowane: 0.04

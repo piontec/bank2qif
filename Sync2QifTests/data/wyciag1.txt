@@ -1,0 +1,44 @@
+2012.01.01 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,20
+2012.01.01
+11 2222 3333 4444 5555 6666 7777 xxxxxxxxxxxxxxxxxxxxx xxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx
+xxxxxxxxx xxxxxxxxxxx
+2012.01.02 PRZELEW DO INNEGO BANKU KRAJOWEGO -0,01 0,09
+2012.01.02
+11 2222 3333 4444 5555 6666 7777 xxxxxxx xxxxxx xxxxxxxxx xxxxxx
+xxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx 
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx 
+xxxxxx xxxxxx xxxxxx xxxxxx 
+2012.01.03 PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO 100,00 0,0
+2012.01.03 BANKU
+11 2222 3333 4444 5555 6666 7777 xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+Data transakcji: 2012-01-03
+2012.01.04 PRZELEW NATYCHMIASTOWY -100,00 0,0
+2012.01.04
+11 2222 3333 4444 5555 6666 7777 xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx
+2012.01.05 PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO 100,00 0,0
+2012.01.05 BANKU
+11 2222 3333 4444 5555 6666 7777 xxxxxx xxxxxx
+ xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+ xxxxxx xxxxxx xxxxxx xxxxxx
+2012.01.06 PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO 1 000,00 5 000,00
+2012.01.06 BANKU
+11 2222 3333 4444 5555 6666 7777 xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx
+2012.01.07 PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO 10 000,00 10 000,09
+2012.01.07 BANKU
+11 2222 3333 4444 5555 6666 7777 xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+xxxxxx xxxxxx xxxxxx xxxxxx xxxxxx
+2012.01.08 ZAŁOŻENIE LOKATY -18 000,00 100,00
+2012.01.08
+11 2222 3333 4444 5555 6666 7777 Termin: 4 miesięczna;
+Oprocentowanie: 6%; Opcja odnowienia: Nieodnawialna; Przelew
+na rachunek xxxxxx
+2012.01.09 KAPITALIZACJA ODSETEK 0,01 10,01
+2012.01.09
+ Odsetki naliczone: 0.01 Pobrany podatek: 0.01 Odsetki
+skapitalizowane: 0.00
