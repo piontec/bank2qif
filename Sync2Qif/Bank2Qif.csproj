@@ -66,6 +66,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\AccountNumber.cs" />
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\ConfigSubresolver.cs" />
     <Compile Include="src\ConvertersInstaller.cs" />

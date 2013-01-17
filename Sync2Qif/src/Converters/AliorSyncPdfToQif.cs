@@ -17,19 +17,6 @@ namespace Bank2Qif.Converters
     [Converter ("sync", "pdf")]
     public class AliorSyncPdfToQif : IConverter
     {
-
-        private class AccountNumber
-        {
-            public AccountNumber(string num)
-            {
-                //TODO: validation
-                Number = num;
-            }
-
-            public string Number { get; private set; }
-        }
-
-
         private class FirstLineResult
         {
             public DateTime Date { get; set; }
@@ -134,88 +121,38 @@ namespace Bank2Qif.Converters
 
             return strings.Where((s, i) => i > firstId && i < lastId);
         }
-               
-
-        static readonly Parser<string> TwoDigits =
-            from dig1 in Parse.Digit
-            from dig2 in Parse.Digit
-            select string.Format("{0}{1}", dig1, dig2);
-
-        static readonly Parser<string> ThreeDigits =
-            from firstTwo in TwoDigits
-            from dig3 in Parse.Digit
-            select string.Format("{0}{1}", firstTwo, dig3);
-
-        //static readonly Parser<string> UpToThreeDigits =
-        //    from dig1 in Parse.Digit
-        //    from dig2 in Parse.Digit. XOr (Parse.Return (""))
-        //    from dig3 in Parse.Digit
-        //    select string.Format("{0}{1}{2}", dig1, dig2, dig3);
-
-        static readonly Parser<string> FourDigits =
-            from firstThree in ThreeDigits
-            from dig4 in Parse.Digit
-            select string.Format("{0}{1}", firstThree, dig4);
-
-        static readonly Parser<string> OptionalSeparator =
-            Parse.Char(' ').Select(c => c.ToString()).Or(Parse.Return(string.Empty));
-
-        static readonly Parser<string> OptSeparatorAndNumber =
-            from separator in OptionalSeparator
-            from strNum in Parse.Number.Text()
-            select strNum;
-
+       
+        
         static readonly Parser<decimal> Amount =
                 from minus in Parse.String("-").Text().Or(Parse.Return(string.Empty))
-                from triples in OptSeparatorAndNumber.Token().Many()
+                from triples in GenericParsers.OptionalSpaceThenNumber.Token().Many()
                 from separator in Parse.Char(',').Once()
                 from pointPart in Parse.Number.Once()
                 let strDecimal = string.Format("{0}{1}.{2}", minus, triples.Aggregate((s1, s2) => s1 + s2),
                     pointPart.Single())
                 select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
 
-        static readonly Parser<DateTime> Date =
-            from year in Parse.Number.Text()
-            from dot1 in Parse.Char('.').Once()
-            from month in Parse.Number.Text()
-            from dot2 in Parse.Char('.').Once()
-            from day in Parse.Number.Text()
-            select new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+        
 
         static readonly Parser<string> UpperString =
             Parse.Upper.Or(Parse.Char(' ')).Or(Parse.Char('-')).Many().Text().Token();
 
         static readonly Parser<FirstLineResult> FirstLineParser =
-            from date in Date
+            from date in GenericParsers.DateYyyyMmDd
             from desc in UpperString
             from amount in Amount
             from balance in Amount
             select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = desc };
 
-        static readonly Parser<AccountNumber> AccountNumberParser =
-            from dig2 in TwoDigits
-            from space1 in OptionalSeparator
-            from dig4_1 in FourDigits
-            from space2 in OptionalSeparator
-            from dig4_2 in FourDigits
-            from space3 in OptionalSeparator
-            from dig4_3 in FourDigits
-            from space4 in OptionalSeparator
-            from dig4_4 in FourDigits
-            from space5 in OptionalSeparator
-            from dig4_5 in FourDigits
-            from space6 in OptionalSeparator
-            from dig4_6 in FourDigits
-            select new AccountNumber(string.Format("{0} {1} {2} {3} {4} {5} {6}", dig2, dig4_1,
-                dig4_2, dig4_3, dig4_4, dig4_5, dig4_6));
+      
 
         static readonly Parser<QifEntry> QifEntryParser =
             from firstLine in FirstLineParser
             from nl1 in GenericParsers.NewLine
-            from secondDate in Date
+            from secondDate in GenericParsers.DateYyyyMmDd
             from desc2 in UpperString.Or(Parse.Return(string.Empty))
             //from nl2 in NewLine
-            from accNum in AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
+            from accNum in GenericParsers.AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
             from desc3 in Parse.AnyChar.Many().Text().Token()
             select new QifEntry
             {
