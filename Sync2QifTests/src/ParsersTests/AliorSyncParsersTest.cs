@@ -99,11 +99,11 @@ namespace Sync2QifTests.ParsersTests
         public void TestQifEntryParserOK()
         {
             string entry1 = 
-@"2012.01.01 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,50" + Environment.NewLine +
-"2012.01.01" + Environment.NewLine +
-"11 2222 3333 4444 5555 6666 7777 xxxxxxxxxxxxxxxxxxxxx xxxxxxxx" + Environment.NewLine +
-"xxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx" + Environment.NewLine +
-"xxxxxxxxx xxxxxxxxxxx";
+@"2012.01.01 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,50
+2012.01.01
+11 2222 3333 4444 5555 6666 7777 xxxxxxxxxxxxxxxxxxxxx xxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx
+xxxxxxxxx xxxxxxxxxxx";
             QifEntry entry = AliorSyncParsers.QifEntryParser.Parse(entry1);
             Assert.AreEqual(DateTime.Parse("2012.01.01"), entry.Date);
             Assert.AreEqual(decimal.Parse("0.20", CultureInfo.InvariantCulture), entry.Amount);

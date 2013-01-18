@@ -56,7 +56,7 @@ namespace Bank2Qif.Parsers
             from nl1 in GenericParsers.NewLine
             from secondDate in GenericParsers.DateYyyyMmDd
             //FIXME: here the shit hits the fan when newline after date immidiately
-            //from desc2 in UpperString.Or(Parse.Return(string.Empty)).Text ().Token ()
+            from desc2 in UpperString.Or(Parse.Return(string.Empty)).Text ().Token ()
             from nl2 in GenericParsers.NewLine
             from accNum in GenericParsers.AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
             from desc3 in Parse.AnyChar.Many().Text().Token()
@@ -66,7 +66,7 @@ namespace Bank2Qif.Parsers
                 Amount = firstLine.Amount,
                 Date = new BankDates { OperationDate = firstLine.Date, BookingDate = secondDate },
                 Payee = accNum.Number,
-                Description = string.Format("{0} {1}: {2}", firstLine.Description, "desc2", desc3)
+                Description = string.Format("{0} {1}: {2}", firstLine.Description, desc2, desc3)
             };
 
         public static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =

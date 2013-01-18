@@ -9,6 +9,12 @@ namespace Bank2Qif
     {
         public AccountNumber(string num)
         {
+            if (num == string.Empty) 
+            {
+                Number = num;
+                return;
+            }
+
             var nums = num.Split(new char[] { ' ' });
             if (nums.Length != 7)
                 throw new ArgumentException("Wrong format of account number");
