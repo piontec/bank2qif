@@ -2,8 +2,9 @@ using System;
 using NUnit.Framework;
 using Bank2Qif.Converters;
 using Bank2Qif;
-using System.Xml.Linq;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 
 namespace Sync2QifTests
@@ -11,24 +12,43 @@ namespace Sync2QifTests
 	[TestFixture]
 	public class AliorSyncPdfToQifTests
 	{
-		AliorSyncPdfToQif converter;
-		XDocument xml;
-		IList<QifEntry> res;
-
+		AliorSyncPdfToQif converter;				
+        
 		[SetUp]
 		public void SetUp ()
 		{
-            //xml = XDocument.Load("../../data/wyciag1.xml", LoadOptions.PreserveWhitespace);
-			//converter = new AliorSyncPdfToQif ();
-			//res = converter.ConvertFileToQif (xml);
+            
+            converter = new AliorSyncPdfToQif();
 		}
 
 		[Test]
-		public void Should_return_all_operations ()
+		public void TestBankStatement1 ()
 		{
-
-			Assert.AreEqual (9, res.Count);
+            CheckParsedDates(9, @"data\wyciag1.txt");
 		}
+
+
+        [Test]
+        public void TestBankStatement2()
+        {
+            CheckParsedDates(10, @"data\wyciag2.txt");
+        }
+
+
+        private void CheckParsedDates(int expectedNumber, string fileName)
+        {
+            string[] lines = File.ReadAllLines(fileName, System.Text.Encoding.UTF8);
+            IEnumerable<QifEntry> result = converter.ConvertExtractedTextToQif(lines);
+
+            Assert.AreEqual(expectedNumber, result.Count());
+            DateTime expectedDate = DateTime.Parse("2012.01.01");
+            var table = result.ToArray();
+            for (int i = 0; i < table.Count(); i++)
+            {
+                Assert.AreEqual(expectedDate.AddDays(i), table[i].Date.OperationDate);
+                Assert.AreEqual(expectedDate.AddDays(i), table[i].Date.BookingDate);
+            }
+        }
 	}
 }
 
