@@ -17,8 +17,8 @@ namespace Bank2Qif
                 Classes.FromThisAssembly()
                 .Where (t => typeof(ITransformer).IsAssignableFrom (t) && 
                     Attribute.IsDefined (t, typeof (TransformerAttribute)))                                
-                .LifestyleSingleton ()
-                .WithService.Base()
+                .LifestyleSingleton ()                
+                .WithService.Select(new List<Type> { typeof(ITransformer) })
                 );
         }
     }

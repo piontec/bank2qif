@@ -7,6 +7,7 @@ using Bank2Qif.Transformers;
 using Castle.Windsor;
 using Castle.MicroKernel;
 using System.Collections.Generic;
+using Castle.MicroKernel.Registration;
 
 namespace Bank2Qif
 {
@@ -24,7 +25,8 @@ namespace Bank2Qif
 
         private string m_fileName, m_bankType;
         private WindsorContainer m_container;
-        
+        private const string INI_NAME = @"etc/config.ini";
+
 
 		public static void Main (string[] args)
 		{
@@ -104,9 +106,12 @@ namespace Bank2Qif
 
         private void LoadContainer()
         {
+            IConfigSource src = new IniConfigSource(INI_NAME);
+
             m_container = new WindsorContainer();
             m_container.Install(new ConvertersInstaller(), new TransformersInstaller());
-            m_container.Kernel.Resolver.AddSubResolver(new ConfigSubresolver());
+            m_container.Kernel.Resolver.AddSubResolver(new ConfigSubresolver(src));
+            m_container.Register (Component.For<IConfigSource>().Instance(src));
         }
 
 
@@ -131,24 +136,24 @@ namespace Bank2Qif
 		private void DisplayHelpAndExit (ExitCodes code)
 		{
             Console.Error.WriteLine(string.Format("Usage: {0} -t [bank type] -f [file name]", 
-                System.AppDomain.CurrentDomain.FriendlyName));
-            //FIXME: does not work
-            //ListSupportedConverters();
+                System.AppDomain.CurrentDomain.FriendlyName));            
+            ListSupportedConverters();
             System.Environment.Exit((int) code);
 		}
 
 
         private void ListSupportedConverters()
-        {
+        {           
             Console.WriteLine("Supported bank types and corresponding file extensions:");
-            Console.WriteLine("\tbank\t\tfile");         
+            Console.WriteLine("\tbank [-t]\tfile [-f]");
+            Console.WriteLine("\t=========\t=========");         
             foreach (var conv in m_container.ResolveAll<IConverter>())
             {
                 var obj = conv.GetType().GetCustomAttributes(typeof (ConverterAttribute), false);
                 var attr = obj.Where (o => o is ConverterAttribute).Cast<ConverterAttribute> ().SingleOrDefault ();
                 if (attr == null)
                     continue;
-                Console.WriteLine(string.Format ("\t{0}\t\t{1}"), attr.Bank, attr.Extension);
+                Console.WriteLine(string.Format ("\t{0}\t\t{1}", attr.Bank, attr.Extension));
             }
         }	
 	}

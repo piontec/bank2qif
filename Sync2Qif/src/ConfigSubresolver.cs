@@ -11,31 +11,30 @@ namespace Bank2Qif
 {
     public class ConfigSubresolver : ISubDependencyResolver
     {
-        private readonly IniConfigSource m_iniSource;
-        private const string INI_NAME = @"etc/config.ini";
+        private readonly IConfigSource m_cfgSource;        
         private const string TRANSFORMER_SUFFIX = "Transformer";
-
-        public ConfigSubresolver()
-        {
-            m_iniSource = new IniConfigSource(INI_NAME);
+        
+        
+        public ConfigSubresolver(IConfigSource src)
+        {            
+            m_cfgSource = src;
         }
 
 
         public bool CanResolve(CreationContext context, ISubDependencyResolver contextHandlerResolver, 
             ComponentModel model, DependencyModel dependency)
-        {            
-            return context.RequestedType == typeof (IConfig);
-            //dependency.TargetItemType
+        {
+            return dependency.TargetItemType == typeof(IConfig);
         }
 
 
         public object Resolve(CreationContext context, ISubDependencyResolver contextHandlerResolver, 
             ComponentModel model, DependencyModel dependency)
         {            
-            var conf = m_iniSource.Configs.Cast<IConfig>().
+            var conf = m_cfgSource.Configs.Cast<IConfig>().
                 Where(c => (c.Name + TRANSFORMER_SUFFIX).Equals (dependency.DependencyKey, StringComparison.CurrentCultureIgnoreCase)).
                 SingleOrDefault();
-            return conf != null ? conf : new IniConfig(dependency.DependencyKey, m_iniSource);
+            return conf != null ? conf : new IniConfig(dependency.DependencyKey, m_cfgSource);
         }
     }
 }
