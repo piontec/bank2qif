@@ -49,6 +49,7 @@
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\Main.cs" />
     <Compile Include="src\Sprache.cs" />
+    <Compile Include="src\SpracheALior.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

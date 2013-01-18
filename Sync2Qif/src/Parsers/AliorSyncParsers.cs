@@ -42,7 +42,7 @@ namespace Bank2Qif.Parsers
                 select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
 
         public static readonly Parser<string> UpperString =
-            Parse.Upper.Or(Parse.Char(' ')).Or(Parse.Char('-')).Many().Text().Token ();
+            Parse.Upper.XOr(Parse.Char(' ')).XOr(Parse.Char('-')).Many().Text().Token ();
 
         public static readonly Parser<FirstLineResult> FirstLineParser =
             from date in GenericParsers.DateYyyyMmDd
@@ -54,19 +54,18 @@ namespace Bank2Qif.Parsers
         public static readonly Parser<QifEntry> QifEntryParser =
             from firstLine in FirstLineParser
             from nl1 in GenericParsers.NewLine
-            from secondDate in GenericParsers.DateYyyyMmDd
-            //FIXME: here the shit hits the fan when newline after date immidiately
-            from desc2 in UpperString.Or(Parse.Return(string.Empty)).Text ().Token ()
-            from nl2 in GenericParsers.NewLine
+            from secondDate in GenericParsers.DateYyyyMmDd            
+            from desc2 in UpperString.XOr(Parse.Return(string.Empty)).Text ().Token ()            
             from accNum in GenericParsers.AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
             from desc3 in Parse.AnyChar.Many().Text().Token()
             select new QifEntry
             {
                 AccountName = accNum.Number,
                 Amount = firstLine.Amount,
-                Date = new BankDates { OperationDate = firstLine.Date, BookingDate = secondDate },
+                Date = new BankDates { OperationDate = secondDate, BookingDate = firstLine.Date },
                 Payee = accNum.Number,
                 Description = string.Format("{0} {1}: {2}", firstLine.Description, desc2, desc3)
+                                .Replace (Environment.NewLine, " ")
             };
 
         public static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =

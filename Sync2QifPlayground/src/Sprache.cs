@@ -52,6 +52,12 @@ OTHER131006-1321686580 Kwota i waluta oryginalna transakcji:
 142.99PLN";
         private readonly string line4 =
 "2012.10.12 PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM -67,00 980,10\r\n2012.10.12\r\n08 2490 0005 0000 4600 9079 6744 PayU S.A. ul. Marcelińska\r\n90/ 60-324 Poznań Pay by link PayU w Allegro XX255709781XX\r\npionte c aukcja nr (2693753978)";
+        private readonly string line5 =
+@"2012.01.01 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,50
+2012.01.01
+11 2222 3333 4444 5555 6666 7777 xxxxxxxxxxxxxxxxxxxxx xxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx
+xxxxxxxxx xxxxxxxxxxx";
 
         public static void Start()
         {
@@ -77,6 +83,10 @@ OTHER131006-1321686580 Kwota i waluta oryginalna transakcji:
 
             var r2 = QifEntryParser.Parse(line4);
             Console.WriteLine(r2);
+            Console.WriteLine("=================================");
+
+            var r3 = QifEntryParser.Parse(line5);
+            Console.WriteLine(r3);
             Console.WriteLine("=================================");
         }
 
@@ -169,7 +179,7 @@ OTHER131006-1321686580 Kwota i waluta oryginalna transakcji:
             from firstLine in FirstLineParser
             from nl1 in NewLine
             from secondDate in Date
-            from desc2 in UpperString.Or(Parse.Return(string.Empty))
+            from desc2 in UpperString.XOr(Parse.Return(string.Empty))
             //from nl2 in NewLine
             from accNum in AccountNumberParser.Or(Parse.Return(new AccountNumber (string.Empty)))
             from desc3 in Parse.AnyChar.Many().Text().Token()

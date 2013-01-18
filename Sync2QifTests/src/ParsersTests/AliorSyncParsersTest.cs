@@ -99,16 +99,18 @@ namespace Sync2QifTests.ParsersTests
         public void TestQifEntryParserOK()
         {
             string entry1 = 
-@"2012.01.01 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,50
-2012.01.01
-11 2222 3333 4444 5555 6666 7777 xxxxxxxxxxxxxxxxxxxxx xxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx
-xxxxxxxxx xxxxxxxxxxx";
+@"2012.01.10 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,50
+2012.01.02
+11 2222 3333 4444 5555 6666 7777 John Smith
+very important payment
+from Mr. John Smith";
             QifEntry entry = AliorSyncParsers.QifEntryParser.Parse(entry1);
-            Assert.AreEqual(DateTime.Parse("2012.01.01"), entry.Date);
+            Assert.AreEqual(DateTime.Parse("2012.01.10"), entry.Date.BookingDate);
+            Assert.AreEqual(DateTime.Parse("2012.01.02"), entry.Date.OperationDate);
             Assert.AreEqual(decimal.Parse("0.20", CultureInfo.InvariantCulture), entry.Amount);
             Assert.AreEqual("11 2222 3333 4444 5555 6666 7777", entry.Payee);
-            Assert.AreEqual("", entry.Description);
+            Assert.AreEqual("PRZELEW W RAMACH BANKU NA RACH OBCY : John Smith very important payment" 
+                + " from Mr. John Smith", entry.Description);
         }
     }
 }
