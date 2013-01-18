@@ -35,8 +35,8 @@ namespace Bank2Qif
 
         private void Run(string[] args)
         {
-            LoadCmdLineArgs(args);
             LoadContainer();
+            LoadCmdLineArgs(args);            
 
             var converter = GetConverter(m_bankType);
             VerifyArgs(converter, m_fileName);
@@ -44,7 +44,8 @@ namespace Bank2Qif
             var entries = converter.ConvertFileToQif(m_fileName);
             entries = ProcessEntries(entries);
 
-            QifFile.Save(entries, m_fileName);
+            QifFile.Save(entries, QifFile.GetQifFileName (m_fileName));
+            Console.WriteLine("Conversion complete.");
         }
 
 
@@ -131,7 +132,24 @@ namespace Bank2Qif
 		{
             Console.Error.WriteLine(string.Format("Usage: {0} -t [bank type] -f [file name]", 
                 System.AppDomain.CurrentDomain.FriendlyName));
+            //FIXME: does not work
+            //ListSupportedConverters();
             System.Environment.Exit((int) code);
-		}	
+		}
+
+
+        private void ListSupportedConverters()
+        {
+            Console.WriteLine("Supported bank types and corresponding file extensions:");
+            Console.WriteLine("\tbank\t\tfile");         
+            foreach (var conv in m_container.ResolveAll<IConverter>())
+            {
+                var obj = conv.GetType().GetCustomAttributes(typeof (ConverterAttribute), false);
+                var attr = obj.Where (o => o is ConverterAttribute).Cast<ConverterAttribute> ().SingleOrDefault ();
+                if (attr == null)
+                    continue;
+                Console.WriteLine(string.Format ("\t{0}\t\t{1}"), attr.Bank, attr.Extension);
+            }
+        }	
 	}
 }
