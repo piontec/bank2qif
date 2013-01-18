@@ -31,6 +31,9 @@
     <Externalconsole>True</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ImapX">
+      <HintPath>..\lib\imapx-2.0.0.8\ImapX.dll</HintPath>
+    </Reference>
     <Reference Include="itextsharp, Version=5.3.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\itextsharp-5.3.4\itextsharp.dll</HintPath>
@@ -47,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
+    <Compile Include="src\imapx.cs" />
     <Compile Include="src\Main.cs" />
     <Compile Include="src\Sprache.cs" />
     <Compile Include="src\SpracheALior.cs" />

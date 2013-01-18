@@ -140,8 +140,9 @@ namespace Sync2QifPlayground.src
 		public static void Main (string[] args)
 		{
             //ExtractWithITextSharpTest();
-            SpracheCase();
+            //SpracheCase();
             //new SpracheALior().Run();
+            new ImapxTest().Run();
 
             Console.WriteLine();
             Console.WriteLine("Press <ENTER>...");
