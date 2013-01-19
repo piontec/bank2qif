@@ -4,6 +4,7 @@ using System.Linq;
 using Nini.Config;
 using Bank2Qif.Converters;
 using Bank2Qif.Transformers;
+using Bank2Qif.Services;
 using Castle.Windsor;
 using Castle.MicroKernel;
 using System.Collections.Generic;
@@ -112,6 +113,8 @@ namespace Bank2Qif
             m_container.Install(new ConvertersInstaller(), new TransformersInstaller());
             m_container.Kernel.Resolver.AddSubResolver(new ConfigSubresolver(src));
             m_container.Register (Component.For<IConfigSource>().Instance(src));
+            m_container.Register (Classes.FromThisAssembly().BasedOn<IService>().WithService.
+                FromInterface().Configure (c => c.LifestyleTransient ()));
         }
 
 

@@ -53,6 +53,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\lib\castle.windsor-3.1.0\net40\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="ImapX">
+      <HintPath>..\lib\imapx-2.0.0.8\ImapX.dll</HintPath>
+    </Reference>
     <Reference Include="itextsharp">
       <HintPath>..\lib\itextsharp-5.3.4\itextsharp.dll</HintPath>
     </Reference>
@@ -79,6 +82,9 @@
     <Compile Include="src\QifFile.cs" />
     <Compile Include="src\Runner.cs" />
     <Compile Include="src\BankDates.cs" />
+    <Compile Include="src\Services\IImapSearcher.cs" />
+    <Compile Include="src\Services\ImapxSearcher.cs" />
+    <Compile Include="src\Services\IService.cs" />
     <Compile Include="src\TransformersInstaller.cs" />
     <Compile Include="src\Transformers\BaseTransformer.cs" />
     <Compile Include="src\Transformers\DefaultTransformer.cs" />
