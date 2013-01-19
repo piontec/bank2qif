@@ -83,6 +83,7 @@
     <Compile Include="src\Transformers\BaseTransformer.cs" />
     <Compile Include="src\Transformers\DefaultTransformer.cs" />
     <Compile Include="src\Transformers\ITransformer.cs" />
+    <Compile Include="src\Transformers\PayuTransformer.cs" />
     <Compile Include="src\Transformers\TransformerAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

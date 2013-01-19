@@ -8,8 +8,8 @@ namespace Bank2Qif.Transformers
 {
     public abstract class BaseTransformer
     {
-        private const string INI_ENABLED = "Enabled";
-        private bool m_enabled;
+        protected const string INI_ENABLED = "Enabled";
+        protected bool m_enabled;
 
         public void Initialize(IConfig config)
         {
