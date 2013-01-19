@@ -28,6 +28,12 @@ namespace Bank2Qif.Parsers
             return Date == dst.Date && Description == dst.Description && Amount == dst.Amount
                 && Balance == dst.Balance;
         }
+
+        public override int GetHashCode()
+        {
+            return Date.GetHashCode() ^ Description.GetHashCode() ^ Amount.GetHashCode()
+                ^ Balance.GetHashCode();
+        }
     }
 
     public static class AliorSyncParsers

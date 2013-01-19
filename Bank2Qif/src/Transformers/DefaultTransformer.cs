@@ -11,8 +11,7 @@ namespace Bank2Qif.Transformers
     {
         private const string INI_ACCOUNT = "Account";
         private const string INI_ACCOUNT_DFLT = "QifImport";
-        private readonly string m_accountName;
-        private readonly bool m_enabled;
+        private readonly string m_accountName;        
 
 
         public DefaultTransformer(IConfig config)

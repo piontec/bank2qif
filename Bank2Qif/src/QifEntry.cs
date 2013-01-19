@@ -26,13 +26,22 @@ namespace Bank2Qif
 		}
 
 
-        public string ToQifString()
+        public string ToQifString(bool mergePayeAndDescription)
         {
             string nl = System.Environment.NewLine;
             StringBuilder sb = new StringBuilder();
-            sb.Append(string.Format("D{0}{1}", Date.BookingDate.ToString("MM/dd/yyyy"), nl));
-            sb.Append(string.Format("P{0}{1}", Payee, nl));
-            sb.Append(string.Format("M{0}{1}", Description, nl));
+            sb.Append(string.Format("D{0}{1}", Date.BookingDate.ToString("MM/dd/yyyy", 
+                CultureInfo.InvariantCulture), nl));
+            if (mergePayeAndDescription)            
+                if (Payee == string.Empty)                
+                    sb.Append(string.Format("P{0}{1}", Description, nl));
+                else
+                    sb.Append(string.Format("P{0} - {1}{2}", Payee, Description, nl));            
+            else
+            {
+                sb.Append(string.Format("P{0}{1}", Payee, nl));
+                sb.Append(string.Format("M{0}{1}", Description, nl));
+            }
             sb.Append(string.Format("T{0}{1}", Amount.ToString (CultureInfo.InvariantCulture), nl));
             sb.Append(string.Format("L{0}{1}", AccountName, nl));
             sb.Append(string.Format("^{0}", nl));

@@ -14,11 +14,13 @@ namespace Bank2Qif
 
             foreach (var entry in entries)
             {
-                output.Append(entry.ToQifString());
+                //TODO: gnucash needs merged payee and description, but should make it an option
+                output.Append(entry.ToQifString(true));
                 output.Append(nl);
             }
 
-            using (StreamWriter file = new StreamWriter (originalFileName, false, Encoding.UTF8))
+            var utf8WithoutBom = new UTF8Encoding(false);
+            using (StreamWriter file = new StreamWriter (originalFileName, false, utf8WithoutBom))
             {
                 file.Write(output.ToString());
             }
