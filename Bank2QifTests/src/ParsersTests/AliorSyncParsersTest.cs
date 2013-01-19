@@ -43,24 +43,18 @@ namespace Bank2QifTests.ParsersTests
         }
 
         [Test]
-        public void TestUpperStringOK()
+        public void TestOperationNameOK()
         {
-            Assert.AreEqual("AAA", AliorSyncParsers.UpperString.Parse("AAA"));            
-            //TODO: thats strange but despite of using Token(), the " " at the end still exists
-            Assert.AreEqual("AAA ", AliorSyncParsers.UpperString.Parse(" AAA "));
-            Assert.AreEqual("-AAA", AliorSyncParsers.UpperString.Parse("-AAA"));
-            Assert.AreEqual("AAA-BBB", AliorSyncParsers.UpperString.Parse("AAA-BBB"));
-            Assert.AreEqual("AAA BBB", AliorSyncParsers.UpperString.Parse("AAA BBB"));
-            Assert.AreEqual("AAA BBB", AliorSyncParsers.UpperString.Parse("AAA BBBvsdsdf"));            
+            Assert.AreEqual("ZAŁOŻENIE LOKATY", AliorSyncParsers.OperationName.Parse("ZAŁOŻENIE LOKATY"));
+            Assert.AreEqual("ZAŁOŻENIE LOKATY", AliorSyncParsers.OperationName.Parse("   ZAŁOŻENIE LOKATY   -67"));            
         }
 
         [Test]
-        public void TestUpperStringNotParsing()
+        public void TestOperationNameException()
         {
-            Assert.AreEqual("", AliorSyncParsers.UpperString.Parse(""));
-            Assert.AreEqual("", AliorSyncParsers.UpperString.Parse("aaaa"));
-            Assert.AreEqual("", AliorSyncParsers.UpperString.Parse("aaaaAAAA"));
-            Assert.AreEqual("", AliorSyncParsers.UpperString.Parse("_AAAAA"));
+            Assert.Throws<ParseException>(() => AliorSyncParsers.OperationName.Parse("AAAA"));
+            Assert.Throws<ParseException>(() => AliorSyncParsers.OperationName.Parse("AAAA BBBBBB"));
+            Assert.Throws<ParseException>(() => AliorSyncParsers.OperationName.Parse("AŁOŻENIE LOKATY"));
         }
 
         [Test]
@@ -96,7 +90,7 @@ namespace Bank2QifTests.ParsersTests
         }
 
         [Test]
-        public void TestQifEntryParserOK()
+        public void TestQifEntryParserOK_1()
         {
             string entry1 = 
 @"2012.01.10 PRZELEW W RAMACH BANKU NA RACH OBCY 0,20 0,50
@@ -109,8 +103,26 @@ from Mr. John Smith";
             Assert.AreEqual(DateTime.Parse("2012.01.02"), entry.Date.OperationDate);
             Assert.AreEqual(decimal.Parse("0.20", CultureInfo.InvariantCulture), entry.Amount);
             Assert.AreEqual("11 2222 3333 4444 5555 6666 7777", entry.Payee);
-            Assert.AreEqual("PRZELEW W RAMACH BANKU NA RACH OBCY : John Smith very important payment" 
+            Assert.AreEqual("PRZELEW W RAMACH BANKU NA RACH OBCY: John Smith very important payment" 
                 + " from Mr. John Smith", entry.Description);
         }
+
+        [Test]
+        public void TestQifEntryParserOK_2()
+        {
+            string entry1 =
+@"2012.01.15 PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO 100,00 0,0
+2012.01.05 BANKU
+11 2222 3333 4444 5555 6666 7777 Jan Kowalski
+very important payment
+from Mr. John Smith";
+            QifEntry entry = AliorSyncParsers.QifEntryParser.Parse(entry1);
+            Assert.AreEqual(DateTime.Parse("2012.01.15"), entry.Date.BookingDate);
+            Assert.AreEqual(DateTime.Parse("2012.01.05"), entry.Date.OperationDate);
+            Assert.AreEqual(decimal.Parse("100", CultureInfo.InvariantCulture), entry.Amount);
+            Assert.AreEqual("11 2222 3333 4444 5555 6666 7777", entry.Payee);
+            Assert.AreEqual("PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO BANKU: Jan Kowalski "
+                + "very important payment from Mr. John Smith", entry.Description);            
+        }        
     }
 }

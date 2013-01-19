@@ -47,21 +47,35 @@ namespace Bank2Qif.Parsers
                     pointPart.Single())
                 select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
 
-        public static readonly Parser<string> UpperString =
-            Parse.Upper.XOr(Parse.Char(' ')).XOr(Parse.Char('-')).Many().Text().Token ();
+        //FIXME: this is very very ugly as this list is also in AliorSyncPdfToQif, but don't have time
+        // to fix it right now. AliorSyncPdfToQif has part of parser's logic - should be moved here.
+        public static readonly Parser<string> OperationName =
+            from trailing in Parse.WhiteSpace.Many()
+            from op in            
+                Parse.String("PRZELEW W RAMACH BANKU NA RACH OBCY").Or(
+                Parse.String("PRZELEW DO INNEGO BANKU KRAJOWEGO").Or(
+                Parse.String("PRZELEW KRAJOWY ELIXIR PRZYCHODZACY Z INNEGO").Or(
+                Parse.String("PRZELEW NATYCHMIASTOWY").Or(
+                Parse.String("ZAŁOŻENIE LOKATY").Or(
+                Parse.String("TRANSAKCJA KARTĄ DEBETOWĄ").Or(
+                Parse.String("PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM").Or(
+                Parse.String("KAPITALIZACJA ODSETEK")))))))).Text()
+            from ending in Parse.WhiteSpace.Many()
+            select op;
 
         public static readonly Parser<FirstLineResult> FirstLineParser =
             from date in GenericParsers.DateYyyyMmDd
-            from desc in UpperString
+            from operation in OperationName
             from amount in Amount
             from balance in Amount
-            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = desc.Trim () };
+            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = operation };
 
         public static readonly Parser<QifEntry> QifEntryParser =
             from firstLine in FirstLineParser
             from nl1 in GenericParsers.NewLine
-            from secondDate in GenericParsers.DateYyyyMmDd            
-            from desc2 in UpperString.XOr(Parse.Return(string.Empty)).Text ().Token ()            
+            from secondDate in GenericParsers.DateYyyyMmDd
+            //FIXME: when adding Trim () below, the next line w account number stops parsing
+            from desc2 in Parse.AnyChar.Until (GenericParsers.NewLine).Text ()
             from accNum in GenericParsers.AccountNumberParser.Or(Parse.Return(new AccountNumber(string.Empty)))
             from desc3 in Parse.AnyChar.Many().Text().Token()
             select new QifEntry
@@ -70,8 +84,10 @@ namespace Bank2Qif.Parsers
                 Amount = firstLine.Amount,
                 Date = new BankDates { OperationDate = secondDate, BookingDate = firstLine.Date },
                 Payee = accNum.Number,
-                Description = string.Format("{0} {1}: {2}", firstLine.Description, desc2, desc3)
-                                .Replace (Environment.NewLine, " ")
+                Description = desc2 == string.Empty ?
+                    string.Format("{0}: {1}", firstLine.Description, desc3).Replace(Environment.NewLine, " ")
+                    : string.Format("{0} {1}: {2}", firstLine.Description, desc2.Trim (), desc3)
+                                .Replace(Environment.NewLine, " ")
             };
 
         public static readonly Parser<IEnumerable<QifEntry>> QifEntriesParser =
