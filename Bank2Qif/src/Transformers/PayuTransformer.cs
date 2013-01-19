@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Nini.Config;
+using Bank2Qif.Services;
+using ImapX;
 
 
 namespace Bank2Qif.Transformers
@@ -13,32 +16,92 @@ namespace Bank2Qif.Transformers
         private readonly string PAYU_PREFIX = "PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM:";
         private readonly string PAYU_MARK = "Pay by link PayU X";
         private readonly string PAYU_ALLEGRO_MARK = "Pay by link PayU w Allegro X";
+        private readonly string CFG_HOST = "ImapServer";
+        private readonly string CFG_USER = "ImapUser";
+        private readonly string CFG_PASS = "ImapPassword";
+        private readonly IImapSearcher m_mailSearcher;
+        private readonly IConfig m_config;
 
-        public PayuTransformer(IConfig config)
+
+        public PayuTransformer(IConfig config, IImapSearcher mailSearcher)
         {
             Initialize(config);
+            m_mailSearcher = mailSearcher;
         }
+
 
         public IEnumerable<QifEntry> Transform(IEnumerable<QifEntry> entries)
         {
             if (!m_enabled)
                 return entries;
 
+            IList<QifEntry> plainPayuEntries = new List<QifEntry>();
+            IList<QifEntry> allegroPayuEntries = new List<QifEntry>();
+
             foreach (var entry in entries)
             {
                 if (IsPayuAllegroTransaction(entry))
-                    ProcessPayuAllegroTransaction(entry);
+                    allegroPayuEntries.Add(entry);
                 if (IsPayuTransaction(entry))
-                    ProcessPayuTransaction(entry);
+                    plainPayuEntries.Add(entry);
             }
+
+            ProcessEntries(allegroPayuEntries, plainPayuEntries);
 
             return entries;
         }
 
-        private void ProcessPayuAllegroTransaction(QifEntry entry)
+
+        private void ProcessEntries(IList<QifEntry> allegroPayuEntries, IList<QifEntry> plainPayuEntries)
+        {
+            MessageCollection emails = FetchEmails(allegroPayuEntries, plainPayuEntries);
+
+            if (emails == null)
+                return;
+
+            foreach (var entry in allegroPayuEntries)
+                ProcessPayuAllegroTransaction(entry, emails);
+
+            foreach (var entry in plainPayuEntries)
+                ProcessPayuTransaction(entry, emails);
+                
+        }
+
+
+        private MessageCollection FetchEmails(IList<QifEntry> allegroPayuEntries, IList<QifEntry> plainPayuEntries)
+        {
+            MessageCollection result = null;
+
+            DateTime minDate = allegroPayuEntries.Concat(plainPayuEntries).Min(e => e.Date.OperationDate);
+            DateTime maxDate = allegroPayuEntries.Concat(plainPayuEntries).Max(e => e.Date.OperationDate);
+
+            // we assume, that the required mails about transactions cannot be received later than one month
+            // after the operation and one week before
+            minDate.AddDays(-7);
+            maxDate.AddMonths(1);
+
+            try
+            {
+                result = m_mailSearcher.FetchMessages(m_config.GetString(CFG_HOST),
+                    m_config.GetString(CFG_USER),
+                    m_config.GetString(CFG_PASS),
+                    GetImapQueryForDateRange(minDate, maxDate));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.StackTrace);
+                Console.Error.WriteLine(e.Message);
+            }
+
+            return result;
+        }
+
+
+        private void ProcessPayuAllegroTransaction(QifEntry entry, MessageCollection emails)
         {
             throw new NotImplementedException();
         }
+
 
         private bool IsPayuAllegroTransaction(QifEntry entry)
         {
@@ -46,7 +109,7 @@ namespace Bank2Qif.Transformers
         }
 
 
-        private void ProcessPayuTransaction(QifEntry entry)
+        private void ProcessPayuTransaction(QifEntry entry, MessageCollection emails)
         {
             throw new NotImplementedException();
         }
@@ -55,6 +118,14 @@ namespace Bank2Qif.Transformers
         private bool IsPayuTransaction(QifEntry entry)
         {
             return entry.Description.StartsWith(PAYU_PREFIX) && entry.Description.Contains(PAYU_MARK);
+        }
+
+
+        private string GetImapQueryForDateRange(DateTime startDate, DateTime endDate)
+        {
+            return string.Format("FROM \"PayU\" BEFORE {0} SINCE {1}",
+                    endDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture),
+                    startDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
         }
     }
 }
