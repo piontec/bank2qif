@@ -8,7 +8,7 @@ using Sprache;
 using System.Globalization;
 using Bank2Qif;
 
-namespace Sync2QifTests.ParsersTests
+namespace Bank2QifTests.ParsersTests
 {
     public class AliorSyncParsersTest
     {

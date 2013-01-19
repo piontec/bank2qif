@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 
 
-namespace Sync2QifTests
+namespace Bank2QifTests
 {
 	[TestFixture]
 	public class AliorSyncPdfToQifTests

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank2Qif", "Sync2Qif\Bank2Qif.csproj", "{06E4739E-550C-4CE4-BFF5-5DEACD121B36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank2Qif", "Bank2Qif\Bank2Qif.csproj", "{06E4739E-550C-4CE4-BFF5-5DEACD121B36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank2QifTests", "Sync2QifTests\Bank2QifTests.csproj", "{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank2QifTests", "Bank2QifTests\Bank2QifTests.csproj", "{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank2QifPlayground", "Sync2QifPlayground\Bank2QifPlayground.csproj", "{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank2QifPlayground", "Bank2QifPlayground\Bank2QifPlayground.csproj", "{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +30,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Sync2QifPlayground\Sync2QifPlayground.csproj
+		StartupItem = Bank2QifPlayground\Bank2QifPlayground.csproj
 	EndGlobalSection
 EndGlobal

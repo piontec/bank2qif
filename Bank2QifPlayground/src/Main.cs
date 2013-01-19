@@ -13,7 +13,7 @@ using iTextSharp.text.pdf.parser;
 using iTextSharp.text.pdf;
 using System.IO;
 
-namespace Sync2QifPlayground.src
+namespace Bank2QifPlayground.src
 {
 	class MainClass
 	{
@@ -158,7 +158,7 @@ namespace Sync2QifPlayground.src
         
         public static void ExtractWithITextSharpTest ()
         {
-            PdfReader reader = new PdfReader(@"../../../Sync2QifTests/data/wyciag1.pdf");
+            PdfReader reader = new PdfReader(@"../../../Bank2QifTests/data/wyciag1.pdf");
 
             IEnumerable<string> lines = new List<string>();
             for (int i = 1; i <= reader.NumberOfPages; i++)

@@ -6,7 +6,7 @@ using Sprache;
 using Bank2Qif;
 
 
-namespace Sync2QifPlayground.src
+namespace Bank2QifPlayground.src
 {
     public class SpracheALior
     {

@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Sync2QifTests</RootNamespace>
-    <AssemblyName>Sync2QifTests</AssemblyName>
+    <RootNamespace>Bank2QifTests</RootNamespace>
+    <AssemblyName>Bank2QifTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -59,7 +59,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Sync2Qif\Bank2Qif.csproj">
+    <ProjectReference Include="..\Bank2Qif\Bank2Qif.csproj">
       <Project>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</Project>
       <Name>Bank2Qif</Name>
     </ProjectReference>

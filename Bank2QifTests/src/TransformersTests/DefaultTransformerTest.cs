@@ -8,7 +8,7 @@ using Bank2Qif.Transformers;
 using Nini.Config;
 using Moq;
 
-namespace Sync2QifTests.TransformersTests
+namespace Bank2QifTests.TransformersTests
 {    
     [TestFixture]
     public class DefaultTransformerTest

@@ -2,10 +2,10 @@ using System;
 using NUnit.Framework;
 using Bank2Qif;
 
-namespace Sync2QifTests
+namespace Bank2QifTests
 {
 	[TestFixture]
-	public class Sync2QifParserTests
+	public class Bank2QifParserTests
 	{
 		[Test]
 		public void QifNameTest ()

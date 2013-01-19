@@ -7,7 +7,7 @@ using Bank2Qif.Parsers;
 using Sprache;
 
 
-namespace Sync2QifTests.src.ParsersTests
+namespace Bank2QifTests.src.ParsersTests
 {
     public class GenericParsersTests
     {

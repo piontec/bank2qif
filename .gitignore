@@ -1,7 +1,7 @@
 *.userprefs
 */bin
-Sync2QifTests/test-results/
+Bank2QifTests/test-results/
 */obj/*
 *.suo
 TestResults/
-Sync2QifTests/data/*.pdf
+Bank2QifTests/data/*.pdf

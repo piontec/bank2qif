@@ -6,7 +6,7 @@ using System.Text;
 using ImapX;
 using ImapX.EmailParser;
 
-namespace Sync2QifPlayground.src
+namespace Bank2QifPlayground.src
 {
     public class ImapxTest
     {
