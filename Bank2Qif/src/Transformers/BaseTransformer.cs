@@ -10,10 +10,12 @@ namespace Bank2Qif.Transformers
     {
         protected const string INI_ENABLED = "Enabled";
         protected bool m_enabled;
+        protected IConfig m_config;
 
         public void Initialize(IConfig config)
         {
-            m_enabled = config.GetBoolean(INI_ENABLED, true);
+            m_config = config;
+            m_enabled = m_config.GetBoolean(INI_ENABLED, true);
         }
     }
 }

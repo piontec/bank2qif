@@ -30,11 +30,15 @@ namespace Bank2Qif
 
         public object Resolve(CreationContext context, ISubDependencyResolver contextHandlerResolver, 
             ComponentModel model, DependencyModel dependency)
-        {            
-            var conf = m_cfgSource.Configs.Cast<IConfig>().
-                Where(c => (c.Name + TRANSFORMER_SUFFIX).Equals (dependency.DependencyKey, StringComparison.CurrentCultureIgnoreCase)).
-                SingleOrDefault();
-            return conf != null ? conf : new IniConfig(dependency.DependencyKey, m_cfgSource);
+        {
+            var fullName = model.ComponentName.Name.Split('.');
+            var name = fullName[fullName.Length - 1];
+            name = name.Substring (0, name.IndexOf(TRANSFORMER_SUFFIX));
+                       
+            var conf = m_cfgSource.Configs.Cast<IConfig>().FirstOrDefault(
+                c => c.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+           
+            return conf ?? new IniConfig(name, m_cfgSource);
         }
     }
 }
