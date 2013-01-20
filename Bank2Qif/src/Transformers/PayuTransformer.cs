@@ -20,8 +20,7 @@ namespace Bank2Qif.Transformers
         private readonly string CFG_USER = "ImapUser";
         private readonly string CFG_PASS = "ImapPassword";
         private readonly IImapSearcher m_mailSearcher;
-        private readonly IConfig m_config;
-
+        
 
         public PayuTransformer(IConfig config, IImapSearcher mailSearcher)
         {
@@ -77,20 +76,34 @@ namespace Bank2Qif.Transformers
 
             // we assume, that the required mails about transactions cannot be received later than one month
             // after the operation and one week before
-            minDate.AddDays(-7);
-            maxDate.AddMonths(1);
+            minDate = minDate.AddDays(-7);
+            maxDate = maxDate.AddMonths(1);
+
+            string host, user, pass;
 
             try
             {
-                result = m_mailSearcher.FetchMessages(m_config.GetString(CFG_HOST),
-                    m_config.GetString(CFG_USER),
-                    m_config.GetString(CFG_PASS),
-                    GetImapQueryForDateRange(minDate, maxDate));
+                host = m_config.GetString(CFG_HOST);
+                user = m_config.GetString(CFG_USER);
+                pass = m_config.GetString(CFG_PASS);
             }
             catch (Exception e)
             {
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine("Error in configuration file of Payu Transformer");
+                return result;
+            }
+
+            try
+            {
+                result = m_mailSearcher.FetchMessages(host, user, pass, GetImapQueryForDateRange(minDate, maxDate));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.StackTrace);
+                Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine("Error communicating with mail server");
             }
 
             return result;
