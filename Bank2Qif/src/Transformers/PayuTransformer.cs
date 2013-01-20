@@ -6,13 +6,15 @@ using System.Text;
 using Nini.Config;
 using Bank2Qif.Services;
 using ImapX;
+using Bank2Qif.Parsers;
+using Sprache;
 
 
 namespace Bank2Qif.Transformers
 {
     [Transformer(10)]
     public class PayuTransformer : BaseTransformer, ITransformer
-    {
+    {        
         private readonly string PAYU_PREFIX = "PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM:";
         private readonly string PAYU_MARK = "Pay by link PayU X";
         private readonly string PAYU_ALLEGRO_MARK = "Pay by link PayU w Allegro X";
@@ -112,21 +114,58 @@ namespace Bank2Qif.Transformers
 
         private void ProcessPayuAllegroTransaction(QifEntry entry, MessageCollection emails)
         {
-            throw new NotImplementedException();
+            //TODO: implement
+            //throw new NotImplementedException();
         }
+
+
+        private void ProcessPayuTransaction(QifEntry entry, MessageCollection emails)
+        {
+            string payuId = PayuParsers.SyncIdParser.Parse(entry.Description);
+
+            bool html;
+            var validEmailBodys = from mail in emails
+                                  let txt = mail.GetDecodedBody(out html)
+                                  where txt.IndexOf(payuId) > 0
+                                  select txt;
+
+            ProcessPayuEmails(entry, validEmailBodys);
+        }
+
+
+        private void ProcessPayuEmails(QifEntry entry, IEnumerable<string> validEmailBodys)
+        {
+            foreach (var body in validEmailBodys)
+            {
+                string receiver = string.Empty;
+                try
+                {
+                    receiver = PayuParsers.SyncPaymentReceiver.Parse(body);
+                }
+                catch (ParseException) { }
+
+                if (receiver == string.Empty)
+                    try
+                    {
+                        receiver = PayuParsers.SyncPaymentStupidInfo.Parse(body);
+                    }
+                    catch (ParseException) { }
+
+                if (receiver != string.Empty)
+                {
+                    entry.Description = string.Format("{0} - {1}", receiver, entry.Description);
+                    break;
+                }
+            }
+        }
+                
 
 
         private bool IsPayuAllegroTransaction(QifEntry entry)
         {
             return entry.Description.StartsWith(PAYU_PREFIX) && entry.Description.Contains(PAYU_ALLEGRO_MARK);
         }
-
-
-        private void ProcessPayuTransaction(QifEntry entry, MessageCollection emails)
-        {
-            throw new NotImplementedException();
-        }
-
+        
 
         private bool IsPayuTransaction(QifEntry entry)
         {

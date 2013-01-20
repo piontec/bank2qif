@@ -12,7 +12,16 @@ namespace Bank2QifPlayground.src
     {
         public void Run()
         {
-            Case2();                       
+            Case3();                       
+        }
+
+        public void Case3()
+        {
+            string s1 = "PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM: PayU S.A. ul. Marcelińska 90/ 60-324 Poznań Pay by link PayU XX258795407XX Multikurs.pl  za mowienie nr 1497  Krysia  kursy";
+            string s2 = "PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM: PayU S.A. ul. Marcelińska 90/ 60-324 Poznań Pay by link PayU w Allegro XX256741454XX pionte c aukcja nr (2709801541)";
+
+            var r1 = TestParse.SyncIdParser.Parse(s1);
+            var r2 = TestParse.SyncAndAllegroIdParser.Parse(s2);
         }
 
         public void Case2()
@@ -70,5 +79,22 @@ namespace Bank2QifPlayground.src
             from trailing in Parse.WhiteSpace.Many()
             select new string(first.Concat(rest).Concat(last).ToArray());
 
+        public static readonly Parser<string> SyncIdDelimiter =
+            Parse.String("XX").Text ();
+
+        public static readonly Parser<string> SyncIdParser =
+            from leading in Parse.AnyChar.Until(SyncIdDelimiter)
+            from syncId in Parse.Number
+            from endDelim in SyncIdDelimiter
+            select syncId;
+
+        public static readonly Parser<Tuple<string, string>> SyncAndAllegroIdParser =
+            from syncId in SyncIdParser
+            from garbage in Parse.AnyChar.Until(Parse.String("aukcja nr ").Text())
+            from left in Parse.Char('(').Once()
+            from allegroId in Parse.Number
+            from right in Parse.Char(')').Once()
+            select Tuple.Create(syncId, allegroId);
+            
     }
 }
