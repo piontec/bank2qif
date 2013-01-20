@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace Bank2Qif
 {
@@ -9,6 +10,7 @@ namespace Bank2Qif
 	{
         public static void Save(IEnumerable<QifEntry> entries, string originalFileName)
         {
+            entries = entries.OrderBy(e => e.Date.BookingDate);
             string nl = System.Environment.NewLine;
             StringBuilder output = new StringBuilder("!Type:Bank" + nl);
 
