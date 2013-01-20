@@ -114,8 +114,36 @@ namespace Bank2Qif.Transformers
 
         private void ProcessPayuAllegroTransaction(QifEntry entry, MessageCollection emails)
         {
-            //TODO: implement
-            //throw new NotImplementedException();
+            Tuple<string, string> ids = PayuParsers.SyncAndAllegroIdParser.Parse(entry.Description);
+
+            bool html;
+            var validEmailBodys = from mail in emails
+                                  let txt = mail.GetDecodedBody(out html)
+                                  where txt.IndexOf(ids.Item2) > 0
+                                  select txt;
+
+            if (validEmailBodys.Count() > 0)
+                ProcessPayuAllegroEmails(entry, validEmailBodys);
+        }
+
+
+        private void ProcessPayuAllegroEmails(QifEntry entry, IEnumerable<string> validEmailBodys)
+        {
+            foreach (var body in validEmailBodys)
+            {
+                string description = string.Empty;
+                try
+                {
+                    description = PayuParsers.QuickAndDirtyHtmlInfoParser.Parse(body);
+                }
+                catch (ParseException) { }
+
+                if (description != string.Empty)
+                {
+                    entry.Description = string.Format("Allegro: {0} - {1}", description, entry.Description);
+                    break;
+                }
+            }
         }
 
 
@@ -129,7 +157,8 @@ namespace Bank2Qif.Transformers
                                   where txt.IndexOf(payuId) > 0
                                   select txt;
 
-            ProcessPayuEmails(entry, validEmailBodys);
+            if (validEmailBodys.Count() > 0)
+                ProcessPayuEmails(entry, validEmailBodys);
         }
 
 
