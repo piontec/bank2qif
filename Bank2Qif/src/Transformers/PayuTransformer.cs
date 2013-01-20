@@ -55,6 +55,9 @@ namespace Bank2Qif.Transformers
 
         private void ProcessEntries(IList<QifEntry> allegroPayuEntries, IList<QifEntry> plainPayuEntries)
         {
+            if (allegroPayuEntries.Count() == 0 && plainPayuEntries.Count() == 0)
+                return;
+
             MessageCollection emails = FetchEmails(allegroPayuEntries, plainPayuEntries);
 
             if (emails == null)
@@ -72,7 +75,7 @@ namespace Bank2Qif.Transformers
         private MessageCollection FetchEmails(IList<QifEntry> allegroPayuEntries, IList<QifEntry> plainPayuEntries)
         {
             MessageCollection result = null;
-
+            
             DateTime minDate = allegroPayuEntries.Concat(plainPayuEntries).Min(e => e.Date.OperationDate);
             DateTime maxDate = allegroPayuEntries.Concat(plainPayuEntries).Max(e => e.Date.OperationDate);
 
