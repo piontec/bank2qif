@@ -14,7 +14,7 @@ using Bank2Qif.Parsers;
 
 namespace Bank2Qif.Converters
 {
-    [Converter ("sync", "pdf")]
+    [Converter ("syncpdf", "pdf")]
     public class AliorSyncPdfToQif : IConverter
     {
         private readonly string FIRST_PAGE_START = @"DATA OPERACJI OPERACJI OPERACJI KSIĘGOWE";
@@ -37,13 +37,13 @@ namespace Bank2Qif.Converters
 
         public IEnumerable<QifEntry> ParseToQif(string lines)
         {
-            return AliorSyncParsers.QifEntriesParser.Parse(lines);
+            return AliorSyncPdfParsers.QifEntriesParser.Parse(lines);
         }
 
 
         public QifEntry ParseSingleToQif(string lines)
         {
-            return AliorSyncParsers.QifEntryParser.Parse(lines);
+            return AliorSyncPdfParsers.QifEntryParser.Parse(lines);
         }
 
 

@@ -7,7 +7,7 @@ using Sprache;
 
 namespace Bank2Qif.Parsers
 {
-    public class FirstLineResult
+    public class AliorSyncPdfFirstLineResult
     {
         public DateTime Date { get; set; }
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace Bank2Qif.Parsers
 
         public override bool Equals(object obj)
         {
-            FirstLineResult dst = obj as FirstLineResult;
+            AliorSyncPdfFirstLineResult dst = obj as AliorSyncPdfFirstLineResult;
             if (dst == null)
                 return false;
             return Date == dst.Date && Description == dst.Description && Amount == dst.Amount
@@ -36,7 +36,7 @@ namespace Bank2Qif.Parsers
         }
     }
 
-    public static class AliorSyncParsers
+    public static class AliorSyncPdfParsers
     {
         public static readonly Parser<decimal> Amount =
                 from minus in Parse.String("-").Text().Or(Parse.Return(string.Empty))
@@ -63,12 +63,12 @@ namespace Bank2Qif.Parsers
             from ending in Parse.WhiteSpace.Many()
             select op;
 
-        public static readonly Parser<FirstLineResult> FirstLineParser =
+        public static readonly Parser<AliorSyncPdfFirstLineResult> FirstLineParser =
             from date in GenericParsers.DateYyyyMmDd
             from operation in OperationName
             from amount in Amount
             from balance in Amount
-            select new FirstLineResult { Date = date, Amount = amount, Balance = balance, Description = operation };
+            select new AliorSyncPdfFirstLineResult { Date = date, Amount = amount, Balance = balance, Description = operation };
 
         public static readonly Parser<QifEntry> QifEntryParser =
             from firstLine in FirstLineParser
