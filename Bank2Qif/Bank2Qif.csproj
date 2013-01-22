@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Externalconsole>True</Externalconsole>
+    <Commandlineparameters>-t sync -f sync_all_2012.csv</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -92,6 +93,7 @@
     <Compile Include="src\Transformers\TransformerAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncCsvToQif.cs" />
     <Compile Include="src\Parsers\AliorSyncPdfParsers.cs" />
+    <Compile Include="src\Parsers\AliorSyncCsvParsers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
