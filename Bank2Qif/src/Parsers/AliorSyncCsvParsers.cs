@@ -14,10 +14,10 @@ namespace Bank2Qif.Parsers
 	{
 		public static readonly Parser<decimal> Amount =
 			from minus in Parse.String("-").Text().Or(Parse.Return(string.Empty))
-			from whole in Parse.Number.Once()
-			from separator in Parse.Char(',').Once()
-			from pointPart in Parse.Number.Once()
-			let strDecimal = string.Format("{0}{1}.{2}", minus, whole, pointPart.Single())
+			from whole in Parse.Number
+			from separator in Parse.Char('.').Once()
+			from pointPart in Parse.Number
+			let strDecimal = string.Format("{0}{1}.{2}", minus, whole, pointPart)
 			select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
 
 		public static readonly Parser<QifEntry> QifEntryParser =
