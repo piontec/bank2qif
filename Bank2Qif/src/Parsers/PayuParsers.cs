@@ -23,6 +23,7 @@ namespace Bank2Qif.Parsers
             from endDelim in SyncIdDelimiter
             select syncId;
 
+        // "PayU w Allegro XX255709781XX piontec aukcja nr (2693753978)"
         public static readonly Parser<Tuple<string, string>> SyncAndAllegroIdParser =
             from syncId in SyncIdParser
             from garbage in Parse.AnyChar.Until(Parse.String("aukcja nr "))

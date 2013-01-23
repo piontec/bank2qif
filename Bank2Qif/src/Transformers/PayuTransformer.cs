@@ -14,10 +14,9 @@ namespace Bank2Qif.Transformers
 {
     [Transformer(10)]
     public class PayuTransformer : BaseTransformer, ITransformer
-    {        
-        private readonly string PAYU_PREFIX = "PRZELEW WEWNĘTRZNY - PŁACĘ Z ALIOR BANKIEM:";
-        private readonly string PAYU_MARK = "Pay by link PayU X";
-        private readonly string PAYU_ALLEGRO_MARK = "Pay by link PayU w Allegro X";
+    {   
+        private readonly string PAYU_MARK = "PayU XX";
+        private readonly string PAYU_ALLEGRO_MARK = "PayU w Allegro XX";
         private readonly string CFG_HOST = "ImapServer";
         private readonly string CFG_USER = "ImapUser";
         private readonly string CFG_PASS = "ImapPassword";
@@ -42,7 +41,10 @@ namespace Bank2Qif.Transformers
             foreach (var entry in entries)
             {
                 if (IsPayuAllegroTransaction(entry))
+                {
                     allegroPayuEntries.Add(entry);
+                    continue;
+                }
                 if (IsPayuTransaction(entry))
                     plainPayuEntries.Add(entry);
             }
@@ -117,16 +119,20 @@ namespace Bank2Qif.Transformers
 
         private void ProcessPayuAllegroTransaction(QifEntry entry, MessageCollection emails)
         {
-            Tuple<string, string> ids = PayuParsers.SyncAndAllegroIdParser.Parse(entry.Description);
+            try
+            {
+                Tuple<string, string> ids = PayuParsers.SyncAndAllegroIdParser.Parse(entry.Description);
 
-            bool html;
-            var validEmailBodys = from mail in emails
-                                  let txt = mail.GetDecodedBody(out html)
-                                  where txt.IndexOf(ids.Item2) > 0
-                                  select txt;
+                bool html;
+                var validEmailBodys = from mail in emails
+                                      let txt = mail.GetDecodedBody(out html)
+                                      where txt.IndexOf(ids.Item2) > 0
+                                      select txt;
 
-            if (validEmailBodys.Count() > 0)
-                ProcessPayuAllegroEmails(entry, validEmailBodys);
+                if (validEmailBodys.Count() > 0)
+                    ProcessPayuAllegroEmails(entry, validEmailBodys);
+            }
+            catch (ParseException) { }
         }
 
 
@@ -195,13 +201,13 @@ namespace Bank2Qif.Transformers
 
         private bool IsPayuAllegroTransaction(QifEntry entry)
         {
-            return entry.Description.StartsWith(PAYU_PREFIX) && entry.Description.Contains(PAYU_ALLEGRO_MARK);
+            return entry.Description.Contains(PAYU_ALLEGRO_MARK);
         }
         
 
         private bool IsPayuTransaction(QifEntry entry)
         {
-            return entry.Description.StartsWith(PAYU_PREFIX) && entry.Description.Contains(PAYU_MARK);
+            return entry.Description.Contains(PAYU_MARK);
         }
 
 

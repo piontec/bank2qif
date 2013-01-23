@@ -10,7 +10,7 @@ namespace Bank2Qif
 	{
         public static void Save(IEnumerable<QifEntry> entries, string originalFileName)
         {
-            entries = entries.OrderBy(e => e.Date.BookingDate);
+            //entries = entries.OrderBy(e => e.Date.BookingDate);
             string nl = System.Environment.NewLine;
             StringBuilder output = new StringBuilder("!Type:Bank" + nl);
 

@@ -21,7 +21,7 @@ namespace Bank2Qif.Transformers
 
         public IEnumerable<QifEntry> Transform(IEnumerable<QifEntry> entries)
         {
-            return entries.AsParallel().Select(e => { e.AccountName = m_accountName; return e; });
+            return entries.Select(e => { e.AccountName = m_accountName; return e; });
         }
     }
 }
