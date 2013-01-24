@@ -10,10 +10,10 @@ namespace Bank2Qif.Parsers
     {
         private static readonly string s_stupidInfoMsg =
             "informujemy o pozytywnym zakończeniu Państwa płatności w sklepie/serwisie ";
-        private static readonly string s_beginItemDesc = "<a href=\"http://www.allegro.pl/show_item.php?item=";
+        private static readonly string s_beginItemDesc = "allegro.pl/show_item.php?item=";
         private static readonly string s_endTagA = "</a>";
         //"<a href=\"http://www.allegro.pl/show_item.php?item=2694621696\">FILTRY ŻELOWE HITECH DO LAMPY 15 ARKUSZY STROBIST</a>"
-
+        // <a href=\"http://allegro.pl/show_item.php?item=2810342496\">ŁAŃCUCH STOJAK NA WINO ALKOHOL NOWOCZESNY DESIGN!!</a>
         public static readonly Parser<string> SyncIdDelimiter =
             Parse.String("XX").Text();
 
