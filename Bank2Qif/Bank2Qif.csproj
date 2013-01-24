@@ -77,6 +77,7 @@
     <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
     <Compile Include="src\Parsers\GenericParsers.cs" />
     <Compile Include="src\Parsers\PayuParsers.cs" />
+    <Compile Include="src\Parsers\SimpleMatchRuleParser.cs" />
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\Converters\IConverter.cs" />
     <Compile Include="src\QifFile.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="src\Transformers\DefaultTransformer.cs" />
     <Compile Include="src\Transformers\ITransformer.cs" />
     <Compile Include="src\Transformers\PayuTransformer.cs" />
+    <Compile Include="src\Transformers\SimpleMatchTransformer.cs" />
     <Compile Include="src\Transformers\TransformerAttribute.cs" />
     <Compile Include="src\Converters\AliorSyncCsvToQif.cs" />
     <Compile Include="src\Parsers\AliorSyncPdfParsers.cs" />
