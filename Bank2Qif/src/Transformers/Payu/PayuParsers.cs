@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Bank2Qif.Parsers;
 using Sprache;
 
-namespace Bank2Qif.Parsers
+namespace Bank2Qif.Transformers.Payu
 {
     public static class PayuParsers
     {

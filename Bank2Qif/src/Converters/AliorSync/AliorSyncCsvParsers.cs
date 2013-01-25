@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Bank2Qif.Parsers;
 using Sprache;
 
 //Data,Nazwa odbiorcy/nadawcy,Rachunek,Tytuł płatności,Kwota
 //01-12-2012,PayU S.A.,Konto osobiste,PayU XX269548709XX Oplata za zamowienie nr 2975,-108.80 PLN
 
-namespace Bank2Qif.Parsers
+namespace Bank2Qif.Converters.AliorSync
 {
 	public static class AliorSyncCsvParsers
 	{

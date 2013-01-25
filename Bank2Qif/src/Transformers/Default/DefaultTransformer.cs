@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Nini.Config;
 
-namespace Bank2Qif.Transformers
+namespace Bank2Qif.Transformers.Default
 {
     [Transformer (0)]
     public class DefaultTransformer : ITransformer

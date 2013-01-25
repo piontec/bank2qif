@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Sprache;
 
-namespace Bank2Qif.Parsers
+namespace Bank2Qif.Transformers.SimpleMatch
 {   
     public static class SimpleMatchRuleParser
     {
@@ -13,6 +13,6 @@ namespace Bank2Qif.Parsers
         // exact
         // Description = "text do znalezienia" -> nazwa_konta
         // Any % "text
-        public static readonly Parser<string> Separator = Parse.String("->");
+        public static readonly Parser<string> Separator = Parse.String("->").Text ();
     }
 }

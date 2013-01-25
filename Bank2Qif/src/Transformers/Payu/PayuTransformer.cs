@@ -4,13 +4,13 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Nini.Config;
-using Bank2Qif.Services;
 using ImapX;
 using Bank2Qif.Parsers;
 using Sprache;
+using Bank2Qif.Services.ImapSearcher;
 
 
-namespace Bank2Qif.Transformers
+namespace Bank2Qif.Transformers.Payu
 {
     [Transformer(10)]
     public class PayuTransformer : BaseTransformer, ITransformer

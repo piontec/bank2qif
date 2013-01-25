@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bank2Qif.src.Transformers
+namespace Bank2Qif.Transformers.SimpleMatch
 {
-    public class MatchRule
+    public class SimpleMatchRule
     {
-        private enum Operator
+        public enum Operator
         {
             Like,
             Equal
@@ -18,7 +18,7 @@ namespace Bank2Qif.src.Transformers
         public string Pattern { get; private set; }
         public string Result { get; private set; }
 
-        public MatchRule(string fieldName, string pattern, Operator ruleOperator, string result)
+        public SimpleMatchRule(string fieldName, string pattern, Operator ruleOperator, string result)
         {
             FieldName = fieldName;
             Pattern = pattern;

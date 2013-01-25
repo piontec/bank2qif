@@ -12,7 +12,7 @@ using Sprache;
 using Bank2Qif.Parsers;
 
 
-namespace Bank2Qif.Converters
+namespace Bank2Qif.Converters.AliorSync
 {
     [Converter("sync", "csv")]
     public class AliorSyncCsvToQif : IConverter

@@ -7,6 +7,7 @@ using Bank2Qif;
 using Bank2Qif.Transformers;
 using Nini.Config;
 using Moq;
+using Bank2Qif.Transformers.Default;
 
 namespace Bank2QifTests.TransformersTests
 {    

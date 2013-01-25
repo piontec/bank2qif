@@ -74,29 +74,29 @@
     <Compile Include="src\ConfigSubresolver.cs" />
     <Compile Include="src\ConvertersInstaller.cs" />
     <Compile Include="src\Converters\ConverterAttribute.cs" />
-    <Compile Include="src\Converters\AliorSyncPdfToQif.cs" />
+    <Compile Include="src\Converters\AliorSync\AliorSyncPdfToQif.cs" />
     <Compile Include="src\Parsers\GenericParsers.cs" />
-    <Compile Include="src\Parsers\PayuParsers.cs" />
-    <Compile Include="src\Parsers\SimpleMatchRuleParser.cs" />
+    <Compile Include="src\Transformers\Payu\PayuParsers.cs" />
+    <Compile Include="src\Transformers\SimpleMatch\SimpleMatchRuleParser.cs" />
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\Converters\IConverter.cs" />
     <Compile Include="src\QifFile.cs" />
     <Compile Include="src\Runner.cs" />
     <Compile Include="src\BankDates.cs" />
-    <Compile Include="src\Services\IImapSearcher.cs" />
-    <Compile Include="src\Services\ImapxSearcher.cs" />
+    <Compile Include="src\Services\ImapSearcher\IImapSearcher.cs" />
+    <Compile Include="src\Services\ImapSearcher\ImapxSearcher.cs" />
     <Compile Include="src\Services\IService.cs" />
     <Compile Include="src\TransformersInstaller.cs" />
     <Compile Include="src\Transformers\BaseTransformer.cs" />
-    <Compile Include="src\Transformers\DefaultTransformer.cs" />
+    <Compile Include="src\Transformers\Default\DefaultTransformer.cs" />
     <Compile Include="src\Transformers\ITransformer.cs" />
-    <Compile Include="src\Transformers\MatchRule.cs" />
-    <Compile Include="src\Transformers\PayuTransformer.cs" />
-    <Compile Include="src\Transformers\SimpleMatchTransformer.cs" />
+    <Compile Include="src\Transformers\SimpleMatch\SimpleMatchRule.cs" />
+    <Compile Include="src\Transformers\Payu\PayuTransformer.cs" />
+    <Compile Include="src\Transformers\SimpleMatch\SimpleMatchTransformer.cs" />
     <Compile Include="src\Transformers\TransformerAttribute.cs" />
-    <Compile Include="src\Converters\AliorSyncCsvToQif.cs" />
-    <Compile Include="src\Parsers\AliorSyncPdfParsers.cs" />
-    <Compile Include="src\Parsers\AliorSyncCsvParsers.cs" />
+    <Compile Include="src\Converters\AliorSync\AliorSyncCsvToQif.cs" />
+    <Compile Include="src\Converters\AliorSync\AliorSyncPdfParsers.cs" />
+    <Compile Include="src\Converters\AliorSync\AliorSyncCsvParsers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -137,4 +137,5 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
 </Project>

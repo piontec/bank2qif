@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ImapX;
 
-namespace Bank2Qif.Services
+namespace Bank2Qif.Services.ImapSearcher
 {
     /// <summary>
     /// Provides search capabilities for mail boxes

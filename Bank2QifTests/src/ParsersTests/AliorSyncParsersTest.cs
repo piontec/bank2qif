@@ -7,6 +7,7 @@ using Bank2Qif.Parsers;
 using Sprache;
 using System.Globalization;
 using Bank2Qif;
+using Bank2Qif.Converters.AliorSync;
 
 namespace Bank2QifTests.ParsersTests
 {

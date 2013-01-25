@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Bank2Qif.Parsers;
 using Sprache;
 
-namespace Bank2Qif.Parsers
+namespace Bank2Qif.Converters.AliorSync
 {
     public class AliorSyncPdfFirstLineResult
     {

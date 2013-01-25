@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Bank2Qif.Converters;
 using Bank2Qif;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Bank2Qif.Converters.AliorSync;
 
 
 namespace Bank2QifTests
