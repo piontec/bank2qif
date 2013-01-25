@@ -5,7 +5,7 @@ using System.Text;
 using Sprache;
 
 namespace Bank2Qif.Parsers
-{
+{   
     public static class SimpleMatchRuleParser
     {
         // wildcard
@@ -13,5 +13,6 @@ namespace Bank2Qif.Parsers
         // exact
         // Description = "text do znalezienia" -> nazwa_konta
         // Any % "text
+        public static readonly Parser<string> Separator = Parse.String("->");
     }
 }
