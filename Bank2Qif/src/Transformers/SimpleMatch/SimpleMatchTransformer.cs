@@ -27,9 +27,10 @@ namespace Bank2Qif.Transformers.SimpleMatch
         {
             var nonCommentLines = File.ReadAllLines(m_rulesFile).
                 Where(line => line.Trim().StartsWith(COMMENT_START) == false).
-                Aggregate((s1, s2) => string.Format("{0}{1}", s1, s2));
+                Aggregate((s1, s2) => string.Format("{0}{1}{2}", s1, Environment.NewLine, s2));
 
-            foreach (var rule in SimpleMatchRuleParsers.SimpleRules.Parse(nonCommentLines))
+            var rules = SimpleMatchRuleParsers.SimpleRules.Parse(nonCommentLines);
+            foreach (var rule in rules)
                 entries = rule.Transform(entries);
 
             return entries;
