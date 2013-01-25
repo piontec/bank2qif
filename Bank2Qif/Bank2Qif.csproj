@@ -75,6 +75,8 @@
     <Compile Include="src\ConvertersInstaller.cs" />
     <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSync\AliorSyncPdfToQif.cs" />
+    <Compile Include="src\Converters\MBank\MBankCsvParsers.cs" />
+    <Compile Include="src\Converters\MBank\MBankCsvToQif.cs" />
     <Compile Include="src\Parsers\GenericParsers.cs" />
     <Compile Include="src\Transformers\Payu\PayuParsers.cs" />
     <Compile Include="src\Transformers\SimpleMatch\SimpleMatchRuleParser.cs" />

@@ -36,9 +36,9 @@ namespace Bank2Qif.Parsers
 
         public static readonly Parser<DateTime> DateYyyyMmDd =
             from year in FourDigits
-            from dot1 in Parse.Char('.').Once()
+            from dot1 in Parse.Char('.').Or (Parse.Char ('-')).Once()
             from month in TwoDigits
-            from dot2 in Parse.Char('.').Once()
+            from dot2 in Parse.Char('.').Or(Parse.Char('-')).Once()
             from day in TwoDigits
             select new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
 
