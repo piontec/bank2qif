@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Nini.Config;
 using System.IO;
+using Sprache;
 
 namespace Bank2Qif.Transformers.SimpleMatch
 {
@@ -13,6 +14,7 @@ namespace Bank2Qif.Transformers.SimpleMatch
         private readonly string m_rulesFile;
         private static readonly string CFG_RULES_FILE_NAME = "RulesFile";
         private static readonly string CFG_RULES_FILE_NAME_DFLT = "rules.txt";
+        private static readonly string COMMENT_START = "#";
 
         public SimpleMatchTransformer(IConfig config)
         {
@@ -23,7 +25,14 @@ namespace Bank2Qif.Transformers.SimpleMatch
 
         public IEnumerable<QifEntry> Transform(IEnumerable<QifEntry> entries)
         {
-            throw new NotImplementedException();
+            var nonCommentLines = File.ReadAllLines(m_rulesFile).
+                Where(line => line.Trim().StartsWith(COMMENT_START) == false).
+                Aggregate((s1, s2) => string.Format("{0}{1}", s1, s2));
+
+            foreach (var rule in SimpleMatchRuleParsers.SimpleRules.Parse(nonCommentLines))
+                entries = rule.Transform(entries);
+
+            return entries;
         }
     }
 }
