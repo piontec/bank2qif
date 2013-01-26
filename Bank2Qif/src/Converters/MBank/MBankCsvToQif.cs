@@ -17,16 +17,23 @@ namespace Bank2Qif.Converters.MBank
             var entries = MBankCsvParsers.QifEntriesParser.Parse(lines);
 
             TextInfo myTI = new CultureInfo("pl-PL", false).TextInfo;
-            // normalize many whitespaces into one, do camel casing
+            
             string pattern = @"Xx(?<num>\d+)xx";
             string replacement = "XX${num}XX";            
             foreach (var entry in entries)
             {
+                // normalize many whitespaces into one, do camel casing
                 entry.Description = System.Text.RegularExpressions.Regex.Replace(
                     myTI.ToTitleCase(entry.Description.ToLower()), @"\s+", " ");
                 // fix PayU IDs
                 entry.Description = System.Text.RegularExpressions.Regex.Replace(
                     entry.Description, pattern, replacement);
+                // normalize PayU descriptions
+                entry.Description = System.Text.RegularExpressions.Regex.Replace(
+                    entry.Description, "Payu", "PayU");
+                // normalize PayU allegro descriptions
+                entry.Description = System.Text.RegularExpressions.Regex.Replace(
+                    entry.Description, "PayU Na Allegro", "PayU w Allegro");
                 entry.Payee = System.Text.RegularExpressions.Regex.Replace(
                     myTI.ToTitleCase(entry.Payee.ToLower ()), @"\s+", " ");
             }
