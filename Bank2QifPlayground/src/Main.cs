@@ -142,8 +142,9 @@ namespace Bank2QifPlayground.src
             //ExtractWithITextSharpTest();
             //SpracheCase();
             //new SpracheALior().Run();
-            new SpracheRules().Run();
+            //new SpracheRules().Run();
             //new ImapxTest().Run();
+            new SpracheInteligo().Run();
 
             Console.WriteLine();
             Console.WriteLine("Press <ENTER>...");

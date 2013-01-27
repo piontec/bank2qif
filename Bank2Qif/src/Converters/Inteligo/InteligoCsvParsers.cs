@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Bank2Qif.Parsers;
@@ -8,10 +9,17 @@ using Sprache;
 namespace Bank2Qif.Converters.Inteligo
 {
     //"Id","Data księgowania","Data zlecona","Typ transakcji","Kwota","Waluta","Saldo po transakcji","Rachunek nadawcy/odbiorcy","Nazwa nadawcy/odbiorcy","Opis transakcji"
-    //"3065","2012-01-15","2012-01-15","Przelew z rachunku","-198.00","PLN","493.61","50102055581111174342100049","Joanna Piątkowska  ul. Cisowa 6, Pasieka 77-200 Miastko","Joanna Piątkowska  ul. Cisowa 6, Pasieka 77-200 Miastko","Nr banku: 10205558","Nr rach.: 50102055581111174342100049","Tytuł: za bilet na coldplay","Data przygotowania: 2012-01-15","Data waluty: 2012-01-15"
-    //"3067","2012-01-15","2012-01-15","Opłata","-0.99","PLN","492.62","","","Opłata miesięczna","Karta płatnicza: 0,99","Data waluty: 2012-01-15"
+    //"1111","2012-01-11","2012-01-11","Przelew z rachunku","-100.00","PLN","200.00","11222233334444555566667777","XXXX YYYYY  ZZZZZ, WWWWWW ZIP City","XXXX YYYYY  ZZZZZ, WWWWWW ZIP City","XX XXXXXX: 11112222","XX XXXX.: 11222233334444555566667777","XXXXXX: XX XXXX XX XXXXX","XXXXX XXXXXX: 2012-01-11","XXXXXX XXXXXXXXXXXX"
+    
 
     public static class InteligoCsvParsers
     {
+        public static readonly Parser<decimal> Amount =
+            from sign in Parse.String("-").Text().Or(Parse.String("+").Text().Or (Parse.Return(string.Empty)))
+            from whole in Parse.Number
+            from separator in Parse.Char('.')
+            from pointPart in Parse.Number
+            let strDecimal = string.Format("{0}{1}.{2}", sign, whole, pointPart)
+            select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
     }
 }

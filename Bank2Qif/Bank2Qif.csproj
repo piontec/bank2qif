@@ -79,6 +79,7 @@
     <Compile Include="src\Converters\Inteligo\InteligoCsvToQif.cs" />
     <Compile Include="src\Converters\MBank\MBankCsvParsers.cs" />
     <Compile Include="src\Converters\MBank\MBankCsvToQif.cs" />
+    <Compile Include="src\Parsers\CsvParser.cs" />
     <Compile Include="src\Parsers\GenericParsers.cs" />
     <Compile Include="src\Transformers\Payu\PayuParsers.cs" />
     <Compile Include="src\Transformers\SimpleMatch\SimpleMatchRuleParser.cs" />
