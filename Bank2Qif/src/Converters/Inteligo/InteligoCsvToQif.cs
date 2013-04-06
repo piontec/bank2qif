@@ -9,12 +9,10 @@ using Bank2Qif.Parsers;
 namespace Bank2Qif.Converters.Inteligo
 {
     [Converter("inteligo", "csv")]
-    public class InteligoCsvToQif : IConverter
+    public class InteligoCsvToQif : BaseConverter
     {
-        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
-            string lines = File.ReadAllText(fileName, System.Text.Encoding.Default);
-            
             var result = from csvline in CsvParser.Csv.Parse(lines).Skip (1)
                      let csv = csvline.ToArray()
                      let bookingDate = GenericParsers.DateYyyyMmDd.Parse(csv[1])

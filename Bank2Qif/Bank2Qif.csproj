@@ -73,6 +73,7 @@
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\ConfigSubresolver.cs" />
     <Compile Include="src\ConvertersInstaller.cs" />
+    <Compile Include="src\Converters\BaseConverter.cs" />
     <Compile Include="src\Converters\ConverterAttribute.cs" />
     <Compile Include="src\Converters\AliorSync\AliorSyncPdfToQif.cs" />
     <Compile Include="src\Converters\Inteligo\InteligoCsvParsers.cs" />

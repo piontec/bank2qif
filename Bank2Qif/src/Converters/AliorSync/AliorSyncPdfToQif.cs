@@ -17,7 +17,7 @@ namespace Bank2Qif.Converters.AliorSync
     //[Converter ("syncpdf", "pdf")]
     // PDF files from alior sync contain more detailed information, but it is much harder 
     // to parse them. Thus, this converter is curerntly not registered.
-    public class AliorSyncPdfToQif : IConverter
+    public class AliorSyncPdfToQif : BaseConverter
     {
         private readonly string FIRST_PAGE_START = @"DATA OPERACJI OPERACJI OPERACJI KSIĘGOWE";
         private readonly string FIRST_PAGE_END = @"Infolinia Alior Sync dostępna jest przez całą dobę pod numerami 19 506";
@@ -49,11 +49,9 @@ namespace Bank2Qif.Converters.AliorSync
         }
 
 
-        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
-            var lines = ExtractLinesFromPdf(fileName);
-
-            return ConvertExtractedTextToQif(lines);
+            return ConvertExtractedTextToQif(lines.Split(new string [] {"\r\n"}, int.MaxValue, StringSplitOptions.RemoveEmptyEntries));
         }
 
         public IEnumerable<QifEntry> ConvertExtractedTextToQif(IEnumerable<string> lines)

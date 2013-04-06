@@ -10,15 +10,13 @@ using Bank2Qif.Parsers;
 namespace Bank2Qif.Converters.MBank
 {
     [Converter("mbank", "csv")]
-    public class MBankCsvToQif : IConverter
+    public class MBankCsvToQif : BaseConverter
     {
         //#Data operacji;#Data księgowania;#Opis operacji;#Tytuł;#Nadawca/Odbiorca;#Numer konta;#Kwota;#Saldo po operacji;
         //2012-01-01;2012-01-01;PRZELEW MTRANSFER WYCHODZACY;"PLACE Z ALLEGRO XX111100261XX WPŁATA ŁĄCZNA OD XXX";"PAYU SPÓŁKA AKCYJNA  UL.MARCELIŃSKA 90                  60-324 POZNAŃ POLSKA";'81114020040000330261746759';-10,50;1,10;
         //2011-12-30;2012-01-01;ZAKUP PRZY UŻYCIU KARTY;"STACJA WIELKOPOLSKA/POZNAN";"  ";'';-10,95;1,50;
-        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
-            string lines = File.ReadAllText(fileName, System.Text.Encoding.Default);
-            
             var entries = from csvline in CsvParser.Csv.Parse(lines).Skip (1)
                      let csv = csvline.ToArray()
                      let opDate = GenericParsers.DateYyyyMmDd.Parse(csv[0])

@@ -18,14 +18,12 @@ namespace Bank2Qif.Converters.AliorSync
     //01-12-2012,PayU S.A.,Konto osobiste,PayU XX269548709XX Oplata za zamowienie nr 2975,-108.80 PLN
 
     [Converter("sync", "csv")]
-    public class AliorSyncCsvToQif : IConverter
+    public class AliorSyncCsvToQif : BaseConverter
     {
         #region IConverter implementation
 
-        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
-            string lines = File.ReadAllText(fileName, System.Text.Encoding.Default);
-
             var entries = from csvline in CsvParser.Csv.Parse(lines).Skip(1)
                           let csv = csvline.ToArray()
                           let opDate = GenericParsers.DateMmDdYyyy.Parse(csv[0])
