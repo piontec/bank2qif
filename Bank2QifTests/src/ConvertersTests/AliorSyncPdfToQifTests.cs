@@ -7,7 +7,7 @@ using System.Linq;
 using Bank2Qif.Converters.AliorSync;
 
 
-namespace Bank2QifTests
+namespace Bank2QifTests.ConvertersTests
 {
 	[TestFixture]
 	public class AliorSyncPdfToQifTests

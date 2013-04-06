@@ -9,7 +9,8 @@ using System.Globalization;
 using Bank2Qif;
 using Bank2Qif.Converters.AliorSync;
 
-namespace Bank2QifTests.ParsersTests
+
+namespace Bank2QifTests.ConvertersTests
 {
     public class AliorSyncParsersTest
     {

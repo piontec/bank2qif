@@ -14,7 +14,9 @@ using Bank2Qif.Parsers;
 
 namespace Bank2Qif.Converters.AliorSync
 {
-    [Converter ("syncpdf", "pdf")]
+    //[Converter ("syncpdf", "pdf")]
+    // PDF files from alior sync contain more detailed information, but it is much harder 
+    // to parse them. Thus, this converter is curerntly not registered.
     public class AliorSyncPdfToQif : IConverter
     {
         private readonly string FIRST_PAGE_START = @"DATA OPERACJI OPERACJI OPERACJI KSIĘGOWE";
