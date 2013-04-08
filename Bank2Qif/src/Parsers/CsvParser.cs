@@ -11,7 +11,7 @@ namespace Bank2Qif.Parsers
 {
     public static class CsvParser
     {
-        static readonly Parser<char> CellSeparator = Parse.Char(',');
+        static readonly Parser<char> CellSeparator = Parse.Char(',').XOr(Parse.Char(';'));
 
         static readonly Parser<char> QuotedCellDelimiter = Parse.Char('"');
 

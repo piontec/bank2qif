@@ -13,8 +13,8 @@ namespace Bank2QifTests.ConvertersTests
     {
         private const string testLines =
         "\"Id\",\"Data księgowania\",\"Data zlecona\",\"Typ transakcji\",\"Kwota\",\"Waluta\",\"Saldo po transakcji\",\"Rachunek nadawcy/odbiorcy\",\"Nazwa nadawcy/odbiorcy\",\"Opis transakcji\""
-        + "\n\r"
-        + "\"1111\",\"2012-01-11\",\"2012-01-11\",\"Przelew z rachunku\",\"-100.00\",\"PLN\",\"200.00\",\"11222233334444555566667777\",\"XXXX YYYYY  ZZZZZ, WWWWWW ZIP City\",\"XXXX YYYYY  ZZZZZ, WWWWWW ZIP City\",\"XX XXXXXX: 11112222\",\"XX XXXX.: 11222233334444555566667777\",\"XXXXXX: XX XXXX XX XXXXX\",\"XXXXX XXXXXX: 2012-01-11\",\"XXXXXX XXXXXXXXXXXX\"";
+        + "\r\n"
+        + "\"1111\",\"2012-01-12\",\"2012-01-11\",\"Przelew z rachunku\",\"-100.00\",\"PLN\",\"200.00\",\"11222233334444555566667777\",\"XXXX YYYYY  ZZZZZ, WWWWWW ZIP City\",\"XXXX YYYYY  ZZZZZ, WWWWWW ZIP City\",\"XX XXXXXX: 11112222\",\"XX XXXX.: 11222233334444555566667777\",\"XXXXXX: XX XXXX XX XXXXX\",\"XXXXX XXXXXX: 2012-01-11\",\"XXXXXX XXXXXXXXXXXX\"";
     
         private IConverter m_converter;
 
@@ -31,6 +31,12 @@ namespace Bank2QifTests.ConvertersTests
         {
             var entries = m_converter.ConvertLinesToQif(testLines);
             Assert.AreEqual (entries.Count (), 1);
+            var entry = entries.Single ();
+            Assert.AreEqual(-100, entry.Amount);
+            Assert.AreEqual("11222233334444555566667777", entry.AccountName);
+            Assert.AreEqual("XXXX YYYYY  ZZZZZ, WWWWWW ZIP City", entry.Payee);
+            Assert.AreEqual(DateTime.Parse ("2012-01-12"), entry.Date.BookingDate);
+            Assert.AreEqual(DateTime.Parse ("2012-01-11"), entry.Date.OperationDate);
         }
     }
 }

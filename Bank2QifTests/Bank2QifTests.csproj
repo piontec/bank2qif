@@ -53,6 +53,7 @@
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\ConvertersTests\AliorSyncPdfParsersTest.cs" />
     <Compile Include="src\ConvertersTests\InteligoCsvParsersTest.cs" />
+    <Compile Include="src\ConvertersTests\MbankCsvParsersTests.cs" />
     <Compile Include="src\ParsersTests\GenericParsersTests.cs" />
     <Compile Include="src\QifFileTests.cs" />
     <Compile Include="src\ConvertersTests\AliorSyncPdfToQifTests.cs" />
