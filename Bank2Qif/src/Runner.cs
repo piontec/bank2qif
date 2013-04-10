@@ -26,7 +26,8 @@ namespace Bank2Qif
 
         private string m_fileName, m_bankType;
         private WindsorContainer m_container;
-        private const string INI_NAME = @"etc/config.ini";
+        public const string CONFIG_DIR = "etc/";
+        private const string INI_NAME = CONFIG_DIR + "config.ini";
 
 
 		public static void Main (string[] args)

@@ -12,9 +12,9 @@ namespace Bank2Qif.Transformers.SimpleMatch
     public class SimpleMatchTransformer : BaseTransformer, ITransformer
     {
         private readonly string m_rulesFile;
-        private static readonly string CFG_RULES_FILE_NAME = "RulesFile";
-        private static readonly string CFG_RULES_FILE_NAME_DFLT = "rules.txt";
-        private static readonly string COMMENT_START = "#";
+        private const string CFG_RULES_FILE_NAME = "RulesFile";
+        private const string CFG_RULES_FILE_NAME_DFLT = Runner.CONFIG_DIR + "rules.txt";
+        private const string COMMENT_START = "#";
 
         public SimpleMatchTransformer(IConfig config)
         {
