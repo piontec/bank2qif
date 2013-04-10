@@ -1,0 +1,3 @@
+﻿# rules file, please add rule like:
+# Description % apple -> 1234
+# Description = apple -> 12345
