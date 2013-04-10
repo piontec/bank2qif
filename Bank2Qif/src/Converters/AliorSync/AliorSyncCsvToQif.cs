@@ -15,7 +15,7 @@ using Bank2Qif.Parsers;
 namespace Bank2Qif.Converters.AliorSync
 {
     //Data,Nazwa odbiorcy/nadawcy,Rachunek,Tytu³ p³atnoœci,Kwota
-    //01-12-2012,PayU S.A.,Konto osobiste,PayU XX269548709XX Oplata za zamowienie nr 2975,-108.80 PLN
+    //01-12-2012,PayU S.A.,Konto osobiste,PayU XX112233444XX Oplata za zamowienie nr 1111,-100.80 PLN
 
     [Converter("sync", "csv")]
     public class AliorSyncCsvToQif : BaseConverter

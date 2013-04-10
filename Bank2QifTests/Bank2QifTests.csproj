@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
+    <Compile Include="src\ConvertersTests\AliorSyncCsvParserTests.cs" />
     <Compile Include="src\ConvertersTests\AliorSyncPdfParsersTest.cs" />
     <Compile Include="src\ConvertersTests\InteligoCsvParsersTest.cs" />
     <Compile Include="src\ConvertersTests\MbankCsvParsersTests.cs" />

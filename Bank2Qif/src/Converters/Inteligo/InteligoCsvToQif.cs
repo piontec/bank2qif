@@ -19,6 +19,7 @@ namespace Bank2Qif.Converters.Inteligo
                      let opDate = GenericParsers.DateYyyyMmDd.Parse(csv[2])
                      let opType = csv[3]
                      let amount = InteligoCsvParsers.Amount.Parse(csv[4])
+                     let account = csv[7]
                      let payee = csv[8]
                      // sometimes csv [8] == csv [9] - in this case skip csv [9]
                      let desc = csv.Where((s, i) => i == 7 || (i > 8 && s != csv[8])).
@@ -28,6 +29,7 @@ namespace Bank2Qif.Converters.Inteligo
                          Amount = amount,
                          Date = new BankDates { OperationDate = opDate, BookingDate = bookingDate },
                          Payee = payee,
+                         AccountName = account,
                          Description = desc
                      };
 

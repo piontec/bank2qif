@@ -27,7 +27,7 @@ namespace Bank2QifTests.ConvertersTests
 
 
         [Test]
-        public void ShouldParseOneEntry()
+        public void InteligoShouldParseOneEntry()
         {
             var entries = m_converter.ConvertLinesToQif(testLines);
             Assert.AreEqual (entries.Count (), 1);
