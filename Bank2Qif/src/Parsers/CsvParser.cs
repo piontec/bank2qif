@@ -11,7 +11,10 @@ namespace Bank2Qif.Parsers
 {
     public static class CsvParser
     {
-        static readonly Parser<char> CellSeparator = Parse.Char(',').XOr(Parse.Char(';'));
+		public static Parser<char> CellSeparatorFu (char sep) 
+		{
+		 return Parse.Char(sep);
+		}
 
         static readonly Parser<char> QuotedCellDelimiter = Parse.Char('"');
 
@@ -27,8 +30,12 @@ namespace Bank2Qif.Parsers
         static readonly Parser<char> QuotedCellContent =
             Parse.AnyChar.Except(QuotedCellDelimiter).Or(Escaped(QuotedCellDelimiter));
 
-        static readonly Parser<char> LiteralCellContent =
-            Parse.AnyChar.Except(CellSeparator).Except(Parse.String(Environment.NewLine));
+		public static Parser<char> LiteralCellContentFu (char sep)
+		{
+        	return Parse.AnyChar.Except(CellSeparatorFu(sep)).Except(Parse.String(Environment.NewLine));
+		}
+
+
 
         static readonly Parser<string> QuotedCell =
             from open in QuotedCellDelimiter
@@ -44,18 +51,24 @@ namespace Bank2Qif.Parsers
             NewLine.End()).Or(
             NewLine);
 
-        static readonly Parser<string> Cell =
-            QuotedCell.XOr(
-            LiteralCellContent.XMany().Text());
+		public static Parser<string> CellFu (char sep)
+		{
+			return QuotedCell.XOr(
+				LiteralCellContentFu(sep).XMany().Text());
+		}
+        
+		public static Parser<IEnumerable<string>> RecordFu (char sep)
+		{
+			return from leading in CellFu (sep)
+				from rest in CellSeparatorFu(sep).Then(_ => CellFu(sep)).Many()
+            	from terminator in RecordTerminator
+            	select Cons(leading, rest);
+		}            
 
-        static readonly Parser<IEnumerable<string>> Record =
-            from leading in Cell
-            from rest in CellSeparator.Then(_ => Cell).Many()
-            from terminator in RecordTerminator
-            select Cons(leading, rest);
-
-        public static readonly Parser<IEnumerable<IEnumerable<string>>> Csv =
-            Record.XMany().End();
+		public static Parser<IEnumerable<IEnumerable<string>>> Csv (char sep)
+		{
+			return RecordFu (sep).XMany().End();
+		}
 
         static IEnumerable<T> Cons<T>(T head, IEnumerable<T> rest)
         {
