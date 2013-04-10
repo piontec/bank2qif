@@ -66,7 +66,7 @@ namespace Bank2QifPlayground.src
             select decimal.Parse(strDecimal, CultureInfo.InvariantCulture);
 
         public static readonly Parser<IEnumerable<IEnumerable<string>>> Csvp =
-            from csvlines in CsvParser.Csv      
+            from csvlines in CsvParser.CsvComma      
             select csvlines;
 
         public static readonly Parser<QifEntry> QifEntryParser =

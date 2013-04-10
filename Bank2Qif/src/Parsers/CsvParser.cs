@@ -10,7 +10,7 @@ using Sprache;
 namespace Bank2Qif.Parsers
 {
     public static class CsvParser
-    {
+    {        
 		public static Parser<char> CellSeparatorFu (char sep) 
 		{
 		 return Parse.Char(sep);
@@ -30,7 +30,7 @@ namespace Bank2Qif.Parsers
         static readonly Parser<char> QuotedCellContent =
             Parse.AnyChar.Except(QuotedCellDelimiter).Or(Escaped(QuotedCellDelimiter));
 
-		public static Parser<char> LiteralCellContentFu (char sep)
+		static Parser<char> LiteralCellContent (char sep)
 		{
         	return Parse.AnyChar.Except(CellSeparatorFu(sep)).Except(Parse.String(Environment.NewLine));
 		}
@@ -51,23 +51,23 @@ namespace Bank2Qif.Parsers
             NewLine.End()).Or(
             NewLine);
 
-		public static Parser<string> CellFu (char sep)
+		static Parser<string> Cell (char sep)
 		{
 			return QuotedCell.XOr(
-				LiteralCellContentFu(sep).XMany().Text());
+				LiteralCellContent(sep).XMany().Text());
 		}
         
-		public static Parser<IEnumerable<string>> RecordFu (char sep)
+		static Parser<IEnumerable<string>> Record (char sep)
 		{
-			return from leading in CellFu (sep)
-				from rest in CellSeparatorFu(sep).Then(_ => CellFu(sep)).Many()
+			return from leading in Cell (sep)
+				from rest in CellSeparatorFu(sep).Then(_ => Cell(sep)).Many()
             	from terminator in RecordTerminator
             	select Cons(leading, rest);
 		}            
 
 		public static Parser<IEnumerable<IEnumerable<string>>> Csv (char sep)
 		{
-			return RecordFu (sep).XMany().End();
+			return Record (sep).XMany().End();
 		}
 
         static IEnumerable<T> Cons<T>(T head, IEnumerable<T> rest)
@@ -77,5 +77,8 @@ namespace Bank2Qif.Parsers
                 yield return item;
         }
 
+        public static Parser<IEnumerable<IEnumerable<string>>> CsvComma = Csv (',');
+
+        public static Parser<IEnumerable<IEnumerable<string>>> CsvSemicolon = Csv(';');
     }
 }

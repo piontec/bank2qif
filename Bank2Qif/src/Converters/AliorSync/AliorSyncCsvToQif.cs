@@ -20,13 +20,11 @@ namespace Bank2Qif.Converters.AliorSync
     [Converter("sync", "csv")]
     public class AliorSyncCsvToQif : BaseConverter
     {
-		private const char CsvSeparator = ',';
-
         #region IConverter implementation
 
         public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
-            var entries = from csvline in CsvParser.Csv(CsvSeparator).Parse(lines).Skip(1)
+            var entries = from csvline in CsvParser.CsvComma.Parse(lines).Skip(1)
                           let csv = csvline.ToArray()
                           let opDate = GenericParsers.DateMmDdYyyy.Parse(csv[0])
                           let rcvr = csv[1]
