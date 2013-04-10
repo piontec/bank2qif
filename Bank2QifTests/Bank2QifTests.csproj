@@ -59,6 +59,8 @@
     <Compile Include="src\QifFileTests.cs" />
     <Compile Include="src\ConvertersTests\AliorSyncPdfToQifTests.cs" />
     <Compile Include="src\TransformersTests\DefaultTransformerTest.cs" />
+    <Compile Include="src\TransformersTests\SimpleMatchRuleParserTests.cs" />
+    <Compile Include="src\TransformersTests\SimpleMatchRuleTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

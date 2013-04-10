@@ -28,10 +28,10 @@ namespace Bank2Qif.Transformers.SimpleMatch
             from field in Parse.Letter.Many().Text().Token()
             from sep1 in Parse.WhiteSpace.Many()
             from op in Operator
-            from pattern in Parse.AnyChar.Until(Separator).Text().Token()
+            from pattern in Parse.AnyChar.Until(Separator).Token ().Text()
             from result in Parse.AnyChar.Until(GenericParsers.NewLine).Or(
                 Parse.AnyChar.Many().End()).Text().Token()
-            select new SimpleMatchRule(field, op, pattern, result);
+            select new SimpleMatchRule(field, op, pattern.Trim (), result);
 
         public static readonly Parser<IEnumerable<SimpleMatchRule>> SimpleRules =
             from rules in SimpleRule.Many()

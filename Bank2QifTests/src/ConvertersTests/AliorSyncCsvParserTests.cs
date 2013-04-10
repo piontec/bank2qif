@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Bank2Qif.Converters.AliorSync;
 using Bank2Qif.Converters;
 
-namespace Bank2QifTests.src.ConvertersTests
+namespace Bank2QifTests.ConvertersTests
 {
     [TestFixture]
     public class AliorSyncCsvParserTests

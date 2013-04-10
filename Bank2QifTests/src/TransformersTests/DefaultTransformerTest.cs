@@ -14,16 +14,17 @@ namespace Bank2QifTests.TransformersTests
     [TestFixture]
     public class DefaultTransformerTest
     {        
-        private readonly QifEntry entry = new QifEntry 
-        {
-            Description = "Name",            
-        };
+        private QifEntry entry;
         private IConfig m_config;
 
 
         [SetUp]
         public void SetUp()
         {
+            entry = new QifEntry 
+            {
+                Description = "Name",            
+            };
             var mockConfig = new Mock<IConfig>();
             mockConfig.Setup(c => c.GetString("Account", "QifImport")).Returns("QifImport");
             m_config = mockConfig.Object;
