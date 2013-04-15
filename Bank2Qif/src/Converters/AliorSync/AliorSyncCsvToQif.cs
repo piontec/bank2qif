@@ -24,6 +24,7 @@ namespace Bank2Qif.Converters.AliorSync
 
         public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
+            lines = lines.Replace("\n", System.Environment.NewLine);
             var entries = from csvline in CsvParser.CsvComma.Parse(lines).Skip(1)
                           let csv = csvline.ToArray()
                           let opDate = GenericParsers.DateMmDdYyyy.Parse(csv[0])

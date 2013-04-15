@@ -13,13 +13,13 @@ namespace Bank2Qif.Transformers.SimpleMatch
     {
         private readonly string m_rulesFile;
         private const string CFG_RULES_FILE_NAME = "RulesFile";
-        private const string CFG_RULES_FILE_NAME_DFLT = Runner.CONFIG_DIR + "rules.txt";
+        private const string CFG_RULES_FILE_NAME_DFLT = "rules.txt";
         private const string COMMENT_START = "#";
 
         public SimpleMatchTransformer(IConfig config)
         {
             base.Initialize(config);
-            m_rulesFile = m_config.GetString(CFG_RULES_FILE_NAME, CFG_RULES_FILE_NAME_DFLT);
+            m_rulesFile = Runner.CONFIG_DIR + m_config.GetString(CFG_RULES_FILE_NAME, CFG_RULES_FILE_NAME_DFLT);
         }
 
 
