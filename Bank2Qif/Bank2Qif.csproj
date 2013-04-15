@@ -83,6 +83,7 @@
     <Compile Include="src\Parsers\CsvParser.cs" />
     <Compile Include="src\Parsers\GenericParsers.cs" />
     <Compile Include="src\Transformers\Payu\PayuParsers.cs" />
+    <Compile Include="src\Transformers\RegexReplace\RegexReplaceTransformer.cs" />
     <Compile Include="src\Transformers\SimpleMatch\SimpleMatchRuleParser.cs" />
     <Compile Include="src\QifEntry.cs" />
     <Compile Include="src\Converters\IConverter.cs" />
