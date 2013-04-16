@@ -33,7 +33,7 @@ namespace Bank2Qif.Converters.MBank
                      let amount = MBankCsvParsers.Amount.Parse(csv [6])                     
                      select new QifEntry
                          {
-                             AccountName = rcvrAcc.Trim('\''),
+                             AccountName = rcvrAcc.Trim(new char [] {'\'', ' '}),
                              Amount = amount,
                              Date = new BankDates { OperationDate = opDate, BookingDate = bookingDate },
                              Payee = rcvr.Trim('"').Trim(' '),

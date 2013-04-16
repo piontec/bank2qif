@@ -8,9 +8,9 @@ using Nini.Config;
 namespace Bank2Qif.Transformers.RegexReplace
 {
     [Transformer (110)]
-    public class DefaultTransformer : BaseTransformer, ITransformer
+    public class RegexReplaceTransformer : BaseTransformer, ITransformer
     {
-        public DefaultTransformer(IConfig config)
+        public RegexReplaceTransformer(IConfig config)
         {                 
             Initialize(config);
         }

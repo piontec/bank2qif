@@ -29,7 +29,7 @@ namespace Bank2Qif.Transformers.SimpleMatch
             RuleOperator = ruleOperator;
             Result = result;
             m_property = typeof(QifEntry).GetProperty(fieldName);
-            if (m_property == null)
+            if (fieldName != ANY_FIELD_NAME && m_property == null)
                 throw new ArgumentException(string.Format("{0} is not a correct field to match on.",
                     m_property), "fieldName");
         }

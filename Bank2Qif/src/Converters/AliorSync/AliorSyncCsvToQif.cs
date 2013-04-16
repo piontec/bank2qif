@@ -22,6 +22,8 @@ namespace Bank2Qif.Converters.AliorSync
     {
         #region IConverter implementation
 
+        private const string DEFAULT_ACCOUNT_NAME = "Konto osobiste";
+
         public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
         {
             lines = lines.Replace("\n", System.Environment.NewLine);
@@ -34,7 +36,7 @@ namespace Bank2Qif.Converters.AliorSync
                           let amount = AliorSyncCsvParsers.Amount.Parse(csv[4])
                           select new QifEntry
                           {
-                              AccountName = accountName,
+                              AccountName = accountName == DEFAULT_ACCOUNT_NAME ? "" : accountName,
                               Amount = amount,
                               Date = new BankDates { OperationDate = opDate, BookingDate = opDate },
                               Payee = rcvr,
