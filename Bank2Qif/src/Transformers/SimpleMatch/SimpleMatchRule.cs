@@ -36,8 +36,7 @@ namespace Bank2Qif.Transformers.SimpleMatch
 
 
         public IEnumerable<QifEntry> Transform(IEnumerable<QifEntry> entries)
-        {
-            IList<QifEntry> result = new List<QifEntry>();
+        {            
             foreach (var entry in entries)
             {
                 string propValue = FieldName == ANY_FIELD_NAME ? entry.ToString()
@@ -48,13 +47,10 @@ namespace Bank2Qif.Transformers.SimpleMatch
                     propValue.IndexOf(Pattern, StringComparison.CurrentCultureIgnoreCase) >= 0;
 
                 if (isMatch)
-                    entry.AccountName = Result;
-                result.Add(entry);
+                    entry.AccountName = Result;         
             }
 
-            //FIXME: WTF? Why in entries there are no changes
-            return result.AsEnumerable();
-            //return entries;
+            return entries;                        
         }
     }
 }

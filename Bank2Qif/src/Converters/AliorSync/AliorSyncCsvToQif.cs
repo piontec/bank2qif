@@ -24,7 +24,7 @@ namespace Bank2Qif.Converters.AliorSync
 
         private const string DEFAULT_ACCOUNT_NAME = "Konto osobiste";
 
-        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
+        public override IList<QifEntry> ConvertLinesToQif(string lines)
         {
             lines = lines.Replace("\n", System.Environment.NewLine);
             var entries = from csvline in CsvParser.CsvComma.Parse(lines).Skip(1)
@@ -43,7 +43,7 @@ namespace Bank2Qif.Converters.AliorSync
                               Description = desc
                           };
 
-            return entries;
+            return entries.ToList ();
         }
 
         #endregion

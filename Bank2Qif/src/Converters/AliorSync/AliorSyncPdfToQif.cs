@@ -49,9 +49,10 @@ namespace Bank2Qif.Converters.AliorSync
         }
 
 
-        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
+        public override IList<QifEntry> ConvertLinesToQif(string lines)
         {
-            return ConvertExtractedTextToQif(lines.Split(new string [] {"\r\n"}, int.MaxValue, StringSplitOptions.RemoveEmptyEntries));
+            return ConvertExtractedTextToQif(lines.Split(new string [] {"\r\n"}, int.MaxValue, 
+                StringSplitOptions.RemoveEmptyEntries)).ToList ();
         }
 
         public IEnumerable<QifEntry> ConvertExtractedTextToQif(IEnumerable<string> lines)

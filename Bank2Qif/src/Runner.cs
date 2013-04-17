@@ -46,9 +46,9 @@ namespace Bank2Qif
             VerifyArgs(converter, m_fileName);
 
             var entries = converter.ConvertFileToQif(m_fileName);
-            entries = ProcessEntries(entries);
+            var processedEntries = ProcessEntries(entries);
 
-            QifFile.Save(entries, QifFile.GetQifFileName (m_fileName));
+            QifFile.Save(processedEntries, QifFile.GetQifFileName(m_fileName));
             Console.WriteLine("Conversion complete.");
         }
 

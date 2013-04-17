@@ -10,14 +10,14 @@ namespace Bank2Qif.Transformers.SimpleMatch
     public static class SimpleMatchRuleParsers
     {
         // #wildcard
-        // Payee % "text do znalezienia" -> nazwa_konta
+        // Payee % "text to match" => account_name
         // #exact
-        // Description = "text do znalezienia" -> nazwa_konta
+        // Description = "text to match" => account_name
         // Any % "text
         private const char LIKE_OP = '%';
         private const char EQUAL_OP = '=';
 
-        public static readonly Parser<string> Separator = Parse.String("->").Text ();
+        public static readonly Parser<string> Separator = Parse.String("=>").Text ();
 
         public static readonly Parser<SimpleMatchRule.Operator> Operator =
             from op in Parse.Char(LIKE_OP).Or(Parse.Char(EQUAL_OP))

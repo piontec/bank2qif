@@ -138,7 +138,7 @@ namespace Bank2Qif.Transformers.Payu
 
         private void ProcessPayuAllegroEmails(QifEntry entry, IEnumerable<string> validEmailBodys)
         {
-            foreach (var body in validEmailBodys)
+            foreach (var body in validEmailBodys.ToArray ())
             {
                 string description = string.Empty;
                 try
@@ -173,7 +173,7 @@ namespace Bank2Qif.Transformers.Payu
 
         private void ProcessPayuEmails(QifEntry entry, IEnumerable<string> validEmailBodys)
         {
-            foreach (var body in validEmailBodys)
+            foreach (var body in validEmailBodys.ToArray ())
             {
                 string receiver = string.Empty;
                 try

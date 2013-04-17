@@ -12,8 +12,8 @@ namespace Bank2QifTests.TransformersTests
     [TestFixture]
     public class SimpleMatchRuleParserTests
     {
-        private string rule1 = "Description = my description -> 12345";
-        private string rule2 = "AccountName % my description -> 12345";
+        private string rule1 = "Description = my description => 12345";
+        private string rule2 = "AccountName % my description => 12345";
 
 
         [Test]

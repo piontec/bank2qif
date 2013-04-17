@@ -21,12 +21,11 @@ namespace Bank2Qif.Transformers.Default
 
         public IEnumerable<QifEntry> Transform(IEnumerable<QifEntry> entries)
         {
-            return entries.Select(e =>
-                {
-                    if (string.IsNullOrEmpty(e.AccountName))
-                        e.AccountName = m_accountName;
-                    return e;
-                });
+            foreach (var entry in entries)
+                if (string.IsNullOrEmpty(entry.AccountName))
+                    entry.AccountName = m_accountName;
+
+            return entries;
         }
     }
 }

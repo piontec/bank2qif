@@ -31,7 +31,7 @@ namespace Bank2QifTests.ConvertersTests
         public void MbankShouldParseOneEntry()
         {
             var entries = m_converter.ConvertLinesToQif(testLines);
-            Assert.AreEqual(entries.Count(), 1);
+            Assert.AreEqual(1, entries.Count());
             var entry = entries.Single ();
             Assert.AreEqual(-10.5, entry.Amount);
             Assert.AreEqual("11222233334444555566667777", entry.AccountName);

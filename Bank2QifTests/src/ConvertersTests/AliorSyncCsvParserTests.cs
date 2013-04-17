@@ -30,7 +30,7 @@ namespace Bank2QifTests.ConvertersTests
             Assert.AreEqual(entries.Count(), 1);
             var entry = entries.Single();
             Assert.AreEqual(-111.99, entry.Amount);
-            Assert.AreEqual("Konto osobiste", entry.AccountName);
+            Assert.AreEqual("", entry.AccountName);
             Assert.AreEqual("AAA BBB CCC 11001", entry.Payee);
             Assert.AreEqual(DateTime.Parse("2012-09-01"), entry.Date.BookingDate);
             Assert.AreEqual(DateTime.Parse("2012-09-01"), entry.Date.OperationDate);

@@ -9,14 +9,14 @@ namespace Bank2Qif.Converters
 {
     public abstract class BaseConverter : IConverter
     {
-        public IEnumerable<QifEntry> ConvertFileToQif(string fileName)
+        public IList<QifEntry> ConvertFileToQif(string fileName)
         {
-            string lines = File.ReadAllText(fileName, System.Text.Encoding.Default);
+            string lines = File.ReadAllText(fileName);
 
             return ConvertLinesToQif(lines);
         }
 
 
-        public abstract IEnumerable<QifEntry> ConvertLinesToQif(string lines);
+        public abstract IList<QifEntry> ConvertLinesToQif(string lines);
     }
 }

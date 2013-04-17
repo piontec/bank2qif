@@ -11,9 +11,9 @@ namespace Bank2Qif.Converters.Inteligo
     [Converter("inteligo", "csv")]
     public class InteligoCsvToQif : BaseConverter
     {
-        public override IEnumerable<QifEntry> ConvertLinesToQif(string lines)
+        public override IList<QifEntry> ConvertLinesToQif(string lines)
         {
-            var result = from csvline in CsvParser.CsvComma.Parse(lines).Skip (1)
+            var entries = from csvline in CsvParser.CsvComma.Parse(lines).Skip (1)
                      let csv = csvline.ToArray()
                      let bookingDate = GenericParsers.DateYyyyMmDd.Parse(csv[1])
                      let opDate = GenericParsers.DateYyyyMmDd.Parse(csv[2])
@@ -33,7 +33,7 @@ namespace Bank2Qif.Converters.Inteligo
                          Description = desc
                      };
 
-            return result;
+            return entries.ToList ();
         }
     }
 }
