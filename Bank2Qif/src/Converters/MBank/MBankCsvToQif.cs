@@ -30,16 +30,18 @@ namespace Bank2Qif.Converters.MBank
                      let description = csv [3]
                      let rcvr = csv [4]
                      let rcvrAcc = csv [5]
-                     let amount = MBankCsvParsers.Amount.Parse(csv [6])                     
+                     let amount = MBankCsvParsers.Amount.Parse(csv [6])
+                     let verfiedAccName = rcvrAcc.Trim(new char [] {'\'', ' '})
+                     let newDescription = description.Trim() == string.Empty ?
+                                 string.Format("{0}", opType) :
+                                 string.Format("{0} - {1}", description, opType)
                      select new QifEntry
-                         {
-                             AccountName = rcvrAcc.Trim(new char [] {'\'', ' '}),
+                         {                             
                              Amount = amount,
                              Date = new BankDates { OperationDate = opDate, BookingDate = bookingDate },
                              Payee = rcvr.Trim('"').Trim(' '),
-                             Description = description.Trim() == string.Empty ?
-                                 string.Format("{0}", opType) :
-                                 string.Format("{0} - {1}", description, opType)
+                             Description = String.IsNullOrEmpty(verfiedAccName) ? newDescription :
+                                String.Format("[{0}] {1}", verfiedAccName, newDescription)
                          };
 
             var result = entries.ToList();
@@ -72,6 +74,11 @@ namespace Bank2Qif.Converters.MBank
                 entry.Payee = System.Text.RegularExpressions.Regex.Replace(
                     myTI.ToTitleCase(entry.Payee.ToLower()), @"\s+", " ");
             }
+        }
+
+        public override Encoding GetEncoding()
+        {
+            return Encoding.GetEncoding("windows-1250");
         }
     }
 }

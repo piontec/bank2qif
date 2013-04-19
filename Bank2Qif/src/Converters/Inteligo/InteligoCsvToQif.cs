@@ -29,11 +29,16 @@ namespace Bank2Qif.Converters.Inteligo
                          Amount = amount,
                          Date = new BankDates { OperationDate = opDate, BookingDate = bookingDate },
                          Payee = payee,
-                         AccountName = account,
-                         Description = desc
+                         Description = String.IsNullOrEmpty(account) ? desc :
+                                String.Format("[{0}] {1}", account, desc)
                      };
 
             return entries.ToList ();
+        }
+
+        public override Encoding GetEncoding()
+        {
+            return Encoding.GetEncoding("windows-1250");
         }
     }
 }

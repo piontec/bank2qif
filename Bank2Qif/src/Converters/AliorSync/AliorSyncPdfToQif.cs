@@ -107,6 +107,11 @@ namespace Bank2Qif.Converters.AliorSync
             int lastId = strings.IndexOf(strings.Where(s => s.StartsWith(endDelim)).Single());
 
             return strings.Where((s, i) => i > firstId && i < lastId);
-        }       
+        }
+
+        public override Encoding GetEncoding()
+        {
+            return Encoding.UTF8;
+        }
     }
 }

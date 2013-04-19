@@ -27,7 +27,7 @@ namespace Bank2Qif.Converters.AliorSync
         private const string NATIVE_CURRENCY = "PLN";
 
         public override IList<QifEntry> ConvertLinesToQif(string lines)
-        {
+        {            
             lines = lines.Replace("\n", System.Environment.NewLine);
             var entries = from csvline in CsvParser.CsvComma.Parse(lines).Skip(1)
                           let csv = csvline.ToArray()
@@ -36,14 +36,15 @@ namespace Bank2Qif.Converters.AliorSync
                           let accountName = csv [2]
                           let desc = csv [3]
                           let amount = AliorSyncCsvParsers.Amount.Parse(csv[4])
+                          let verifiedAccName = accountName == DEFAULT_ACCOUNT_NAME ? "" : accountName
                           select new QifEntry
-                          {
-                              AccountName = accountName == DEFAULT_ACCOUNT_NAME ? "" : accountName,
+                          {                              
                               Amount = amount.Item2 == NATIVE_CURRENCY ?
                                 amount.Item1 : ComputeValue (amount.Item1, desc),
                               Date = new BankDates { OperationDate = opDate, BookingDate = opDate },
                               Payee = rcvr,
-                              Description = desc
+                              Description = String.IsNullOrEmpty (verifiedAccName) ? desc : 
+                                String.Format ("[{0}] {1}", verifiedAccName, desc)
                           };
 
             return entries.ToList ();
@@ -55,6 +56,11 @@ namespace Bank2Qif.Converters.AliorSync
         }
 
         #endregion
+
+        public override Encoding GetEncoding()
+        {
+            return Encoding.UTF8;
+        }
     }
 }
 

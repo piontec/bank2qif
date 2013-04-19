@@ -11,12 +11,14 @@ namespace Bank2Qif.Converters
     {
         public IList<QifEntry> ConvertFileToQif(string fileName)
         {
-            string lines = File.ReadAllText(fileName);
-
+            string lines = File.ReadAllText(fileName, GetEncoding());
+            
             return ConvertLinesToQif(lines);
         }
 
 
         public abstract IList<QifEntry> ConvertLinesToQif(string lines);
+
+        public abstract Encoding GetEncoding();
     }
 }
