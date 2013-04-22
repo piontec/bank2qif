@@ -10,13 +10,13 @@ namespace Bank2Qif.Transformers.Payu
     public static class PayuParsers
     {
         private static readonly string s_stupidInfoMsg =
-            "informujemy o pozytywnym zakończeniu Państwa płatności w sklepie/serwisie ";
+            "informujemy o pozytywnym zakończeniu państwa płatności w sklepie/serwisie ";
         private static readonly string s_beginItemDesc = "allegro.pl/show_item.php?item=";
         private static readonly string s_endTagA = "</a>";
         //"<a href=\"http://www.allegro.pl/show_item.php?item=2694621696\">FILTRY ŻELOWE HITECH DO LAMPY 15 ARKUSZY STROBIST</a>"
         // <a href=\"http://allegro.pl/show_item.php?item=2810342496\">ŁAŃCUCH STOJAK NA WINO ALKOHOL NOWOCZESNY DESIGN!!</a>
         public static readonly Parser<string> SyncIdDelimiter =
-            Parse.String("XX").Text();
+            Parse.String("xx").Text();
 
         public static readonly Parser<string> SyncIdParser =
             from leading in Parse.AnyChar.Until(SyncIdDelimiter)
@@ -24,6 +24,7 @@ namespace Bank2Qif.Transformers.Payu
             from endDelim in SyncIdDelimiter
             select syncId;
 
+        // "[81114020040000330261746759] PayU w Allegro XX289351494XX Piontca Aukcja Nr (2973843879) - Przelew Mtransfer Wychodzacy"
         // "PayU w Allegro XX255709781XX piontec aukcja nr (2693753978)"
         public static readonly Parser<Tuple<string, string>> SyncAndAllegroIdParser =
             from syncId in SyncIdParser

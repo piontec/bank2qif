@@ -121,7 +121,7 @@ namespace Bank2Qif.Transformers.Payu
         {
             try
             {
-                Tuple<string, string> ids = PayuParsers.SyncAndAllegroIdParser.Parse(entry.Description);
+                Tuple<string, string> ids = PayuParsers.SyncAndAllegroIdParser.Parse(entry.Description.ToLower ());
 
                 bool html;
                 var validEmailBodys = from mail in emails
@@ -158,7 +158,7 @@ namespace Bank2Qif.Transformers.Payu
 
         private void ProcessPayuTransaction(QifEntry entry, MessageCollection emails)
         {
-            string payuId = PayuParsers.SyncIdParser.Parse(entry.Description);
+            string payuId = PayuParsers.SyncIdParser.Parse(entry.Description.ToLower());
 
             bool html;
             var validEmailBodys = from mail in emails
