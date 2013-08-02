@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Nini.Config;
+﻿using Nini.Config;
+
 
 namespace Bank2Qif.Transformers
 {
@@ -12,10 +9,11 @@ namespace Bank2Qif.Transformers
         protected bool m_enabled;
         protected IConfig m_config;
 
-        public void Initialize(IConfig config)
+
+        protected void Initialize (IConfig config)
         {
             m_config = config;
-            m_enabled = m_config.GetBoolean(INI_ENABLED, true);
+            m_enabled = m_config.GetBoolean (INI_ENABLED, true);
         }
     }
 }

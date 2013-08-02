@@ -1,20 +1,21 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Nini.Config;
 using Bank2Qif.Converters;
-using Bank2Qif.Transformers;
 using Bank2Qif.Services;
-using Castle.Windsor;
+using Bank2Qif.Transformers;
 using Castle.MicroKernel;
-using System.Collections.Generic;
 using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using Nini.Config;
+
 
 namespace Bank2Qif
 {
-	public class Runner
-	{
-        internal enum ExitCodes : int
+    public class Runner
+    {
+        internal enum ExitCodes
         {
             Success = 0,
             SyntaxError = 2,
@@ -30,135 +31,133 @@ namespace Bank2Qif
         private const string INI_NAME = CONFIG_DIR + "config.ini";
 
 
-		public static void Main (string[] args)
-		{
-            Runner runner = new Runner();
-            runner.Run(args);            
-		}
-
-
-        private void Run(string[] args)
+        public static void Main (string[] args)
         {
-            LoadContainer();
-            LoadCmdLineArgs(args);            
-
-            var converter = GetConverter(m_bankType);
-            VerifyArgs(converter, m_fileName);
-
-            var entries = converter.ConvertFileToQif(m_fileName);
-            var processedEntries = ProcessEntries(entries);
-
-            QifFile.Save(processedEntries, QifFile.GetQifFileName(m_fileName));
-            Console.WriteLine("Conversion complete.");
+            Runner runner = new Runner ();
+            runner.Run (args);
         }
 
 
-        private IEnumerable<QifEntry> ProcessEntries(IEnumerable<QifEntry> entries)
+        private void Run (string[] args)
         {
-            var transformers = m_container.ResolveAll<ITransformer>().OrderBy (
+            LoadContainer ();
+            LoadCmdLineArgs (args);
+
+            var converter = GetConverter (m_bankType);
+            VerifyArgs (converter, m_fileName);
+
+            var entries = converter.ConvertFileToQif (m_fileName);
+            var processedEntries = ProcessEntries (entries);
+
+            QifFile.Save (processedEntries, QifFile.GetQifFileName (m_fileName));
+            Console.WriteLine ("Conversion complete.");
+        }
+
+
+        private IEnumerable<QifEntry> ProcessEntries (IEnumerable<QifEntry> entries)
+        {
+            var transformers = m_container.ResolveAll<ITransformer> ().OrderBy (
                 t => ((TransformerAttribute)
-                    Attribute.GetCustomAttribute (t.GetType (), typeof (TransformerAttribute))).Priority
+                      Attribute.GetCustomAttribute (t.GetType (), typeof (TransformerAttribute))).Priority
                 );
 
             foreach (var transformer in transformers)
             {
-                entries = transformer.Transform(entries);
+                entries = transformer.Transform (entries);
             }
 
             return entries;
         }
-        
 
-        private IConverter GetConverter(string bankType)
+
+        private IConverter GetConverter (string bankType)
         {
             IConverter result = null;
             try
             {
-                result = m_container.Resolve<IConverter>(bankType);
+                result = m_container.Resolve<IConverter> (bankType);
             }
             catch (ComponentNotFoundException)
             {
-                Console.Error.WriteLine (string.Format ("No converter found for bank type {0}", bankType));
-                DisplayHelpAndExit(ExitCodes.NoConverter);
+                Console.Error.WriteLine ("No converter found for bank type {0}", bankType);
+                DisplayHelpAndExit (ExitCodes.NoConverter);
             }
 
             return result;
         }
 
 
-        private void VerifyArgs(IConverter converter, string fileName)
+        private void VerifyArgs (IConverter converter, string fileName)
         {
-            string supportedExt = ((ConverterAttribute)Attribute.GetCustomAttribute(
-                converter.GetType(), typeof(ConverterAttribute))).Extension;
+            string supportedExt = ((ConverterAttribute) Attribute.GetCustomAttribute (
+                converter.GetType (), typeof (ConverterAttribute))).Extension;
 
-            if (!fileName.EndsWith(supportedExt, StringComparison.InvariantCultureIgnoreCase))
+            if (!fileName.EndsWith (supportedExt, StringComparison.InvariantCultureIgnoreCase))
             {
-                Console.Error.WriteLine(string.Format("Wrong file name for that type of" +
-                    "converter, {0} file expected", supportedExt));
-                DisplayHelpAndExit(ExitCodes.WrongFile);
+                Console.Error.WriteLine ("Wrong file name for that type of converter, {0} file expected", supportedExt);
+                DisplayHelpAndExit (ExitCodes.WrongFile);
             }
 
-            if (!File.Exists(fileName))
+            if (!File.Exists (fileName))
             {
-                Console.Error.WriteLine(string.Format ("File {0} does not exists", fileName));
-                DisplayHelpAndExit(ExitCodes.FileNotFound);
+                Console.Error.WriteLine ("File {0} does not exists", fileName);
+                DisplayHelpAndExit (ExitCodes.FileNotFound);
             }
         }
 
 
-        private void LoadContainer()
+        private void LoadContainer ()
         {
-            IConfigSource src = new IniConfigSource(INI_NAME);
+            IConfigSource src = new IniConfigSource (INI_NAME);
 
-            m_container = new WindsorContainer();
-            m_container.Install(new ConvertersInstaller(), new TransformersInstaller());
-            m_container.Kernel.Resolver.AddSubResolver(new ConfigSubresolver(src));
-            m_container.Register (Component.For<IConfigSource>().Instance(src));
-            m_container.Register (Classes.FromThisAssembly().BasedOn<IService>().WithService.
-                FromInterface().Configure (c => c.LifestyleTransient ()));
+            m_container = new WindsorContainer ();
+            m_container.Install (new ConvertersInstaller (), new TransformersInstaller ());
+            m_container.Kernel.Resolver.AddSubResolver (new ConfigSubresolver (src));
+            m_container.Register (Component.For<IConfigSource> ().Instance (src));
+            m_container.Register (Classes.FromThisAssembly ().BasedOn<IService> ().WithService.
+                                          FromInterface ().Configure (c => c.LifestyleTransient ()));
         }
 
 
-        private void LoadCmdLineArgs(string[] args)
+        private void LoadCmdLineArgs (string[] args)
         {
             if (args.Length != 4)
             {
-                Console.WriteLine("Wrong number of parameters");
-                DisplayHelpAndExit(ExitCodes.SyntaxError);
+                Console.WriteLine ("Wrong number of parameters");
+                DisplayHelpAndExit (ExitCodes.SyntaxError);
             }
 
-            ArgvConfigSource source = new ArgvConfigSource(args);
+            ArgvConfigSource source = new ArgvConfigSource (args);
 
-            source.AddSwitch("Main", "file-name", "f");
-            source.AddSwitch("Main", "bank-type", "t");
-                        
-            m_fileName = source.Configs["Main"].Get("file-name");
-            m_bankType = source.Configs["Main"].Get("bank-type");
+            source.AddSwitch ("Main", "file-name", "f");
+            source.AddSwitch ("Main", "bank-type", "t");
+
+            m_fileName = source.Configs ["Main"].Get ("file-name");
+            m_bankType = source.Configs ["Main"].Get ("bank-type");
         }
-        
-
-		private void DisplayHelpAndExit (ExitCodes code)
-		{
-            Console.Error.WriteLine(string.Format("Usage: {0} -t [bank type] -f [file name]", 
-                System.AppDomain.CurrentDomain.FriendlyName));            
-            ListSupportedConverters();
-            System.Environment.Exit((int) code);
-		}
 
 
-        private void ListSupportedConverters()
-        {           
-            Console.WriteLine("Supported bank types and corresponding file extensions:");
-            Console.WriteLine("\tbank [-t]\tfile [-f]");
-            Console.WriteLine("\t=========\t=========");         
-            foreach (var conv in m_container.ResolveAll<IConverter>())
+        private void DisplayHelpAndExit (ExitCodes code)
+        {
+            Console.Error.WriteLine ("Usage: {0} -t [bank type] -f [file name]", AppDomain.CurrentDomain.FriendlyName);
+            ListSupportedConverters ();
+            Environment.Exit ((int) code);
+        }
+
+
+        private void ListSupportedConverters ()
+        {
+            Console.WriteLine ("Supported bank types and corresponding file extensions:");
+            Console.WriteLine ("\tbank [-t]\tfile [-f]");
+            Console.WriteLine ("\t=========\t=========");
+            foreach (var conv in m_container.ResolveAll<IConverter> ())
             {
-                var obj = conv.GetType().GetCustomAttributes(typeof (ConverterAttribute), false);
+                var obj = conv.GetType ().GetCustomAttributes (typeof (ConverterAttribute), false);
                 var attr = obj.Where (o => o is ConverterAttribute).Cast<ConverterAttribute> ().SingleOrDefault ();
                 if (attr == null)
                     continue;
-                Console.WriteLine(string.Format ("\t{0}\t\t{1}", attr.Bank, attr.Extension));
+                Console.WriteLine ("\t{0}\t\t{1}", attr.Bank, attr.Extension);
             }
-        }	
-	}
+        }
+    }
 }

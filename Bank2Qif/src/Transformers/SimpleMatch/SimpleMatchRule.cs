@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
+
 
 namespace Bank2Qif.Transformers.SimpleMatch
 {
@@ -22,35 +21,37 @@ namespace Bank2Qif.Transformers.SimpleMatch
         private readonly PropertyInfo m_property;
         private static readonly string ANY_FIELD_NAME = "any";
 
-        public SimpleMatchRule(string fieldName, Operator ruleOperator, string pattern, string result)
+
+        public SimpleMatchRule (string fieldName, Operator ruleOperator, string pattern, string result)
         {
             FieldName = fieldName;
             Pattern = pattern;
             RuleOperator = ruleOperator;
             Result = result;
-            m_property = typeof(QifEntry).GetProperty(fieldName);
+            m_property = typeof (QifEntry).GetProperty (fieldName);
             if (fieldName != ANY_FIELD_NAME && m_property == null)
-                throw new ArgumentException(string.Format("{0} is not a correct field to match on.",
-                    m_property), "fieldName");
+                throw new ArgumentException (string.Format ("{0} is not a correct field to match on.",
+                                                            m_property), "fieldName");
         }
 
 
-        public IEnumerable<QifEntry> Transform(IEnumerable<QifEntry> entries)
-        {            
+        public IEnumerable<QifEntry> Transform (IEnumerable<QifEntry> entries)
+        {
             foreach (var entry in entries)
             {
-                string propValue = FieldName == ANY_FIELD_NAME ? entry.ToString()
-                    : m_property.GetGetMethod().Invoke(entry, null).ToString ();
+                string propValue = FieldName == ANY_FIELD_NAME
+                                       ? entry.ToString ()
+                                       : m_property.GetGetMethod ().Invoke (entry, null).ToString ();
 
-                bool isMatch = RuleOperator == SimpleMatchRule.Operator.Equal ?
-                    propValue == Pattern :
-                    propValue.IndexOf(Pattern, StringComparison.CurrentCultureIgnoreCase) >= 0;
+                bool isMatch = RuleOperator == Operator.Equal
+                                   ? propValue == Pattern
+                                   : propValue.IndexOf (Pattern, StringComparison.CurrentCultureIgnoreCase) >= 0;
 
                 if (isMatch)
-                    entry.AccountName = Result;         
+                    entry.AccountName = Result;
             }
 
-            return entries;                        
+            return entries;
         }
     }
 }
