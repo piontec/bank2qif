@@ -57,7 +57,7 @@ namespace Bank2Qif.Parsers
 				LiteralCellContent(sep).XMany().Text());
 		}
         
-		static Parser<IEnumerable<string>> Record (char sep)
+		public static Parser<IEnumerable<string>> CsvRecord (char sep)
 		{
 			return from leading in Cell (sep)
 				from rest in CellSeparatorFu(sep).Then(_ => Cell(sep)).Many()
@@ -67,7 +67,7 @@ namespace Bank2Qif.Parsers
 
 		public static Parser<IEnumerable<IEnumerable<string>>> Csv (char sep)
 		{
-			return Record (sep).XMany().End();
+			return CsvRecord (sep).XMany().End();
 		}
 
         static IEnumerable<T> Cons<T>(T head, IEnumerable<T> rest)
@@ -80,5 +80,9 @@ namespace Bank2Qif.Parsers
         public static Parser<IEnumerable<IEnumerable<string>>> CsvComma = Csv (',');
 
         public static Parser<IEnumerable<IEnumerable<string>>> CsvSemicolon = Csv(';');
+
+        public static Parser<IEnumerable<string>> CsvRecordComma = CsvRecord (',');
+
+        public static Parser<IEnumerable<string>> CsvRecordSemicolon = CsvRecord(';');
     }
 }

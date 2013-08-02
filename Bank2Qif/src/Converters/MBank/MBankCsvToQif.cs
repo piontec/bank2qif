@@ -4,11 +4,36 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Sprache;
 using Bank2Qif.Parsers;
+using Castle.Core.Internal;
+
 
 namespace Bank2Qif.Converters.MBank
 {
+    public static class Extensions
+    {
+        // if this ever failes and results in a bug, scrap it and replace with plain \" removal
+        private static Regex incorrectCitationMarks = new Regex("(?<start>.*;\".*?)((?<c1>\")(?<c>[^;]+?)(?<c2>\")(?<r>.*?))+(?<end>.*?\";.*)");
+
+
+        public static IEnumerable<string> RemoveIncorrectCitationMarks (this IEnumerable<string> source)
+        {
+            foreach (var item in source)
+            {
+                var r = incorrectCitationMarks.Matches (item);
+                if (r.Count == 0)
+                    yield return item;
+                else
+                {
+                    var corrected = incorrectCitationMarks.Replace (item, "${start}${c}${r}${end}");
+                    yield return corrected;
+                }
+            }
+        }
+    }
+    
     [Converter("mbank", "csv")]
     public class MBankCsvToQif : BaseConverter
     {
@@ -19,8 +44,10 @@ namespace Bank2Qif.Converters.MBank
         //2011-12-30;2012-01-01;ZAKUP PRZY UŻYCIU KARTY;"STACJA WIELKOPOLSKA/POZNAN";"  ";'';-10,95;1,50;
         public override IList<QifEntry> ConvertLinesToQif(string lines)
         {
-            var filteredCsvEntries = CsvParser.CsvSemicolon.Parse(lines).Skip (MBANK_HEADER_LENGTH);
-            filteredCsvEntries = filteredCsvEntries.Take(filteredCsvEntries.Count() - MBANK_FOOTER_LENGTH);
+            var transactionLines = lines.Split (new[] {"\r\n"}, StringSplitOptions.None).AsEnumerable ();
+            // skip header and footer of mbank's log and remove incorrect citation marks
+            transactionLines = transactionLines.Skip (MBANK_HEADER_LENGTH).Take (transactionLines.Count () - MBANK_HEADER_LENGTH - MBANK_FOOTER_LENGTH).RemoveIncorrectCitationMarks ();
+            var filteredCsvEntries = transactionLines.Select(l => CsvParser.CsvRecordSemicolon.Parse(l));
 
             var entries = from csvline in filteredCsvEntries
                      let csv = csvline.ToArray()
