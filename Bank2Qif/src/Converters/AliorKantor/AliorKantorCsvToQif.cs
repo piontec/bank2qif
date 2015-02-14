@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Bank2Qif.Parsers;
 using Sprache;
-using Bank2Qif.Converters.MBank;
 
 
 namespace Bank2Qif.Converters.AliorKantor
@@ -23,7 +22,7 @@ namespace Bank2Qif.Converters.AliorKantor
                           let bookingDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
                           let opDate = GenericParsers.DateYyyyMmDd.Parse (csv [1])
                           let desc = csv [2]
-                          let amount = MBankCsvParsers.Amount.Parse(csv[3])
+                          let amount = AliorKantorCsvParsers.Amount.Parse(csv[3])
                           let payee = csv [4]                          
                           select new QifEntry
                                      {

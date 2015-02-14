@@ -55,6 +55,7 @@
     <Compile Include="src\ConvertersTests\AliorSyncPdfParsersTest.cs" />
     <Compile Include="src\ConvertersTests\InteligoCsvParsersTest.cs" />
     <Compile Include="src\ConvertersTests\MbankCsvParsersTests.cs" />
+    <Compile Include="src\ParsersTests\AliorKantorPrsersTests.cs" />
     <Compile Include="src\ParsersTests\GenericParsersTests.cs" />
     <Compile Include="src\QifFileTests.cs" />
     <Compile Include="src\ConvertersTests\AliorSyncPdfToQifTests.cs" />
@@ -69,7 +70,9 @@
       <Name>Bank2Qif</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="data\wyciag1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -9,6 +9,7 @@ using Sprache;
 
 namespace Bank2QifTests.ParsersTests
 {
+    [TestFixture]
     public class GenericParsersTests
     {
         [Test]
