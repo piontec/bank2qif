@@ -108,7 +108,21 @@ namespace Bank2Qif
 
         private void LoadContainer ()
         {
-            IConfigSource src = new IniConfigSource (INI_NAME);
+            IConfigSource src = null;
+            try
+            {
+                src = new IniConfigSource(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + INI_NAME);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.Error.WriteLine("Directory not found. " + ex.Message);
+                Environment.Exit((int)ExitCodes.FileNotFound);
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.Error.WriteLine("File not found. " + ex.Message);
+                Environment.Exit((int)ExitCodes.FileNotFound);
+            }
 
             m_container = new WindsorContainer ();
             m_container.Install (new ConvertersInstaller (), new TransformersInstaller ());
