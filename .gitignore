@@ -5,3 +5,4 @@ Bank2QifTests/test-results/
 *.suo
 TestResults/
 Bank2QifTests/data/*.pdf
+bin/
