@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Bank2QifPlayground</RootNamespace>
@@ -34,10 +32,6 @@
     <Reference Include="ImapX">
       <HintPath>..\lib\imapx-2.0.0.8\ImapX.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.3.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\itextsharp-5.3.4\itextsharp.dll</HintPath>
-    </Reference>
     <Reference Include="Sprache">
       <HintPath>..\lib\sprache-1.9.1\Sprache.dll</HintPath>
     </Reference>
@@ -47,6 +41,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Core" />
+    <Reference Include="itextsharp">
+      <HintPath>..\lib\itextsharp-5.3.4\itextsharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />

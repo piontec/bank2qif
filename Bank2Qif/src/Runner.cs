@@ -92,7 +92,7 @@ namespace Bank2Qif
             string supportedExt = ((ConverterAttribute) Attribute.GetCustomAttribute (
                 converter.GetType (), typeof (ConverterAttribute))).Extension;
 
-            if (!fileName.EndsWith (supportedExt, StringComparison.InvariantCultureIgnoreCase))
+			if (Path.GetExtension (fileName) != "." + supportedExt)
             {
                 Console.Error.WriteLine ("Wrong file name for that type of converter, {0} file expected", supportedExt);
                 DisplayHelpAndExit (ExitCodes.WrongFile);
@@ -135,7 +135,7 @@ namespace Bank2Qif
 
         private void LoadCmdLineArgs (string[] args)
         {
-            if (args.Length != 4)
+            if (args.Length != 3)
             {
                 Console.WriteLine ("Wrong number of parameters");
                 DisplayHelpAndExit (ExitCodes.SyntaxError);
@@ -143,17 +143,18 @@ namespace Bank2Qif
 
             ArgvConfigSource source = new ArgvConfigSource (args);
 
-            source.AddSwitch ("Main", "file-name", "f");
+            //source.AddSwitch ("Main", "file-name", "f");
             source.AddSwitch ("Main", "bank-type", "t");
 
-            m_fileName = source.Configs ["Main"].Get ("file-name");
+            //m_fileName = source.Configs ["Main"].Get ("file-name");
+			m_fileName = args[args.Length - 1];
             m_bankType = source.Configs ["Main"].Get ("bank-type");
         }
 
 
         private void DisplayHelpAndExit (ExitCodes code)
         {
-            Console.Error.WriteLine ("Usage: {0} -t [bank type] -f [file name]", AppDomain.CurrentDomain.FriendlyName);
+            Console.Error.WriteLine ("Usage: {0} -t [bank type] [file name]", AppDomain.CurrentDomain.FriendlyName);
             ListSupportedConverters ();
             Environment.Exit ((int) code);
         }

@@ -17,19 +17,16 @@ Global
 		{06E4739E-550C-4CE4-BFF5-5DEACD121B36}.Debug|x86.Build.0 = Debug|x86
 		{06E4739E-550C-4CE4-BFF5-5DEACD121B36}.Release|x86.ActiveCfg = Release|x86
 		{06E4739E-550C-4CE4-BFF5-5DEACD121B36}.Release|x86.Build.0 = Release|x86
-		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Debug|x86.Build.0 = Debug|Any CPU
-		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.ActiveCfg = Release|Any CPU
-		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.Build.0 = Release|Any CPU
 		{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}.Debug|x86.ActiveCfg = Debug|x86
 		{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}.Debug|x86.Build.0 = Debug|x86
 		{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}.Release|x86.ActiveCfg = Release|x86
 		{D1A9D2C0-0221-4AD0-9743-EA4E6D5E2D1E}.Release|x86.Build.0 = Release|x86
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Bank2QifPlayground\Bank2QifPlayground.csproj
 	EndGlobalSection
 EndGlobal

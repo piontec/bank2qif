@@ -26,11 +26,14 @@ namespace Bank2Qif.Transformers.SimpleMatch
 
         public IEnumerable<QifEntry> Transform (IEnumerable<QifEntry> entries)
         {
-            var nonCommentLines = File.ReadAllLines (m_rulesFile).
-                                       Where (line => line.Trim ().StartsWith (COMMENT_START) == false).
-                                       Aggregate ((s1, s2) => string.Format ("{0}{1}{2}", s1, Environment.NewLine, s2));
+			var nonCommentLines = File.ReadAllLines (m_rulesFile).
+				Where (line => line.Trim ().StartsWith (COMMENT_START) == false);
+			if (nonCommentLines.Count () == 0)
+				return new List<QifEntry> ();
+			
+			var joined = nonCommentLines.Aggregate ((s1, s2) => string.Format ("{0}{1}{2}", s1, Environment.NewLine, s2));
 
-            var rules = SimpleMatchRuleParsers.SimpleRules.Parse (nonCommentLines);
+			var rules = SimpleMatchRuleParsers.SimpleRules.Parse (joined);
             foreach (var rule in rules)
                 entries = rule.Transform (entries);
 

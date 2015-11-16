@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E15D62AD-9AC8-47C7-BF37-FC4663F573FC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Bank2QifTests</RootNamespace>
@@ -32,22 +30,20 @@
     <Reference Include="Moq">
       <HintPath>..\lib\moq-4.0.10827\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>lib\nunit-2.6.2\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Sprache, Version=1.9.1.31, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\sprache-1.9.1\Sprache.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Core" />
+    <Reference Include="Nini">
+      <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
+    </Reference>
+    <Reference Include="Sprache">
+      <HintPath>..\lib\sprache-1.9.1\Sprache.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />

@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{06E4739E-550C-4CE4-BFF5-5DEACD121B36}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Bank2Qif</RootNamespace>
@@ -35,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Externalconsole>True</Externalconsole>
-    <Commandlineparameters>-t sync -f sync_all_2012.csv</Commandlineparameters>
+    <Commandlineparameters>-t aliorkantor /home/piontec/Desktop/gnucash_todo/pl-historia-20151116.csv</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -56,9 +54,6 @@
     <Reference Include="itextsharp">
       <HintPath>..\lib\itextsharp-5.3.4\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Nini">
-      <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
-    </Reference>
     <Reference Include="Sprache">
       <HintPath>..\lib\sprache-1.9.1\Sprache.dll</HintPath>
     </Reference>
@@ -66,6 +61,9 @@
     <Reference Include="System.Core" />
     <Reference Include="Castle.Core">
       <HintPath>..\lib\castle.windsor-3.1.0\net40\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Nini">
+      <HintPath>..\lib\nini-1.1.0\Nini.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
