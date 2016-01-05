@@ -27,8 +27,9 @@ namespace Bank2Qif
 
         private string m_fileName, m_bankType;
         private WindsorContainer m_container;
-        public const string CONFIG_DIR = "etc/";
-        private const string INI_NAME = CONFIG_DIR + "config.ini";
+        public const string LOCAL_CONFIG_DIR = "etc";
+		public const string HOME_CFG_DIR = ".bank2qif";
+        private const string INI_NAME = "config.ini";
 
 
         public static void Main (string[] args)
@@ -105,13 +106,28 @@ namespace Bank2Qif
             }
         }
 
+		private string GetHomeDir ()
+		{
+			return (Environment.OSVersion.Platform == PlatformID.Unix || 
+				Environment.OSVersion.Platform == PlatformID.MacOSX)
+				? Environment.GetEnvironmentVariable("HOME")
+				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+		}
+
+		private string GetConfigPath ()
+		{
+			var homeCfg = Path.Combine (GetHomeDir (), HOME_CFG_DIR);
+			if (File.Exists (Path.Combine (homeCfg, INI_NAME)))
+				return homeCfg;
+			return Path.Combine (Directory.GetCurrentDirectory(), LOCAL_CONFIG_DIR);
+		}
 
         private void LoadContainer ()
         {
             IConfigSource src = null;
             try
             {
-                src = new IniConfigSource(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + INI_NAME);
+				src = new IniConfigSource(Path.Combine (GetConfigPath (), INI_NAME));
             }
             catch (DirectoryNotFoundException ex)
             {

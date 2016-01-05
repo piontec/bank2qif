@@ -20,7 +20,7 @@ namespace Bank2Qif.Transformers.SimpleMatch
         public SimpleMatchTransformer (IConfig config)
         {
             Initialize (config);
-            m_rulesFile = Runner.CONFIG_DIR + m_config.GetString (CFG_RULES_FILE_NAME, CFG_RULES_FILE_NAME_DFLT);
+            m_rulesFile = m_config.GetString (CFG_RULES_FILE_NAME, CFG_RULES_FILE_NAME_DFLT);
         }
 
 
