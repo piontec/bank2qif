@@ -40,12 +40,20 @@ namespace Bank2Qif.Parsers
             select new DateTime (int.Parse (year), int.Parse (month), int.Parse (day));
 
         public static readonly Parser<DateTime> DateMmDdYyyy =
-            from day in TwoDigits
-            from sep1 in Parse.Char ('-').Once ()
             from month in TwoDigits
+            from sep1 in Parse.Char ('-').Once ()
+            from day in TwoDigits
             from dot2 in Parse.Char ('-').Once ()
             from year in FourDigits
             select new DateTime (int.Parse (year), int.Parse (month), int.Parse (day));
+
+		public static readonly Parser<DateTime> DateDdMmYyyy =
+			from day in TwoDigits
+			from sep1 in Parse.Char ('-').Once ()
+			from month in TwoDigits
+			from dot2 in Parse.Char ('-').Once ()
+			from year in FourDigits
+			select new DateTime (int.Parse (year), int.Parse (month), int.Parse (day));
 
         public static readonly Parser<AccountNumber> AccountNumberParser =
             from dig2 in TwoDigits

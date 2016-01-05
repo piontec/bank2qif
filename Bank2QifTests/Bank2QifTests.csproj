@@ -58,6 +58,7 @@
     <Compile Include="src\TransformersTests\DefaultTransformerTest.cs" />
     <Compile Include="src\TransformersTests\SimpleMatchRuleParserTests.cs" />
     <Compile Include="src\TransformersTests\SimpleMatchRuleTests.cs" />
+    <Compile Include="src\ConvertersTests\BzWbkCsvToQifTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
