@@ -26,7 +26,7 @@ namespace Bank2Qif.Converters.AliorSync
             lines = lines.Replace ("\n", Environment.NewLine);
             var entries = from csvline in CsvParser.CsvComma.Parse (lines).Skip (1)
                           let csv = csvline.ToArray ()
-                          let opDate = GenericParsers.DateMmDdYyyy.Parse (csv [0])
+                          let opDate = GenericParsers.DateDdMmYyyy.Parse (csv [0])
                           let rcvr = csv [1]
                           let accountName = csv [2]
                           let desc = csv [3]
@@ -37,6 +37,7 @@ namespace Bank2Qif.Converters.AliorSync
                                          Amount = amount.Item2 == NATIVE_CURRENCY
                                                       ? amount.Item1
                                                       : ComputeValue (amount.Item1, desc),
+										 AccountName = string.Empty,
                                          Date = new BankDates {OperationDate = opDate, BookingDate = opDate},
                                          Payee = rcvr,
                                          Description = String.IsNullOrEmpty (verifiedAccName)

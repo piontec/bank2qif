@@ -24,14 +24,14 @@ namespace Bank2QifTests.ConvertersTests
 		[Test]
 		public void TestBankStatement1 ()
 		{
-            CheckParsedDates(9, @"data\wyciag1.txt");
+			CheckParsedDates(9, Path.Combine ("data", "wyciag1.txt"));
 		}
 
 
         [Test]
         public void TestBankStatement2()
         {
-            CheckParsedDates(10, @"data\wyciag2.txt");
+			CheckParsedDates(10, Path.Combine ("data", "wyciag2.txt"));
         }
 
 

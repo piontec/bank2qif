@@ -30,12 +30,19 @@ namespace Bank2QifTests.ConvertersTests
         [Test]
         public void MbankShouldParseOneEntry()
         {
-            var entries = m_converter.ConvertLinesToQif(testLines);
+			StringBuilder sb = new StringBuilder ();
+			for (int i = 0; i < MBankCsvToQif.MBANK_HEADER_LENGTH - 1; i++)
+				sb.Append ("HEADER\r\n");
+			sb.Append (testLines);
+			for (int i = 0; i < MBankCsvToQif.MBANK_FOOTER_LENGTH; i++)
+				sb.Append ("FOOTER\r\n");
+
+			var entries = m_converter.ConvertLinesToQif(sb.ToString());
             Assert.AreEqual(1, entries.Count());
             var entry = entries.Single ();
             Assert.AreEqual(-10.5, entry.Amount);
-            Assert.AreEqual("11222233334444555566667777", entry.AccountName);
-            Assert.AreEqual("PAYU SPÓŁKA AKCYJNA  UL.MARCELIŃSKA 90                  60-324 POZNAŃ POLSKA", entry.Payee);
+			Assert.AreEqual("[11222233334444555566667777] Place Z Allegro XX111100111XX Wpłata Łączna Od Xxx - Przelew Mtransfer Wychodzacy", entry.Description);
+			Assert.AreEqual("Payu Spółka Akcyjna Ul.Marcelińska 90 60-324 Poznań Polska", entry.Payee);
             Assert.AreEqual(DateTime.Parse ("2012-01-02"), entry.Date.BookingDate);
             Assert.AreEqual(DateTime.Parse ("2012-01-01"), entry.Date.OperationDate);
         }

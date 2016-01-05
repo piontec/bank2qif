@@ -25,7 +25,7 @@ namespace Bank2QifTests.ConvertersTests
             m_converter = new InteligoCsvToQif();
         }
 
-
+		[Ignore("Not using anymore")]
         [Test]
         public void InteligoShouldParseOneEntry()
         {

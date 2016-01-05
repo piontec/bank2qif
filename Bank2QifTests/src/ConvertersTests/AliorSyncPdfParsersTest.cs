@@ -13,7 +13,7 @@ using Bank2Qif.Converters.AliorSync;
 namespace Bank2QifTests.ConvertersTests
 {
     public class AliorSyncParsersTest
-    {
+    {		
         [Test]
         public void TestAmountOK()
         {

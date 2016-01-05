@@ -79,8 +79,12 @@ namespace Bank2Qif.Parsers
 
         public static Parser<IEnumerable<IEnumerable<string>>> CsvSemicolon = Csv(';');
 
+		public static Parser<IEnumerable<IEnumerable<string>>> CsvPipe = Csv('|');
+
         public static Parser<IEnumerable<string>> CsvRecordComma = CsvRecord (',');
 
         public static Parser<IEnumerable<string>> CsvRecordSemicolon = CsvRecord(';');
+
+		public static Parser<IEnumerable<string>> CsvRecordPipe = CsvRecord('|');
     }
 }

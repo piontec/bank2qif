@@ -105,6 +105,7 @@
     <Compile Include="src\Converters\AliorSync\AliorSyncPdfParsers.cs" />
     <Compile Include="src\Converters\AliorSync\AliorSyncCsvParsers.cs" />
     <Compile Include="src\Converters\BzWbk\BzWbkCsvToQif.cs" />
+    <Compile Include="src\Converters\BPH\BphCsvToQif.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -152,5 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\Converters\BzWbk\" />
+    <Folder Include="src\Converters\BPH\" />
   </ItemGroup>
 </Project>
