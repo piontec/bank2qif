@@ -22,7 +22,7 @@ namespace Bank2Qif.Converters.BPH
 				let opDate = GenericParsers.DateDdMmYyyy.Parse (csv [2])
 				let account = csv [3]
 				let payee = csv [4]  
-				let desc = csv [5]
+				let desc = csv [5].Split (new []{'-'}, 2)
 				let type = csv [6]
 				let amount = csv [7]
 				select new QifEntry
@@ -30,7 +30,8 @@ namespace Bank2Qif.Converters.BPH
 				Amount = Decimal.Parse(amount.Replace(",", ".").Replace(" ", "")),
 				Date = new BankDates {OperationDate = opDate, BookingDate = bookingDate},
 				Payee = payee.Trim (),
-				Description = string.Format ("{0} ({1})", desc.Trim (), type.Trim()),
+				Description = string.Format ("{1}: {0}", (desc.Length > 1 ? desc[1] : desc[0]).Trim (new [] {' ',';'}),
+					type.Trim()),
 				AccountName = account
 			};
 
