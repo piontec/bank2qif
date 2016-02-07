@@ -31,9 +31,8 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <Externalconsole>True</Externalconsole>
-    <Commandlineparameters>-t aliorkantor /home/piontec/Desktop/gnucash_todo/pl-historia-20151116.csv</Commandlineparameters>
+    <Commandlineparameters>-t bph ~/Desktop/gnucash_todo/2016-01/bph.txt</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>

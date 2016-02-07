@@ -23,13 +23,14 @@ namespace Bank2Qif.Converters.BPH
 				let account = csv [3]
 				let payee = csv [4]  
 				let desc = csv [5]
+				let type = csv [6]
 				let amount = csv [7]
 				select new QifEntry
 			{
 				Amount = Decimal.Parse(amount.Replace(",", ".").Replace(" ", "")),
 				Date = new BankDates {OperationDate = opDate, BookingDate = bookingDate},
 				Payee = payee.Trim (),
-				Description = desc.Trim (),
+				Description = string.Format ("{0} ({1})", desc.Trim (), type.Trim()),
 				AccountName = account
 			};
 

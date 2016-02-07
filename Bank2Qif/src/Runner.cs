@@ -179,7 +179,7 @@ namespace Bank2Qif
         private void ListSupportedConverters ()
         {
             Console.WriteLine ("Supported bank types and corresponding file extensions:");
-            Console.WriteLine ("\tbank [-t]\tfile [-f]");
+            Console.WriteLine ("\tbank [-t]\tfile ext");
             Console.WriteLine ("\t=========\t=========");
             foreach (var conv in m_container.ResolveAll<IConverter> ())
             {

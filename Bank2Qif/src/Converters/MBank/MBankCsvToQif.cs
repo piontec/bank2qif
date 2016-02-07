@@ -32,7 +32,7 @@ namespace Bank2Qif.Converters.MBank
     [Converter ("mbank", "csv")]
     public class MBankCsvToQif : BaseConverter
     {
-        public const int MBANK_HEADER_LENGTH = 37;
+        public const int MBANK_HEADER_LENGTH = 38;
 		public const int MBANK_FOOTER_LENGTH = 5;
         //#Data operacji;#Data księgowania;#Opis operacji;#Tytuł;#Nadawca/Odbiorca;#Numer konta;#Kwota;#Saldo po operacji;
         //2012-01-01;2012-01-01;PRZELEW MTRANSFER WYCHODZACY;"PLACE Z ALLEGRO XX111100261XX WPŁATA ŁĄCZNA OD XXX";"PAYU SPÓŁKA AKCYJNA  UL.MARCELIŃSKA 90                  60-324 POZNAŃ POLSKA";'81114020040000330261746759';-10,50;1,10;
