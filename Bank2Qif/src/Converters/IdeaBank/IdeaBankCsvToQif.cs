@@ -20,8 +20,8 @@ namespace Bank2Qif.Converters.IdeaBank
 				let csv = csvline.ToArray ()
 				let bookingDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
 				let opDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
-				let amount = csv [4]
 				let type = csv [15]
+				let amount = type == "uznanie" ? csv [4] : "-"+csv[4]
 				let account = type == "uznanie" ? csv [2] : csv [8]
 				let payee = csv [9]  
 				let desc = csv [14]
