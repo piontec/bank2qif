@@ -106,6 +106,7 @@
     <Compile Include="src\Converters\BzWbk\BzWbkCsvToQif.cs" />
     <Compile Include="src\Converters\BPH\BphCsvToQif.cs" />
     <Compile Include="src\Converters\IdeaBank\IdeaBankCsvToQif.cs" />
+    <Compile Include="src\Converters\BankSmart\BankSmartCsvToQif.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -155,5 +156,6 @@
     <Folder Include="src\Converters\BzWbk\" />
     <Folder Include="src\Converters\BPH\" />
     <Folder Include="src\Converters\IdeaBank\" />
+    <Folder Include="src\Converters\BankSmart\" />
   </ItemGroup>
 </Project>
