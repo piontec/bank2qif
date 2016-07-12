@@ -29,9 +29,8 @@ namespace Bank2Qif.Converters.IdeaBank
 			{
 				Amount = Decimal.Parse(amount.Replace(",", ".").Replace(" ", "")),
 				Date = new BankDates {OperationDate = opDate, BookingDate = bookingDate},
-				Payee = payee.Trim (),
-				Description = string.Format ("{1}: {0}", desc.Trim (new [] {' ',';'}), type.Trim()),
-				AccountName = account
+				Payee = string.Format("{0} [{1}]", payee.Trim (), account),
+				Description = string.Format ("{1}: {0}", desc.Trim (new [] {' ',';'}), type.Trim())
 			};
 
 			return entries.ToList ();

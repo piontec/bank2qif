@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Bank2Qif.Parsers;
 using Sprache;
+using System.Text.RegularExpressions;
 
 
 namespace Bank2Qif.Converters.BankSmart
@@ -16,12 +17,13 @@ namespace Bank2Qif.Converters.BankSmart
 	public class BankSmartCsvToQif : BaseConverter
 	{
 		public override IList<QifEntry> ConvertLinesToQif (string lines)
-		{			
+		{	
+			Regex rgx = new Regex("[A-Z]{3}");
 			var entries = from csvline in CsvParser.CsvComma.Parse (lines).Skip (1)
 				let csv = csvline.ToArray ()
 				let opDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
 				let bookingDate = GenericParsers.DateYyyyMmDd.Parse (csv [1])
-				let amount = csv [4].Replace (" USD", string.Empty)
+				let amount = rgx.Replace (csv [4], string.Empty)
 				let payee = csv [2]  
 				let desc = csv [3]
 				select new QifEntry
