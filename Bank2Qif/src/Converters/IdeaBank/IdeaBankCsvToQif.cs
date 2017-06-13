@@ -16,7 +16,7 @@ namespace Bank2Qif.Converters.IdeaBank
 	{
 		public override IList<QifEntry> ConvertLinesToQif (string lines)
 		{
-			var entries = from csvline in CsvParser.CsvSemicolon.Parse (lines).Skip (1)
+			var entries = from csvline in CsvParser.CsvSemicolon.Parse (lines).Skip (2)
 				let csv = csvline.ToArray ()
 				let bookingDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
 				let opDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
