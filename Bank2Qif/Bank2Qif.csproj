@@ -32,7 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>True</Externalconsole>
-    <Commandlineparameters>-t ideabank ~/Desktop/gnucash_todo/gnucash-import/2016-03/ideabank.csv</Commandlineparameters>
+    <Commandlineparameters>-t bphalior /tmp/copy.csv</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -107,6 +107,7 @@
     <Compile Include="src\Converters\BPH\BphCsvToQif.cs" />
     <Compile Include="src\Converters\IdeaBank\IdeaBankCsvToQif.cs" />
     <Compile Include="src\Converters\BankSmart\BankSmartCsvToQif.cs" />
+    <Compile Include="src\Converters\BPH\BphAliorCsvToQif.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
