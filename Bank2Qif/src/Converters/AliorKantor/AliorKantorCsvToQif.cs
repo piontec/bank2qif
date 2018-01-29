@@ -9,8 +9,8 @@ using Sprache;
 namespace Bank2Qif.Converters.AliorKantor
 {
     //Data księgowania ;Data efektywna;Nazwa transakcji i opis;Kwota;Waluta;Saldo po operacji
-    //2014-12-30 00:00:00;2014-12-30 00:00:00;"Rozliczenie transakcji Kantor Walutowy 1111";-11,11;"PLN";111,11
-    //2014-12-16 00:00:00;2014-12-16 00:00:00;"pod usd   ";10;"PLN";11,1
+	//25-10-2017;23-10-2017;"Rozliczenie transakcji Kantor Walutowy 1111";-11,11;"PLN";111,11
+	//25-10-2017;23-10-2017;"pod usd   ";10;"PLN";11,1
 
     [Converter("aliorkantor", "csv")]
     public class AliorKantorCsvToQif : BaseConverter
@@ -19,8 +19,8 @@ namespace Bank2Qif.Converters.AliorKantor
         {
             var entries = from csvline in CsvParser.CsvSemicolon.Parse (lines).Skip (1)
                           let csv = csvline.ToArray ()
-                          let bookingDate = GenericParsers.DateYyyyMmDd.Parse (csv [0])
-                          let opDate = GenericParsers.DateYyyyMmDd.Parse (csv [1])
+						  let bookingDate = GenericParsers.DateDdMmYyyy.Parse (csv [0])
+				          let opDate = GenericParsers.DateDdMmYyyy.Parse (csv [1])
                           let desc = csv [2]
                           let amount = AliorKantorCsvParsers.Amount.Parse(csv[3])
                           let payee = csv [4]                          

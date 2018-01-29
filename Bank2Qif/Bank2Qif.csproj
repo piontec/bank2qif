@@ -32,7 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>True</Externalconsole>
-    <Commandlineparameters>-t bphalior /tmp/copy.csv</Commandlineparameters>
+    <Commandlineparameters>-t aliorkantor ~/Desktop/gnucash_todo/gnucash-import/2017-all/krysia_kantor_eur.csv</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
