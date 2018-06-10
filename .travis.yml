@@ -2,6 +2,15 @@ language: csharp
 mono:  
   - 4.6.2
 solution: bank2qif.sln
+install:
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release bank2qif.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Bank2QifTests/bin/Release/Bank2QifTests.dll
+deploy:
+  provider: releases
+  file_glob: true
+  file: Bank2Qif/bin/Release/*
+  skip_cleanup: true
+  on:
+    tags: true
