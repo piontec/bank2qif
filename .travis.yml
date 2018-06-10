@@ -1,8 +1,7 @@
 language: csharp
-mono:
-  - latest
-  - 3.12.0
-solution: solution-name.sln
+mono:  
+  - 4.6.2
+solution: bank2qif.sln
 script:
   - xbuild /p:Configuration=Release bank2qif.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Bank2QifTests/bin/Release/Bank2QifTests.dll
