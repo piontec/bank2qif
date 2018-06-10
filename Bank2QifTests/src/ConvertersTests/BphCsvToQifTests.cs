@@ -35,7 +35,7 @@ namespace Bank2QifTests.ConvertersTests
 			Assert.AreEqual(-22.33, entry.Amount);
 			Assert.AreEqual("11 2222 2222 2222 2222 2222 2222", entry.AccountName);
 			Assert.AreEqual("NADAWCA", entry.Payee);
-			Assert.AreEqual ("OPIS OD NADAWCY", entry.Description);
+			Assert.AreEqual ("Transakcja kartą: OPIS OD NADAWCY", entry.Description);
 			Assert.AreEqual(DateTime.Parse ("2015-12-28"), entry.Date.BookingDate);
 			Assert.AreEqual(DateTime.Parse ("2015-12-24"), entry.Date.OperationDate);
 		}
