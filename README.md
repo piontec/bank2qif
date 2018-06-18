@@ -40,10 +40,29 @@ where:
 * `gnucash_account` - name of the gnucash account to assign the transaction to
 
 #### Examples
-TBD
+* if "SHELL" is found in a transaction description, assign it to account "Expenses:Car:Gas" in Gnucash
+    ```
+    Description % SHELL => Expenses:Car:Gas
+    ```
+* if the Payee field contains "John Smith", assign in Gnucash to "Expenses:Education:English"
+    ```
+    Payee % John Smith => Expenses:Education:English
+    ```
+* if the text "LADYBUG" is found anywhere, assign to "Expenses:Groceries"
+    ```
+    any % LADYBUG => Expenses:Groceries
+    ```
 
 ### Running bank2qif
-TBD
+To check the names of available converters, just run:
+```bash
+./bank2qif.exe
+```
+When you have your bank statements and your rules ready, you can run bank2qif like this:
+```bash
+./bank2qif.exe -t [converter_name] [statement_file_path]
+```
+The resulting QIF file will be written in the same location as the statement file, but with `.qif` extension. 
 
 ### Importing to gnucash
 TBD
