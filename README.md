@@ -65,7 +65,39 @@ When you have your bank statements and your rules ready, you can run bank2qif li
 The resulting QIF file will be written in the same location as the statement file, but with `.qif` extension. 
 
 ### Importing to gnucash
-TBD
+In general, the import is done by selecting "File -> Import -> Import QIF" in the menu. This opens a pretty intuitive creator that guides you through the process. Still, pay attention to the following details:
+* gnucash internally maps account names from QIF files into its own account names using the following rules:
+    * if there already is an account with exactly the same name as in the QIF file, it is used and in the account mapping window the column "New" doesn't have a check mark
+    * if there's no account with exactly the same name as in the QIF file, it will be created by gnucash and it shows a checked field in the "New" column; if you want, you can map the non existing account into a one that already exists in gnucash - just select the target account for each row; gnucash saves this mapping for later, so for a given gnucash file you only need to do this once
+* double check the currency that will be used for your import - QIF files have no currency information, so you need to provide it
+* after the creator closes, all your transactions will be already visible in gnucash accounts: the ones that weren't matched by bank2qif to any specific account are by default assigned to "QifImport" account; you can edit and move them to valid accounts from there.
 
 ## Developing bank2qif
-TBD
+### Support for bank statements formats - Converters
+To develop a converter for a new bank and its statement format, have a look at the simplest converters like [src/IdeaBank/IdeaBankCsvToQif.cs](src/IdeaBank/IdeaBankCsvToQif.cs). A Converter musts extend the `BaseConverter` class, be tagged with `Converter` attribute and implement at least the `ConvertLinesToQif` method. All tagged converters are auto-registered on startup, so there's nothing else you have to do to make it available. Parsers used for Converters are implemented using [Sprache](https://github.com/sprache/Sprache) library. An example of Converter class declaration looks like this:
+```csharp
+[Converter("ideabank", "csv")]
+public class IdeaBankCsvToQif : BaseConverter
+{
+	public override IList<QifEntry> ConvertLinesToQif (string lines)
+    {
+        ...
+    }
+}
+```
+
+### Statement data modification - Transformers
+If you want to transform your data in a bank statement before it is saved into QIF file, have a look at [src/Transformers/ITransformer.cs](src/Transformers/ITransformer.cs) interface and the most frequently used implementation - the `SimpleMatch` transformer in [src/Transformers/SimpleMatch/SimpleMatchTransformer.cs](src/Transformers/SimpleMatch/SimpleMatchTransformer.cs). This is the transformer that matches transactions to account based on the `rules.txt` file. I have started a few others, but they're not really supported right now. A Transformer is also auto-registered at startup based on the `[Transformer` attribute. An example Transformer declaration looks like this:
+```csharp
+[Transformer (priority: 100)]
+public class SimpleMatchTransformer : BaseTransformer, ITransformer
+{
+    public IEnumerable<QifEntry> Transform (IEnumerable<QifEntry> entries)
+    {
+        ...
+    }
+}
+```
+
+### Independent text format parsers - Parsers
+If you want to reuse a rule that knows how to parse a specific, but recurring piece of text, like location specific date or currency format, please add them in `src/Parsers` directory.
