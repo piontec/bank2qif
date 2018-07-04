@@ -74,7 +74,7 @@ In general, the import is done by selecting "File -> Import -> Import QIF" in th
 
 ## Developing bank2qif
 ### Support for bank statements formats - Converters
-To develop a converter for a new bank and its statement format, have a look at the simplest converters like [Bank2Qif/src/IdeaBank/IdeaBankCsvToQif.cs](Bank2Qif/src/IdeaBank/IdeaBankCsvToQif.cs). A Converter musts extend the `BaseConverter` class, be tagged with `Converter` attribute and implement at least the `ConvertLinesToQif` method. All tagged converters are auto-registered on startup, so there's nothing else you have to do to make it available. Parsers used for Converters are implemented using [Sprache](https://github.com/sprache/Sprache) library. An example of Converter class declaration looks like this:
+To develop a converter for a new bank and its statement format, have a look at the simplest converters like [Bank2Qif/src/Converters/IdeaBank/IdeaBankCsvToQif.cs](Bank2Qif/src/Converters/IdeaBank/IdeaBankCsvToQif.cs). A Converter musts extend the `BaseConverter` class, be tagged with `Converter` attribute and implement at least the `ConvertLinesToQif` method. All tagged converters are auto-registered on startup, so there's nothing else you have to do to make it available. Parsers used for Converters are implemented using [Sprache](https://github.com/sprache/Sprache) library. An example of Converter class declaration looks like this:
 ```csharp
 [Converter("ideabank", "csv")]
 public class IdeaBankCsvToQif : BaseConverter
