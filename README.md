@@ -74,7 +74,7 @@ In general, the import is done by selecting "File -> Import -> Import QIF" in th
 
 ## Developing bank2qif
 ### Support for bank statements formats - Converters
-To develop a converter for a new bank and its statement format, have a look at the simplest converters like [src/IdeaBank/IdeaBankCsvToQif.cs](src/IdeaBank/IdeaBankCsvToQif.cs). A Converter musts extend the `BaseConverter` class, be tagged with `Converter` attribute and implement at least the `ConvertLinesToQif` method. All tagged converters are auto-registered on startup, so there's nothing else you have to do to make it available. Parsers used for Converters are implemented using [Sprache](https://github.com/sprache/Sprache) library. An example of Converter class declaration looks like this:
+To develop a converter for a new bank and its statement format, have a look at the simplest converters like [Bank2Qif/src/IdeaBank/IdeaBankCsvToQif.cs](Bank2Qif/src/IdeaBank/IdeaBankCsvToQif.cs). A Converter musts extend the `BaseConverter` class, be tagged with `Converter` attribute and implement at least the `ConvertLinesToQif` method. All tagged converters are auto-registered on startup, so there's nothing else you have to do to make it available. Parsers used for Converters are implemented using [Sprache](https://github.com/sprache/Sprache) library. An example of Converter class declaration looks like this:
 ```csharp
 [Converter("ideabank", "csv")]
 public class IdeaBankCsvToQif : BaseConverter
@@ -87,7 +87,7 @@ public class IdeaBankCsvToQif : BaseConverter
 ```
 
 ### Statement data modification - Transformers
-If you want to transform your data in a bank statement before it is saved into QIF file, have a look at [src/Transformers/ITransformer.cs](src/Transformers/ITransformer.cs) interface and the most frequently used implementation - the `SimpleMatch` transformer in [src/Transformers/SimpleMatch/SimpleMatchTransformer.cs](src/Transformers/SimpleMatch/SimpleMatchTransformer.cs). This is the transformer that matches transactions to account based on the `rules.txt` file. I have started a few others, but they're not really supported right now. A Transformer is also auto-registered at startup based on the `[Transformer` attribute. An example Transformer declaration looks like this:
+If you want to transform your data in a bank statement before it is saved into QIF file, have a look at [Bank2Qif/src/Transformers/ITransformer.cs](Bank2Qif/src/Transformers/ITransformer.cs) interface and the most frequently used implementation - the `SimpleMatch` transformer in [Bank2Qif/src/Transformers/SimpleMatch/SimpleMatchTransformer.cs](Bank2Qif/src/Transformers/SimpleMatch/SimpleMatchTransformer.cs). This is the transformer that matches transactions to account based on the `rules.txt` file. I have started a few others, but they're not really supported right now. A Transformer is also auto-registered at startup based on the `[Transformer` attribute. An example Transformer declaration looks like this:
 ```csharp
 [Transformer (priority: 100)]
 public class SimpleMatchTransformer : BaseTransformer, ITransformer
@@ -100,4 +100,4 @@ public class SimpleMatchTransformer : BaseTransformer, ITransformer
 ```
 
 ### Independent text format parsers - Parsers
-If you want to reuse a rule that knows how to parse a specific, but recurring piece of text, like location specific date or currency format, please add them in `src/Parsers` directory.
+If you want to reuse a rule that knows how to parse a specific, but recurring piece of text, like location specific date or currency format, please add them in `Bank2Qif/src/Parsers` directory.
